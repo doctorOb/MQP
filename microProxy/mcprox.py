@@ -54,6 +54,7 @@ class ProxyThread(threading.Thread):
 	def run(self):
 		self.sock.listen(10)
 		while 1:
+			print"still alive"
 			temp = ConnectionThread(self.sock.accept())
 			print"<<<<<<<connection from host read>>>>>>>"
 			temp.daemon = True
