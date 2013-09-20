@@ -37,6 +37,7 @@ class ConnectionThread(threading.Thread):
 		reply = ''
  
 		while 1:
+			print"waiting for host"
 			temp = request.recv(1024)
  
 			if ('' == temp):
