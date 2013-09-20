@@ -15,7 +15,7 @@ import threading
  
  
 PORT = 8080
-HOST = ''
+HOST = socket.gethostbyname(socket.gethostname())
 regex = re.compile(r'http://(.*?)/', re.IGNORECASE)
  
 class ConnectionThread(threading.Thread):
@@ -46,9 +46,9 @@ class ConnectionThread(threading.Thread):
 		self.conn.close()
  
 class ProxyThread(threading.Thread):
-	def __init__(self, port):
+	def __init__(self, host, port):
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.bind((HOST, port))
+		self.sock.bind((host, port))
 		threading.Thread.__init__(self)
    
 	def run(self):
@@ -59,7 +59,7 @@ class ProxyThread(threading.Thread):
 			temp.start()
  
 if __name__ == "__main__":
-	proxy = ProxyThread(PORT)
+	proxy = ProxyThread(HOST,PORT)
 	proxy.daemon = True
 	proxy.start()
-	print "Started a proxy on port", PORT
+	print "Started a proxy on port", PORT, "with hostname", HOST
