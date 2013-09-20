@@ -55,6 +55,7 @@ class ProxyThread(threading.Thread):
 		self.sock.listen(10)
 		while 1:
 			temp = ConnectionThread(self.sock.accept())
+			print"<<<<<<<connection from host read>>>>>>>"
 			temp.daemon = True
 			temp.start()
  
