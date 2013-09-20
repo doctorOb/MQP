@@ -50,7 +50,9 @@ class ProxyThread(threading.Thread):
 	def __init__(self, host, port):
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.sock.bind((host, port))
+		print"before threading start"
 		threading.Thread.__init__(self)
+		print"after threading start"
    
 	def run(self):
 		self.sock.listen(10)
