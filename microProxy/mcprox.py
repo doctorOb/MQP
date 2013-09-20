@@ -15,6 +15,7 @@ import threading
  
  
 PORT = 8080
+HOST = ''
 regex = re.compile(r'http://(.*?)/', re.IGNORECASE)
  
 class ConnectionThread(threading.Thread):
@@ -47,7 +48,7 @@ class ConnectionThread(threading.Thread):
 class ProxyThread(threading.Thread):
 	def __init__(self, port):
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.bind(('localhost', port))
+		self.sock.bind((HOST, port))
 		threading.Thread.__init__(self)
    
 	def run(self):
