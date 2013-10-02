@@ -1,0 +1,32 @@
+\documentclass{article}
+\author{Dan Robertson}
+\title{Initial Requirements Gathering: Tower vs Router vs RaspberryPi}
+\begin{document}
+
+The Pis ethernet is connected to an internal USB Hub , which also provides the 
+Pis USB ports. This internal Hub is also connected via USB to the SoC , so all
+bandwith of USB and LAN is shared (480 mbps).It also puts some load onto the CPU ,which manages this traffic. 
+
+Using routers: The problem of multiple subnets and open driver support becomes an issue on a router to router basis. While the list of Open/dd-wrt supported routers is growing, it won't work with everything. Further, the process of flashing the router (and fidgeting with the makefiles, startup scripts, and configs) is entirely variable, depending on the router model. Custom firmware is 
+perhaps more robust that using a Pi, but its more geared towards superusers who want to enrich their home network, and would be hard to make deployable.
+\\
+OpenWRT
+\noindent
+\begin{itemize}
+\item Preloaded package manager (ipkg).
+\item Set up a VPN, runs lightweight server software
+\item more flexible then DD-WRT
+\item Create packages (perl, C) and Kernel Modules. Flash executibles onto the router, or bind them to the firmware image.
+\item Has a (semi-supported) image for Raspbery Pi
+\item Per packet inspection (via monitor mode) is totally doable. Socket programming, no problem.
+\end{itemize}
+
+DD-WRT
+\begin{itemize}
+\item Supports any OpenWRT package
+\item Create custom modules in C or Python (requires a lot of space).
+\end{itemize}
+
+The takeaway: Raspberry Pi or OpenWRT. Assumming that a router can talk to a neighbor router (on a seperate network) over wifi, OpenWRT seems like the way to go. However, raspberry pi has its advantages.
+
+\end{document}

@@ -1,0 +1,35 @@
+\documentclass{article}
+\begin{document}
+
+Squid Proxy, commonly refered to as Squid Cache, is a caching proxy server for linux that supports a wide array of features out of the box. The user defines squids behavior entirely through a configuration file that covers a wide variety of use cases, such as:
+\begin{itemize}
+\item URL rewriting 
+\item request forwarding, dropping, redirecting
+\item caching of frequently used content
+\item Cache heierarchies, formed by multiple peers who can query each other to check for cached content before resorting to using the requested server
+\item transparent proxying
+\end{itemize}
+
+For a network administrator, this setup is fairly attractive. However, in the case of openWRT - squid has a few noteable pitfalls. 
+\begin{itemize}
+\item[1.] No out of the box support for parallel TCP connections (pooling) or http request splitting
+\item[2.] no use for caching (as the OWRT and squid installation leaves about 2 mb of space for consumption).
+\end{itemize}
+
+Squid does have some support for packet analysis. You can redirect packets matching a certain pattern to a seperate server (or another port) to a script that can then modify it and redirect it back to squid for further decision making. Squid calls this \'content adaption\', and describes a few of its capabilities.
+\begin{itemize}
+\item Add, remove , or modify and HTTP header
+\item block content
+\item redirect certain requests to a custom page or server
+\item respond to certain requests with a custom page
+\item insert or remove content from a page
+\end{itemize}
+
+Squid supports the Internet Content Adaption Protocol (ICAP), but its use is less applicable here.
+One node of interest is Squid's {\bf Client Streams}. These give each instantiated client stream node access to the HTTP responses coming into the server. Modifying squid code can allows for Client stream nodes to perform custom content adaption (hopefully, TCP segment blending) on a per packet basis. The downside (as noted on squid\'s wiki) is that the technology has not been sufficiently documented and its support has dwindled as squid has matured.
+
+Last, squid suggests the hackish approach, modifying squid source to fit your needs and building it yourself. This requires extensive study of squids code base (whcih lacks an API and formal documentation) and may take a long time to get aquainted with. 
+
+At this point: squid proxy only provides a smoother mechanism for handling one to one TCP connections, but the issue of blending multiple streams is still not easily addressed. Instead of hacking around with openWRT and libnetfilter\_queue, we would be hacking around with squid's code. 
+
+\end{document}

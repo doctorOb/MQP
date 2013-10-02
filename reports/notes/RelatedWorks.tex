@@ -1,0 +1,49 @@
+\documentclass{article}
+\usepackage{natbib}
+\begin{document}
+\title{Related Works}
+\author{Dan Robertson}
+\date{September 2013}
+\maketitle
+
+\begin{abstract}
+
+It is often the case in networking that a desired throughput goal exceeded the limit of possible bandwidth. Although bandwidth speed increases 10 fold every few years, newer and faster speeds often come with a price hike that might not be worth the money. Fortunately, there exists a cheap solution that yields desirably higher bandwidth using only existing architecture and a few clever hacks. Link aggregation allows multiple network links to be combined into one logical interface with the combined bandwidth of the supporting links. This has been achieved at the lowest 3 layers of the OSI model, with both proprietary and open software solutions in existence that get the job done.
+
+This MQP goes hand and hand with the ideas and practices behind link aggregation. We will see that while there are many solutions, there is little 
+
+\end{abstract}
+
+\section{Link aggregation}
+
+The practice of link aggregation was standardized in November 1997, by the IEEE 802.3 group. They recognized that Ethernet was most of the market, and that several vendors already had solutions for aggregating physical links to provide a faster Ethernet connection. However, an inter-operable solution was desired. The protocol they developed became known as the ``Link Aggregation Control Protocol''(LACP), officially as 802.3ad, but later renamed to 802.3AX. LACP allows networking devices which implement the protocol to send LACP packets to their similar peers in order to negotiate a link bundling scheme. Amongst the many goals of the LACP protocol was to provide dynamic link addition and deletion for the logical link, as well as fail over points when a link was unexpectedly severed. 
+
+One of the core principles behind link aggregation, and this MQP, is cost. Upgrading to a higher speed link is always an option, but trunking together multiple existing lower speed links can satisfy most, if not all, of the same needs. The added bonus is resilience, a failure of one link just means a decrease in throughput, instead of a total loss. It is important to note however, that Ethernet was the main focus during the time in which the LACP protocol came into being. It dealt with aggregating multiple physical links using a switch. Wireless link aggregation was never detailed in their report.
+
+Link aggregation can be separated into two breadths. adaptive, which focuses on dynamically shifting traffic distribution methods based on mutating network characteristics, and Non-adaptive, which relies on purely static configurations.
+
+
+\subsection{Heterogeneous Wireless Networks - Bringing Link Aggregation to Radio Access Technologies}
+
+With the surging popularity of video streaming, high definition content, and online gaming, bandwidth limits are again becoming a problem. Aggregating several Radio Access Technologies (RATs), such as LTE and WiFi. Multinode terminal devices (such as smart phones) have the power to actively switch between RATs, but to use both simultaneously is a possibility not currently in use. This is because of a few major set backs. First, for real time and TCP applications, splitting traffic between links with different latencies can result in out of order delivery, which adversely affects TCP throughput. Second, battery power usage becomes an issue when multiple RATs are being used simultaneously. This MQP is less concerned with battery usage, but the issue of packet reordering is at the forefront of any of these techniques. 
+
+\subsubsection{Notes on the paper}
+
+Combining multiple RATs can yield throughput equivalent to the sum of the individual lines. Helps reduce load on a particular link by evenly distributing it over many links. Distribution order must preserve packet order. 
+
+Packet reordering outside a certain sequence range will trigger a TCP loss event, which shrinks the transmission window and negatively affect throughput.
+
+Packet reordering metrics: Reorder Density (RD) and Reorder Buffer-occupancy Density (RBD). 
+
+RD - distribution of out of order packets, normalized to the number of packets, for any given sequence.
+
+RBD - measures the buffer occupancy frequencies normalized tot he number of non duplicate packets. Good for predicting amount of resources required to preform reordering.
+
+\subsection{A solution for every layer}
+
+Bandwidth aggregation has been realized on all network layers except the Physical. These solutions each have their advantages and disadvantages, which are summarized below.
+
+\subsubseciont{Application Layer}
+Here, the application has access to multiple outgoing interfaces, and can split the data into several application layer chunks (as this MQP attempts to do with HTTP) which it transmits simultaneously over these interfaces. The obvious issue here, is that the aggregation must be application specific, and does not provide more general, application agnostic aggregation. Examples include XFTP, Muni Sockets and Parallel Sockets. They all provide similar solutions that combine multiple TCP connections into one logical one.
+
+\end{document}
