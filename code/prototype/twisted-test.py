@@ -8,9 +8,14 @@ from twisted.web.resource import Resource
 from twisted.web.server import NOT_DONE_YET
 from twisted.web.http import HTTPClient, Request, HTTPChannel
 
+
+from twisted.internet.defer import inlineCallbacks, returnValue
+from twisted.internet.task import deferLater
+
 import urlparse
 from urllib import quote as urlquote
 
+from threading import Thread
 import sys
 import random
 from copy import deepcopy
@@ -106,7 +111,7 @@ class PeerProxyClient(HTTPClient):
 
 	def connectionMade(self):
 		self.sendCommand(self.command, self.rest)
-		self.headers['Range'] = 'bytes={}-{}'.format(*self.pool.getNextChunk(self))
+		self.headers['Range'] = 'bytes={}-{}'.format(*self.pool.getNextChunk(self.id))
 		for header, value in self.headers.items():
 			self.sendHeader(header,value)
 			if header == 'Range':
@@ -128,7 +133,7 @@ class PeerProxyClient(HTTPClient):
 		self.pool.appendData(self,buffer)
 
 	def handleResponseEnd(self):
-		self.headers['Range'] = 'bytes={}-{}'.format(*self.pool.getNextChunk(self))
+		self.headers['Range'] = 'bytes={}-{}'.format(*self.pool.getNextChunk(self.id))
 		self.endHeaders()
 		print("continuing")
 		
@@ -206,10 +211,7 @@ class ProxyRequest(Request):
 		fileSize = getFileSize(self.uri)
 
 		if fileSize >= MINIMUM_FILE_SIZE:
-			headers['Range'] = "bytes={}-{}".format(0, fileSize/2)
-			newHeaders = deepcopy(headers)
 			print("using 2 streams")
-			newHeaders['Range'] = "bytes={}-{}".format(fileSize/2,fileSize)
 
 			pool = DownloadPool(fileSize,self)
 			print('uri:',self.uri)
@@ -225,6 +227,27 @@ class Proxy(HTTPChannel):
 	requestFactory = ProxyRequest
 
 
+class sendBuf():
+
+	def __init__(self,id,size):
+		self.id = id
+		self.data = ''
+		self.size = size
+		self.done = False
+
+	def writeData(self,data):
+		self.data += data
+		if len(data) >= self.size:
+			self.done = True
+
+
+	def getData(self):
+		return self.data
+
+	def getId(self):
+		return self.id
+
+
 
 class DownloadPool():
 
@@ -233,56 +256,101 @@ class DownloadPool():
 		self.requestSize = requestSize
 		self.url = father.uri
 		self.father = father
-		self.buffers = {}
+		self.sendBuffers = []
 		self.connections = {}
-		self.nextPeerToSend = ''
+		self.sendingPeer = ''
 		self.rangeIndex = 0
 		self.chunkSize = 1024
 		self.chunks = [] #array to hold each chunk range
+		self.peerBufferIndex = {} #peer id to spot in sender buffer
 
 		last = 0
-		for i in range(self.chunSize,requestSize,self.chunkSize):
+		for i in range(self.chunkSize,requestSize,self.chunkSize):
 			self.chunks.insert(0,(last,i))
 			last = i + 1
+
+		self.defered = waitForData()
+		self.defered.addCallback(self.writeData)
+
 
 
 	def queryPeers(self):
 		"""give shared request info to each peer"""
+		i = 1
 		for peer in self.peers:
-			peerFactory = PeerClientFactory(self.url,self)
+			peerFactory = PeerClientFactory(self.url,i,self)
 			reactor.connectTCP(peer,PEERPORT,peerFactory)
+			i+=1
 
 	def getNextChunk(self,peer):
 		if len(self.chunks) <= 0:
 			return None
 
-		return self.chunks.pop()
+		range = self.chunks.pop()
+		if self.rangeIndex == range[0]:
+			self.sendingPeer = peer.id
 
-	def appendData(self,peer,data):
-		if not peer.id in self.buffers:
-			self.buffers[peer.id] = data
+		self.sendBuffers.append(sendBuf(peer.id))
+
+		return range
+
+	def appendData(self,peerId,data):
+
+		for buf in self.sendBuffers:
+			if buf.id == peerId:
+				buf.writeData(data)
+
+	
+	def waitForData(self,d=None):
+
+		if not d:
+			d = defer.Deferred()
+
+		if len(self.sendBuffer) == 0:
+			reactor.callLater(1,waitForData,d)
 		else:
-			self.buffers[peer.id] += data
+			d.callback()
 
-		if len(self.buffers[peer.id]) >= self.chunkSize:
-			self.nextPeerToSend = peer.id
-			self.sendNextChunk()
+		return d
 
-	def sendNextChunk(self):
-		"""send the next chunk of file data to the proxy client"""
-		chunk = self.buffers[self.nextPeerToSend]
-		self.father.transport.write(chunk)
+	def writeData(self):
+		buf = self.sendBuffers.pop()
+		data = buf.getData()
+		buf.data = ''
+
+		if not buf.done:
+			self.sendBuffers.insert(0,buf)
+
+		self.father.transport.write(data)
+
+
+	def loop(self):
+		"""main loop for the pool. Check buffers for available 
+		data to send and do so if available"""
+
+		while True:
+
+			if len(self.sendBuffers) == 0:
+				
+			buf = self.sendBuffers.pop()
+			data = buf.getData()
+			if not buf.done:
+				self.sendBuffers.insert(0,buf)
+
+			self.rangeIndex += len(data)
+			self.father.transport.write(data)
+
 
 
 
 
 class PeerHandler(Protocol):
 
-	def __init__(self,uri,father):
+	def __init__(self,id,uri,father):
 		self.father = father
 		self.uri = uri
 		self.data_recvd = 0
-		self.id = random.randint(1,1000)
+		self.id = id
 		self.verified = False
 
 		self.data_stop = 0
@@ -296,14 +364,15 @@ class PeerHandler(Protocol):
 
 	def queryNext(self):
 		print('querying next')
-		next = self.father.getNextChunk(self)
+		next = self.father.getNextChunk(self.id)
 		if next is None:
 			return 
 
 		self.data_recvd = 0
 		self.data_stop = next[1] - next[0] + 1
+		self.index = next[0]
 		self.transport.write(PPM_CHUNK(next))
-		print("wroet to transport")
+		print("wrote to transport")
 
 	def dataReceived(self,data):
 		print(data)

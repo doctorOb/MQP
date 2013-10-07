@@ -44,6 +44,21 @@ RBD - measures the buffer occupancy frequencies normalized tot he number of non 
 Bandwidth aggregation has been realized on all network layers except the Physical. These solutions each have their advantages and disadvantages, which are summarized below.
 
 \subsubseciont{Application Layer}
-Here, the application has access to multiple outgoing interfaces, and can split the data into several application layer chunks (as this MQP attempts to do with HTTP) which it transmits simultaneously over these interfaces. The obvious issue here, is that the aggregation must be application specific, and does not provide more general, application agnostic aggregation. Examples include XFTP, Muni Sockets and Parallel Sockets. They all provide similar solutions that combine multiple TCP connections into one logical one.
+Here, the application has access to multiple outgoing interfaces, and can split the data into several application layer chunks (as this MQP attempts to do with HTTP) which it transmits simultaneously over these interfaces. The obvious issue here, is that the aggregation must be application specific, and does not provide more general, application agnostic aggregation. Examples include XFTP, MuniSockets and Parallel Sockets. They all provide similar solutions that combine multiple TCP connections into one logical one.
 
+\subsubsection{Transport Layer}
+Multipath TCP (MTCP) has been defined by the IETF in 2011. It breaks outgoing data from the application layer into multiple streams that can travel out different interfaces. Segments that share an interface are considered sub flows. It doesn't have support for some of the more desirable bandwidth aggregation techniques, such as intelligent interface selection. To deal with reordering, MPTCP maintains a buffer for out of order packets that are kept until the can be reordered into the stream. 
+
+TCP isn't inherently optimized for timely delivery, so using it as a mechanism for aggregation only provides so much gain. Further, new TCP protocols will not be interoperable with existing network infrastructure. 
+
+\subsubsection{Network Layer Solutions}
+
+IP protocol is easier to leverage to obtain bandwidth aggregation. Unfortunately, it is prone to more out of sequence arrivals.
+
+The Round Robin packet scheduling algorithm, which runs in O(1) time, is a simple preexisting network layer approach to bandwidth aggregation. Packets (assumed to be of the same size) from the same flow are assigned to multiple paths in a circular matter. The RR scheduler only works so well in theory because it assumes homogenous packet size and transmission rate. This is very rarely the case however, so the approach falls short.
+
+Kim et al. (2008) proposed a BA scheme that employs two metrics for scheduling, bandwidth estimation and packet partition scheduling. The former determines the amount of bytes that can safely be transmitted across a link without triggering congestion. 
+
+\subsubsection{Data link Layer}
+The data link layer was what most of the older solutions to bandwidth aggregation used.
 \end{document}

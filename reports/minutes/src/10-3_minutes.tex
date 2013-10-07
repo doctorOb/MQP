@@ -1,0 +1,72 @@
+\documentclass[a4wide,10pt]{extarticle}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{enumitem}
+\setlist{noitemsep}
+\usepackage{color}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage[compact]{titlesec}
+\titlespacing*{\section}{0pt}{6pt}{6pt}
+\titlespacing*{\subsection}{0pt}{6pt}{6pt}
+
+\begin{document}
+\thispagestyle{empty}
+
+\begin{center}
+\textbf{MQP Meeting minutes}
+\vspace{0.33cm}
+\end{center}
+
+\begin{center}
+\begin{tabular}{| m{2.8cm} | m{13.6cm} |} \hline
+\textbf{Date and Time} & Tuesday 3 October 2013 at 2:00 pm \\ \hline
+\textbf{Venue} & Craig's Office \\ \hline
+\textbf{Participants} & Curtis, Craig, Krishna, Dan\\ \hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tabular}{| m{3.0cm} | m{12.6cm} | m{2cm}|} \hline
+\textbf{Item} & \textbf{Notes and Discussion}\\ \hline
+
+Lesson on Paper writing & 
+	\begin{itemize}
+		\item Krishna and Craig explained the right and wrong way to go about writing an academic paper of any decent size.
+		\begin{itemize}
+			\item Wrong: Writing the introduction first
+			\item Right: Iteratively updating each section with concise bullet points on a daily basis. Translate them to paper later on.
+		\end{itemize}
+		\item Apply literature design patterns: NABC and Heilmeier's Catechism
+		\item Thinking about these principles throughout writing will help better structure the report.
+		\item Bullet points are fine as long as they cover the subject area. Don't have to take a deep dive into formal writing.
+	\end{itemize} 
+\\ \hline
+Python prototype so far &
+	\begin{itemize}
+		\item Twisted proxy is here to stay.
+		\item Infrastructure for taking requests and dispatching threads for each client is all set up (thanks to Twisted's robustness).
+		\item Need to reevaluate design for managing and splitting up the packets.
+		\item Having trouble managing data returned by peer client helpers.
+		\item Look into map-reduce algorithm and multi-threading with python.
+	\end{itemize}
+\\ \hline
+
+Related Works Overview &
+	\begin{itemize}
+		\item A lot of work has been done so far, dating back to the early 90s.
+		\item Packet reordering and traffic distribution are the two key concerns with bandwidth aggregation. Each of the many realizations achieve this in their own way.
+		\item Luckily, we're circumventing packet reordering
+		\item New research focuses on Multipath TCP and combining multiple RATs (different antennas)
+	\end{itemize}
+\\ \hline
+For Next Week &
+	\begin{itemize}
+		\item Dive into threading with python to get a manager thread working.
+		\item Consolidate report into one file, contribute daily to each section.
+	\end{itemize}
+\\ \hline
+
+\end{tabular}
+\end{center}
+\end{document}
