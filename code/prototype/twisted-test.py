@@ -1,7 +1,7 @@
 from twisted.web import proxy, http
 from twisted.web.client import Agent, HTTPConnectionPool
 from twisted.web.http_headers import Headers
-from twisted.internet import reactor
+from twisted.internet import reactor, defer
 from twisted.internet.protocol import Protocol, Factory, ClientFactory, ClientCreator
 from twisted.python import log
 from twisted.web.resource import Resource
@@ -256,11 +256,11 @@ class DownloadPool():
 		self.requestSize = requestSize
 		self.url = father.uri
 		self.father = father
-		self.sendBuffers = []
+		self.sendBuffers = {}
 		self.connections = {}
 		self.sendingPeer = ''
 		self.rangeIndex = 0
-		self.chunkSize = 1024
+		self.chunkSize = 1024*10
 		self.chunks = [] #array to hold each chunk range
 		self.peerBufferIndex = {} #peer id to spot in sender buffer
 
@@ -269,8 +269,6 @@ class DownloadPool():
 			self.chunks.insert(0,(last,i))
 			last = i + 1
 
-		self.defered = waitForData()
-		self.defered.addCallback(self.writeData)
 
 
 
@@ -288,17 +286,19 @@ class DownloadPool():
 
 		range = self.chunks.pop()
 		if self.rangeIndex == range[0]:
-			self.sendingPeer = peer.id
+			self.sendingPeer = peer
 
-		self.sendBuffers.append(sendBuf(peer.id))
+		self.sendBuffers[range[0]] = sendBuf(peer,self.chunkSize)
+		
+		defered = self.waitForData()
+		defered.addCallback(self.writeData)
 
 		return range
 
-	def appendData(self,peerId,data):
+	def appendData(self,peerIndex,data):
 
-		for buf in self.sendBuffers:
-			if buf.id == peerId:
-				buf.writeData(data)
+		buf = self.sendBuffers[peerIndex]
+		buf.writeData(data)
 
 	
 	def waitForData(self,d=None):
@@ -306,39 +306,23 @@ class DownloadPool():
 		if not d:
 			d = defer.Deferred()
 
-		if len(self.sendBuffer) == 0:
-			reactor.callLater(1,waitForData,d)
-		else:
-			d.callback()
+		try:
+			data = self.sendBuffers[self.rangeIndex]
+			d.callback(data)
+		except KeyError:
+			reactor.callLater(1,self.waitForData,d)
 
 		return d
 
-	def writeData(self):
-		buf = self.sendBuffers.pop()
-		data = buf.getData()
-		buf.data = ''
+	def writeData(self,data):
 
-		if not buf.done:
-			self.sendBuffers.insert(0,buf)
+		buf = self.sendBuffers[self.rangeIndex]
+		self.father.transport.write(buf.getData())
 
-		self.father.transport.write(data)
+		if buf.done:
+			del self.sendBuffers[self.rangeIndex]
+			self.rangeIndex+=buf.size
 
-
-	def loop(self):
-		"""main loop for the pool. Check buffers for available 
-		data to send and do so if available"""
-
-		while True:
-
-			if len(self.sendBuffers) == 0:
-				
-			buf = self.sendBuffers.pop()
-			data = buf.getData()
-			if not buf.done:
-				self.sendBuffers.insert(0,buf)
-
-			self.rangeIndex += len(data)
-			self.father.transport.write(data)
 
 
 
@@ -352,7 +336,7 @@ class PeerHandler(Protocol):
 		self.data_recvd = 0
 		self.id = id
 		self.verified = False
-
+		self.index = 0
 		self.data_stop = 0
 
 	def connectionMade(self):
@@ -363,30 +347,29 @@ class PeerHandler(Protocol):
 		print("connection failed")
 
 	def queryNext(self):
-		print('querying next')
 		next = self.father.getNextChunk(self.id)
 		if next is None:
 			return 
 
-		self.data_recvd = 0
-		self.data_stop = next[1] - next[0] + 1
+		self.data_start = next[0]
+		self.data_stop = next[1]
 		self.index = next[0]
 		self.transport.write(PPM_CHUNK(next))
 		print("wrote to transport")
 
 	def dataReceived(self,data):
-		print(data)
 		if not self.verified:
 			print("got response from peer:",data)
 			self.verified = True
 			self.queryNext()
 			return
-		if self.data_recvd < self.data_stop:
-			self.father.appendData(self,data)
-			self.data_recvd += len(data)
-			print("{}/{}".format(self.data_recvd,self.data_stop))
+
+		if self.index < self.data_stop:
+			self.father.appendData(self.index,data)
+			self.index += len(data)
+			print("{}/{}".format(self.index,self.data_stop))
 		
-		if self.data_recvd >= self.data_stop:
+		if self.index >= self.data_stop:
 			print("alignment correct")
 			self.queryNext()
 
@@ -407,15 +390,16 @@ class PeerClientFactory(Factory):
 
 	protocol = PeerHandler
 
-	def __init__(self, url, father):
+	def __init__(self, url, id,father):
 		self.father = father
 		self.url = url
+		self.id = id
 
 	def startedConnecting(self,ignored):
 		pass
 
 	def buildProtocol(self,addr):
-		return self.protocol(self.url, self.father)
+		return self.protocol(self.id, self.url,self.father)
 
 	def clientConnectionLost(self, connector, reason):
 		print 'Lost connection.  Reason:', reason

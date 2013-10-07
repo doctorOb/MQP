@@ -3,7 +3,8 @@
 	\usepackage[tmargin=1in,bmargin=1in,lmargin=1.25in,rmargin=1.25in]{geometry}
 
 \usepackage{setspace}
-
+\usepackage{biblatex}
+\bibliography{mqp_bib.bib}
 \usepackage[draft]{todonotes}
 
 \newcommand{\comment}[1]
@@ -149,7 +150,20 @@
 			Kim et al. (2008) proposed a BA scheme that employs two metrics for scheduling, bandwidth estimation and packet partition scheduling. The former determines the amount of bytes that can safely be transmitted across a link without triggering congestion. 
 
 		\subsubsection{Data link Layer}
-			The data link layer was what most of the older solutions to bandwidth aggregation used.
+			The data link layer was what most of the older solutions to bandwidth aggregation used. It was not until the mobile network boom that attempts to aggregate heterogeneous RATs at the link layer began. One such realization of this practice is the Generic Link Layer (GLL) protocol. GLL is a multi access radio architecture that aims to unite differing RATs under a transparent session. GLL allows for Multi Radio Transmission Diversity.
+			 ``MRTD is defined as the data flow split (on IP or MAC PDU level) between two communicating entities over more than one RAT. This comprises parallel transmission, or dynamic switching between the available RATs.''\cite{GLL:2005}
+			MRTD can select its links based off criteria such as traffic requirements and estimated link quality. However, like many others, this approach to bandwidth aggregation struggles with the issues of packet reordering and unbalanced load distribution.
+
+	\subsection{Adaptive bandwidth aggregation}
+		The pitfalls of the naieve approach (non-adaptive bandwidth aggregation) manifest themselves at every layer. Static decision making for link selection ultimately lead to out of order delivery of differing data segments, which must then be addressed by packet reordering. 
+		Adaptive bandwidth aggregation considers the varying link and traffic conditions when organizing sub-flows between multiple interfaces.w
+
+		Some solutions used at various layers:
+		\begin{itemize}
+			\item Luo et all (2003) Split traffic into important and non-important stream, delivering each stream over a different RAT. A small training packet is sent along each link to calculate the RTT and delays, this is done intermittently and allows their implementation to better split traffic between different links.
+			\item Splitting traffic into streams is often done with video content, where a base layer (necessary for decoding the video) is seperated from different high level enhancement layers, which enrich viewing of the video.
+
+		\end{itemize}
 
 \section{Approach}
 
@@ -157,7 +171,10 @@
 		\begin{itemize}
 			\item We knew we needed to pick the right hardware for the job, as this project could be implemented on any variety of devices that can emulate a router.
 			\item The first criteria was programmability.
+			\item Development and Deployment overhead were also a factor ;)
 		\end{itemize}
+
+		We narrowed down the scope of our device search to three major families. The first of these is the Raspberry Pi. Small, cheap, and robust, with a personalized flavor of Linux and support for just about any framework desired, the Pi was an attractive choice. It can be modified to meet a variety of needs, including emulating a router. 
 
 \section{Evaluation}
 

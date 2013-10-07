@@ -20,74 +20,68 @@ from copy import deepcopy
 import urllib2
 
 
-class PeerProxyClient(HTTPClient):
-	_finished = False
-	bytes_recvd = 0
-	def __init__(self, command, rest, headers, father):
+
+def httpRange(range):
+	"""return the http header formatted string for 
+	the request range given by the supplied tuple"""
+	return "bytes={}-{}".format(*range)
+
+
+class RequestBodyReciever(Protocol):
+	"""needed to actually send the response from a server (because of the way the response object works).
+	Passes any data it recieves to the Peer writer"""
+
+	def __init__(self,father,writer,defered):
+		self.writer = writer
 		self.father = father
-		self.command = command
-		self.rest = rest
+		self.recvd = 0
+		self.defered = defered
+		print('created')
 
+	def dataReceived(self,bytes):
+		print('got data')
+		self.recvd += len(bytes)
+		self.writer.transport.write(bytes)
 
-		if "proxy-connection" in headers:
-			del headers["proxy-connection"]
-		headers["connection"] = "close"
-		headers.pop('keep-alive', None)
+	def connectionLost(self,reason):
+		print("finished recieving body:",reason.getErrorMessage())
+		self.defered.callback(None)
 
-		father.addReference(self)
-		
-		self.headers = headers
-
-
-	def connectionMade(self):
-		self.sendCommand(self.command, self.rest)
-		for header, value in self.headers.items():
-			self.sendHeader(header,value)
-			if header == 'Range':
-				print("range request:{}".format(value))
-		self.endHeaders()
-
-	def handleStatus(self, version, code, message):
-		if int(code) == 200 or int(code) == 206:
-			pass
-		else:
-			print('recieved error code:',code)
-			self.father.transport.loseConnection()
-
-	def handleHeader(self, key, value):
-		pass
-
-	def handleResponsePart(self, buffer):
-		self.bytes_recvd += len(buffer)
-		self.father.transport.write(buffer)
-
-	def handleResponseEnd(self):
-		print('data ended')
-		next = self.father.nextChunk()
-		if next != None:
-			self.headers['Range'] = 'bytes={}-{}'.format(next)
-			self.endHeaders()
-		else:
-			print("nothing to do right now")
-		#loop and make a new connection
-		# if not self._finished:
-		# 	self._finished = True
-		# 	self.father.finish()
-		# 	self.transport.loseConnection()
-
-		
-class PeerProxyClientFactory(ClientFactory):
-
-	protocol = PeerProxyClient
-
-	def __init__(self,command,rest,headers,father):
+class PersistentProxyClient():
+	"""since twisted's HTTPClient class does not support persistent HTTP connections, a custom class had 
+	to be created."""
+	def __init__(self,uri,father):
 		self.father = father
-		self.command = command
-		self.rest = rest
-		self.headers = headers
+		self.uri = uri
+		self.pool = HTTPConnectionPool(reactor) #the connection to be persisted
+		self.agent = Agent(reactor, pool=self.pool)
 
-	def buildProtocol(self,addr):
-		return self.protocol(self.command, self.rest, self.headers,self.father)
+	def getChunk(self,range):
+		"""issue the HTTP GET request for the range of the file specified"""
+		print(range)
+		defered = self.agent.request(
+			'GET',
+			self.uri,
+			Headers({
+				'Range' : [httpRange(range)]
+				}),
+			None)
+		defered.addCallback(self.responseRecieved)
+		return defered
+
+	def responseRecieved(self,response):
+		"""do some intermediary work with the response, then pass the body along 
+		to the printer class, which writes it to the client"""
+		if response.code > 206: #206 is the code returned for http range responses
+			print("error with response from server")
+			return None #TODO: exit gracefully
+
+		finished = Deferred()
+		print response.code
+		recvr = RequestBodyReciever(self,self.father,finished)
+		response.deliverBody(recvr)
+		return finished
+
 
 
 class peerProtocolMessage():
@@ -110,30 +104,23 @@ class peerProtocolMessage():
 		data = data.replace('\n','').replace('\r','')
 		self.payload = data[data_start:].split(',') #the message
 
-		print(self.data)
-		self.uri = self.getUri()
-		self.host = self.getHost()
-		self.range = self.getRange()
-		self.chunkSize = self.getChunkSize()
+		if self.type == 'INIT':
+			self.uri = self.getUri()
+			self.host = self.getHost()
+		if self.type == 'CHUNK':
+			self.range = self.getRange()
+			self.chunkSize = self.getChunkSize()
 
 	def getUri(self):
-		if self.type != 'INIT':
-			return None
 		return self.payload[0]
 
 	def getHost(self):
-		if self.type != 'INIT':
-			return None
 		return urlparse.urlparse(self.payload[0])[1]
 
 	def getRange(self):
-		if self.type != 'CHUNK':
-			return None
 		return self.payload[0], self.payload[1]
 
 	def getChunkSize(self):
-		if self.type != 'CHUNK':
-			return None
 		return int(self.payload[1]) - int(self.payload[0]) 
 
 class PeerReciever(Protocol):
@@ -154,7 +141,7 @@ class peerHelper(Protocol):
 		self.headers = {}
 		self.rest = None
 		self.todo = []
-		self.httpClient = None
+		self.client = None
 
 
 
@@ -164,14 +151,6 @@ class peerHelper(Protocol):
 	def dataReceived(self,data):
 		message = peerProtocolMessage(data)
 		self.handleMessage(message)
-
-	def addReference(self,client):
-		self.httpClient = client
-	def nextChunk(self):
-		if len(self.todo) > 0:
-			return self.todo.reverse().pop()
-		else:
-			return None
 
 	def handleMessage(self,message):
 		print('got message')
@@ -186,19 +165,14 @@ class peerHelper(Protocol):
 			parsed = urlparse.urlparse(self.uri)
 			self.headers['host'] = parsed[1]
 			self.rest = urlparse.urlunparse(('','') + parsed[2:])
+			self.client = PersistentProxyClient(self.uri,self)
 			return
-		if message.type == 'CHUNK':
-			self.res_len = message.chunkSize;
+		if message.type == 'CHUNK' and message.range:
+			self.res_len = message.chunkSize
 			self.headers['Range'] = 'bytes={}-{}'.format(*message.range)
 
 			print('uri:',self.uri)
-			if self.PeerClientFactory == None:
-				self.PeerClientFactory = PeerProxyClientFactory('GET',self.rest,self.headers,self)
-				print('host:',self.headers['host'])
-				reactor.connectTCP(self.headers['host'],80,self.PeerClientFactory)
-			else:
-				self.todo.append(message.chunkSize)
-				self.httpClient.handleResponseEnd()
+			self.client.getChunk(message.range)
 
 
 
