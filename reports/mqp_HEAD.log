@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  7 OCT 2013 16:49
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  8 OCT 2013 12:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -786,21 +786,66 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 84.
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 100.
- [3]
+
+Underfull \hbox (badness 10000) in paragraph at lines 107--108
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 109--110
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 111--112
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 116--117
+
+ []
+
+
 Overfull \hbox (0.42424pt too wide) in paragraph at lines 124--125
 []\OT1/cmr/m/n/12 Packet re-order-ing met-rics: Re-order Den-sity (RD) and Re-o
 rder Buffer-occupancy
  []
 
-[4]
+[4] [5]
 
-LaTeX Warning: Citation 'GLL:2005' on page 5 undefined on input line 154.
+LaTeX Warning: Citation 'GLL:2005' on page 6 undefined on input line 156.
 
-[5] (./mqp_HEAD.tdo)
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 180--181
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 182--183
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 184--185
+
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 186--187
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--189
+
+ []
+
+(./mqp_HEAD.tdo)
 \tf@tdo=\write5
 \openout5 = `mqp_HEAD.tdo'.
 
- [6] [7] (./mqp_HEAD.aux)
+ [8] (./mqp_HEAD.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -816,11 +861,11 @@ Package logreq Info: Writing requests to 'mqp_HEAD.run.xml'.
 Here is how much of TeX's memory you used:
  15835 strings out of 493315
  294535 string characters out of 6137904
- 670189 words of memory out of 5000000
+ 669189 words of memory out of 5000000
  19007 multiletter control sequences out of 15000+600000
  7837 words of font info for 28 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 63i,6n,57p,854b,705s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 63i,6n,57p,856b,705s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pf
 b></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
@@ -829,10 +874,10 @@ usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
 r/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
 local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/l
 ocal/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on mqp_HEAD.pdf (7 pages, 120179 bytes).
+Output written on mqp_HEAD.pdf (8 pages, 123989 bytes).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
- 45 compressed objects within 1 object stream
+ 66 PDF objects out of 1000 (max. 8388607)
+ 47 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

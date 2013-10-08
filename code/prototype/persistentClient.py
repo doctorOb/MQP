@@ -29,27 +29,28 @@ def httpRange(range):
 
 class RequestBodyReciever(Protocol):
 	"""needed to actually send the response from a server (because of the way the response object works).
-	Passes any data it recieves to the Peer writer"""
+	Passes any data it recieves to the Peer writer. This is an unfortunate side effect of the twisted 
+	architecture. A response object cannot pass it's body onwards without the use of this mitigating class"""
 
-	def __init__(self,father,writer,defered):
-		self.writer = writer
-		self.father = father
+	def __init__(self,peerHelper,defered):
+		self.peerHelper = peerHelper #reference to peerHelper class that holds an 
+									 #open TCP connection with the peer
 		self.recvd = 0
-		self.defered = defered
-		print('created')
+		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
 
 	def dataReceived(self,bytes):
 		print('got data')
 		self.recvd += len(bytes)
-		self.writer.transport.write(bytes)
+		self.peerHelper.transport.write(bytes)
 
 	def connectionLost(self,reason):
-		print("finished recieving body:",reason.getErrorMessage())
+		print("finished recieving body:",reason.getErrorMessage())#sometimes this isn't actually an error
 		self.defered.callback(None)
 
 class PersistentProxyClient():
 	"""since twisted's HTTPClient class does not support persistent HTTP connections, a custom class had 
-	to be created."""
+	to be created. This uses an HTTP connection pool and spawns a deferred agent for each HTTP request to 
+	the target server"""
 	def __init__(self,uri,father):
 		self.father = father
 		self.uri = uri
@@ -78,7 +79,7 @@ class PersistentProxyClient():
 
 		finished = Deferred()
 		print response.code
-		recvr = RequestBodyReciever(self,self.father,finished)
+		recvr = RequestBodyReciever(self.father,finished)
 		response.deliverBody(recvr)
 		return finished
 
@@ -122,16 +123,13 @@ class peerProtocolMessage():
 
 	def getChunkSize(self):
 		return int(self.payload[1]) - int(self.payload[0]) 
-
-class PeerReciever(Protocol):
-	def __init__(self,father):
-		self.father = father
-		
-	def dataReceived(self,data):
-		self.father.transport.write(data)
 		
 
 class peerHelper(Protocol):
+	"""this class manages the connection between the feeding client and the server. This acts 
+	as a control layer that receiving data requests from the client and handing them to HTTP deferred
+	that talk to the actual server. The deferreds will write their data back to the client through a reference 
+	to this class's transport object"""
 
 	def __init__(self):
 		self.pool = pool = HTTPConnectionPool(reactor)
