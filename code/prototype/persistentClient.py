@@ -11,6 +11,7 @@ from twisted.web.resource import Resource
 from twisted.web.server import NOT_DONE_YET
 from twisted.web.http import HTTPClient, Request, HTTPChannel
 
+
 import urlparse
 from urllib import quote as urlquote
 
@@ -19,12 +20,8 @@ import random
 from copy import deepcopy
 import urllib2
 
-
-
-def httpRange(range):
-	"""return the http header formatted string for 
-	the request range given by the supplied tuple"""
-	return "bytes={}-{}".format(*range)
+sys.path.append('proxyHelpers.py')
+from proxyHelpers import *
 
 
 class RequestBodyReciever(Protocol):
@@ -39,50 +36,12 @@ class RequestBodyReciever(Protocol):
 		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
 
 	def dataReceived(self,bytes):
-		print('got data')
 		self.recvd += len(bytes)
-		self.peerHelper.transport.write(bytes)
+		self.peerHelper.father.transport.write(bytes)
+
 
 	def connectionLost(self,reason):
-		print("finished recieving body:",reason.getErrorMessage())#sometimes this isn't actually an error
 		self.defered.callback(None)
-
-class PersistentProxyClient():
-	"""since twisted's HTTPClient class does not support persistent HTTP connections, a custom class had 
-	to be created. This uses an HTTP connection pool and spawns a deferred agent for each HTTP request to 
-	the target server"""
-	def __init__(self,uri,father):
-		self.father = father
-		self.uri = uri
-		self.pool = HTTPConnectionPool(reactor) #the connection to be persisted
-		self.agent = Agent(reactor, pool=self.pool)
-
-	def getChunk(self,range):
-		"""issue the HTTP GET request for the range of the file specified"""
-		print(range)
-		defered = self.agent.request(
-			'GET',
-			self.uri,
-			Headers({
-				'Range' : [httpRange(range)]
-				}),
-			None)
-		defered.addCallback(self.responseRecieved)
-		return defered
-
-	def responseRecieved(self,response):
-		"""do some intermediary work with the response, then pass the body along 
-		to the printer class, which writes it to the client"""
-		if response.code > 206: #206 is the code returned for http range responses
-			print("error with response from server")
-			return None #TODO: exit gracefully
-
-		finished = Deferred()
-		print response.code
-		recvr = RequestBodyReciever(self.father,finished)
-		response.deliverBody(recvr)
-		return finished
-
 
 
 class peerProtocolMessage():
@@ -143,6 +102,13 @@ class peerHelper(Protocol):
 
 
 
+	def handleHeader(self, key, value):
+		pass
+
+	def handleResponseCode(self, version, code, message):
+		pass
+
+
 	def connectionMade(self):
 		print('recieved connection')
 
@@ -151,7 +117,8 @@ class peerHelper(Protocol):
 		self.handleMessage(message)
 
 	def handleMessage(self,message):
-		print('got message')
+		print('got message',message.data)
+
 		if message == None:
 			return
 		if message.type == 'END':
@@ -163,13 +130,13 @@ class peerHelper(Protocol):
 			parsed = urlparse.urlparse(self.uri)
 			self.headers['host'] = parsed[1]
 			self.rest = urlparse.urlunparse(('','') + parsed[2:])
-			self.client = PersistentProxyClient(self.uri,self)
+			self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever)
 			return
 		if message.type == 'CHUNK' and message.range:
 			self.res_len = message.chunkSize
-			self.headers['Range'] = 'bytes={}-{}'.format(*message.range)
+			self.headers['Range'] = httpRange(message.range)
 
-			print('uri:',self.uri)
+			print('uri:{} range: {}'.format(self.uri,self.headers['Range']))
 			self.client.getChunk(message.range)
 
 

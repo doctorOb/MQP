@@ -21,9 +21,13 @@ import random
 from copy import deepcopy
 import urllib2
 
+sys.path.append('proxyHelpers.py')
+from proxyHelpers import *
+
 MINIMUM_FILE_SIZE = 10485760 / 5
 
 PEERPORT = 7779
+CHUNK_SIZE = MEGABYTE
 
 class HeadRequest(urllib2.Request):
 	def get_method(self):
@@ -103,6 +107,29 @@ class ProxyClientFactory(ClientFactory):
 		return self.protocol(self.command, self.rest, self.version,
 			self.headers, self.data, self.father)
 
+class RequestBodyReciever(Protocol):
+	"""needed to actually send the response from a server (because of the way the response object works).
+	Passes any data it recieves to the Peer writer. This is an unfortunate side effect of the twisted 
+	architecture. A response object cannot pass it's body onwards without the use of this mitigating class"""
+
+	def __init__(self,client,defered):
+		self.client = client #reference to client class that holds an 
+									 #open TCP connection with the peer
+		self.recvd = 0
+		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
+
+	def dataReceived(self,bytes):
+		self.recvd += len(bytes)
+		self.client.father.appendData(self.client.id,bytes)
+
+	def connectionLost(self,reason):
+		range = self.client.father.getNextChunk(self.client.id)
+		if range != None:
+			self.client.getChunk(range)
+		else:
+			print("finished getting data for pool")		
+
+
 
 class ProxyRequest(Request):
 	"""This class catches all HTTP connections coming from an end client and 
@@ -126,7 +153,7 @@ class ProxyRequest(Request):
 		parsed = urlparse.urlparse(self.uri)
 		self.protocol = parsed[0]
 		self.host = parsed[1]
-		port = self.ports[self.protocol]
+		self.port = self.ports[self.protocol]
 		if ':' in self.host:
 			self.host, self.port = self.host.split(':')
 			self.port = int(self.port)
@@ -147,27 +174,28 @@ class ProxyRequest(Request):
 		#TODO: consider performing this check once a request is received (assuming content-length is
 		#always provided by the server).
 		fileSize = getFileSize(self.uri)
-		if fileSize >= MINIMUM_FILE_SIZE:
-			print("using 2 streams")
 
+		if fileSize > MINIMUM_FILE_SIZE:
+			print("using 2 streams")
 			pool = DownloadPool(fileSize,self)
 			print('uri:',self.uri)
-			PeerClientFactory = PeerProxyClientFactory(self.method,self.rest,self.clientproto,headers,s,self,pool)
-			self.reactor.connectTCP(self.host,self.port,PeerClientFactory)
+			pool.queryPeers()
 			return
 		
 		#A client factory for the ProxyCLient needs to be created. The factory is then passed to 
 		#the reactor which will call it when a TCP connection is established with the host
-		clientFacotry = class_(self.method, rest, self.clientproto, headers, s, self)
-		self.reactor.connectTCP(host,port,clientFacotry)
+		clientFacotry = class_(self.method, self.rest, self.clientproto, headers, s, self)
+		self.reactor.connectTCP(self.host,self.port,clientFacotry)
 
 class Proxy(HTTPChannel):
 	requestFactory = ProxyRequest
 
 
 class sendBuf():
-	"""a smarter buffer used to hold data (and meta-data describing the data), 
-	that comes through from a peer helper"""
+	"""
+	a smarter buffer used to hold data (and meta-data describing the data), 
+	that comes through from a peer helper
+	"""
 
 	def __init__(self,id,size):
 		self.id = id
@@ -183,16 +211,23 @@ class sendBuf():
 			self.done = True
 
 	def getData(self):
-		yield self.data
-		self.data = ''
+		return self.data
 
 	def getId(self):
 		return self.id
 
-
+def repeatCallback(client):
+	range = client.father.getNextChunk(self.id)
+	print("next for me:{}".format(range))
+	if range != None:
+		client.getChunk(range)
+	else:
+		print("finished getting data for pool")
+		client.father.finish()
 
 class DownloadPool():
-	"""This is a manager object that delegates (maps) each chunk to a given peer handler class.
+	"""
+	This is a manager object that delegates (maps) each chunk to a given peer handler class.
 	It indirectly communicates with the peer through these. Since twisted is not inherently thread
 	safe, and is heavily event driven, this class does not run as its own thread. Instead, I chose to 
 	make use of twisted's Deferred class, which was recommended for use in any blocking situation.
@@ -208,7 +243,8 @@ class DownloadPool():
 	In this case, whenever a new chunk is requested by one of the peer handlers (implying that 
 	it's associated peer has finished its prior work), a deferred is dispatched. It will then 
 	check the head of the pools buffers for data to write. If none exist, it will reschedule 
-	its self to be called in a short time."""
+	its self to be called in a short time.
+	"""
 
 	def __init__(self,requestSize,father):
 		self.peers = ['127.0.0.1'] #must be known ahead of time (perhaps read in from a config)
@@ -223,7 +259,7 @@ class DownloadPool():
 		#sending buffers. It will only be moved once the sendBuf it maps to has finished
 		#receiving its expected data
 		self.rangeIndex = 0 
-		self.chunkSize = 1024*10
+		self.chunkSize = CHUNK_SIZE
 		self.chunks = [] #array to hold each chunk range. This is only necessary if the 
 						 #chunk size is static (non-adaptive)
 
@@ -232,25 +268,58 @@ class DownloadPool():
 			self.chunks.insert(0,(last,i))
 			last = i + 1
 
+		def repeatCallback(client):
+			range = client.father.getNextChunk(self.id)
+			print("next for me:{}".format(range))
+			if range != None:
+				client.getChunk(range)
+			else:
+				print("finished getting data for pool")
 
+		self.client = PersistentProxyClient(self.url,self,RequestBodyReciever,id=0,callback=repeatCallback)
 
+	def handleHeader(self, key, value):
+		"""
+		the content length returned from the first chunk request will be for the size of the chunk,
+		but the client needs to see the length of the entire file, so the value must be forged 
+		before the headers are sent back to the client
+		"""
+		if key.lower() in ['server', 'date', 'content-type']:
+			self.father.responseHeaders.setRawHeaders(key, [value])
+		else if 'content-length' in key:
+			self.father.responseHeaders.addRawHeader(key,requestSize)
+		else:
+			self.father.responseHeaders.addRawHeader(key, value)
+
+	def handleResponseCode(self, version, code, message):
+		"""
+		handle the response code (the one the client sees). If it is 206 (returned for 
+		partial content responses) the code must be changed to 200, so the client sees it
+		as it would be for a real request
+		"""
+		if code == 206: #206 is returned for partial content files. The 
+			code = 200
+		self.father.setResponseCode(int(code),message)
 
 	def queryPeers(self):
 		"""give shared request info to each peer"""
+		print("querying peers")
 		i = 1
 		for peer in self.peers:
 			peerFactory = PeerClientFactory(self.url,i,self)
 			reactor.connectTCP(peer,PEERPORT,peerFactory)
 			i+=1
 
-	def getNextChunk(self,peer):
-		"""this function is called by a peerHandler class when it is ready to 
-		dispatch more work to a peer"""
+	def getNextChunk(self,sender):
+		"""
+		this function is called by a peerHandler class when it is ready to 
+		dispatch more work to a sender.
+		"""
 		if len(self.chunks) <= 0:
 			return None
 
 		range = self.chunks.pop()
-		self.sendBuffers[range[0]] = sendBuf(peer,self.chunkSize)
+		self.sendBuffers[range[0]] = sendBuf(sender,self.chunkSize)
 		
 		#create a deferred object to handle the response
 		defered = self.waitForData()
@@ -259,15 +328,19 @@ class DownloadPool():
 		return range
 
 	def appendData(self,peerIndex,data):
-		"""called by a peerHandler when it has data to write, passes in a
-		buffer index (the start of the chunk) to write at"""
+		"""
+		called by a peerHandler when it has data to write, passes in a
+		buffer index (the start of the chunk) to write at
+		"""
 		buf = self.sendBuffers[peerIndex]
 		buf.writeData(data)
 
 	
 	def waitForData(self,d=None):
-		"""the heart of the callback chain. This will either trigger it's callback
-		(writeData), or schedule its self to be called later (to prevent blocking)"""
+		"""
+		the heart of the callback chain. This will either trigger it's callback
+		(writeData), or schedule its self to be called later (to prevent blocking)
+		"""
 
 		if not d:
 			d = defer.Deferred()
@@ -276,18 +349,22 @@ class DownloadPool():
 			data = self.sendBuffers[self.rangeIndex]
 			d.callback(data)
 		except KeyError:
-			reactor.callLater(1,self.waitForData,d)
+			reactor.callLater(.01,self.waitForData,d)
 
 		return d
 
 	def writeData(self,data):
-		"""write the data at the head of the buffer to the transport"""
+		"""
+		write the data at the head of the buffer to the transport
+		"""
 		buf = self.sendBuffers[self.rangeIndex]
 		self.father.transport.write(buf.getData())
+		buf.data = '' #clear it out incase their is more data to fill
 
 		if buf.done:
 			del self.sendBuffers[self.rangeIndex] #remove the buffer, and update the index
 			self.rangeIndex+=buf.size
+			print("index:",self.rangeIndex)
 
 
 
@@ -295,7 +372,8 @@ class DownloadPool():
 
 
 class PeerHandler(Protocol):
-	"""Handles a persistent TCP connection between the proxy and a peer proxy. The flow it facilitates is 
+	"""
+	Handles a persistent TCP connection between the proxy and a peer proxy. The flow it facilitates is 
 	as follows:
 
 		init: send the peer a protocol INIT message asking for help with a file from the given url
@@ -312,6 +390,7 @@ class PeerHandler(Protocol):
 		self.id = id
 		self.verified = False
 		self.index = 0
+		self.recvd = 0
 		self.data_stop = 0
 
 	def connectionMade(self):
@@ -324,28 +403,28 @@ class PeerHandler(Protocol):
 	def queryNext(self):
 		"""as the DownloadPool what range to get next, and send the request to the peer"""
 		next = self.father.getNextChunk(self.id)
-		if next is None:
+		print('next for peer:',next)
+		if next == None:
 			return 
 
-		self.data_start = next[0]
-		self.data_stop = next[1]
 		self.index = next[0]
+		self.data_stop += (next[1] - next[0])
 		self.transport.write(PPM_CHUNK(next))
 		print("wrote to transport")
 
 	def dataReceived(self,data):
+
 		if not self.verified:
 			print("got response from peer:",data)
 			self.verified = True
 			self.queryNext()
 			return
 
-		if self.index < self.data_stop:
+		self.recvd += len(data)
+		if self.recvd < self.data_stop:
 			self.father.appendData(self.index,data)
-			self.index += len(data)
-			print("{}/{}".format(self.index,self.data_stop))
 		
-		if self.index >= self.data_stop:
+		if self.recvd >= self.data_stop:
 			print("alignment correct")
 			self.queryNext()
 

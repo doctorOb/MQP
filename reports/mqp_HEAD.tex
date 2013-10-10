@@ -25,7 +25,7 @@
 
 		\item[{\it What's new in your approach and why do you think it will be successful?\\}]
 
-			Bandwidth aggregation has always been the preferred option for those seeking to increase bandwidth without 
+			Bandwidth aggregation has always been the preferred option for those seeking to increase bandwidth without flexing their budget too much. Our approach makes it possible for any pair of apartment owners with their own Internet line to achieve bandwidth aggregation without dropping a dime. By implementing at the router, we sidestep some of the common issues presented by bandwidth aggregation at lower levels (such as link quality variation, and out of order delivery). The approach can be viewed as the low hanging fruit of the aggregation approaches.
 
 		\item[{\it Who cares? If you're successful, what difference will it make?\\}]
 
@@ -171,6 +171,39 @@
 
 \section{Approach}
 
+
+	\subsection{Big Design Components}
+		{\bf Determining when to aggregate}
+		\begin{itemize}
+			\item Deciding what traffic to use bandwidth aggregation for. A Naieve approach is to issue an HTTP head request for every packet to get the content size, and judge based on that. 
+			\item Since today's web pages often require dozens of resources to be fetched from various locations before a page can be completely displayed, there are many HTTP GET requests associated with a single URL request.
+			\item For a large number of small requests, the round trip delay of sending a HEAD request for every packet introduces an unfavorable latency for typical web sessions.
+			\item Content type cannot be reliably ascertained from just the destination URI or the HTTP headers in the request. 
+			\item Content length is specified in the response, so it may be desirable to wait for the response to come back from the server, then canceling the connection and switch to a bandwidth aggregation context
+		\end{itemize}
+		{\bf Negotiating Peer Involvement}
+		\begin{itemize}
+			\item In order for a peer to participate, it must be within wireless signal range of the initiating router, where the connection between the two is consistent and unlikely to cut out.
+			\item The peer must determine how much of it's total bandwidth it can commit to the session.
+		\end{itemize}
+		{\bf Security and Liability}
+		\begin{itemize}
+			\item Any traffic downloaded in the name of another peer should be traceable back to that peer.
+			\item Any illegal traffic downloaded using aggregation can potentially be traced back to the owners of each participating router. This risk must be understood by each participating user.
+			\item The traffic downloaded by participating routers must be guaranteed to be from the hosting server, and unmodified. We cannot allow for man in the middle attacks.
+		\end{itemize}
+		{\bf Request Segmentation and Distribution}
+		\begin{itemize}
+			\item The adaptive solution: when requesting peers for help in a download session, keep a reference of their offered bandwidth. Give this peer a chunksize that is derived by their bandwidth and the size of the file. Ideally, each peer would finish their section in a similar interval.
+			\item Non adaptive: fixed size chunks, assign next chunk to the next available peer until all chunks have been downloaded.
+			\item How do we chose the maximum chunk size? Given the limited space we have on a router, buffer size will enforce this. The buffer cannot be to big, but at the same time, the download speed is adversely affected by request/response time, so less requests for bigger chunks would ensure the greatest download time.
+			\item Downloading by 1 Kb per chunk versus 
+			\item Who buffers the responses? If every peer buffers their result and waits until the coordinating router is ready, then we distribute the buffer requirement over all the available routers, which allows for a bigger virtual buffer.
+		\end{itemize}
+
+		{\bf }
+
+
 	\subsection{Deciding on a Device}
 		\begin{itemize}
 			\item We knew we needed to pick the right hardware for the job, as this project could be implemented on any variety of devices that can emulate a router.
@@ -187,8 +220,61 @@
 
 		OpenWRT functions similar to DD-WRT, but it has more developer support and a livelier community then that of the DD-WRT. It comes preloaded with a package manager that makes installing custom software easy, which allows for the creation of C/Python packages and even Kernel Modules. These add-ons can be flashed onto the router as executables, or bundled with the original firmware image. \\
 
+		After reviewing all the device choices, I decided to use OpenWRT for the project. Implementing router to router bandwidth aggregation on a router seemed to be the most straightforward option. 
+
+	\subsection{First Design Iteration}
+		
+		After choosing to implement the project on routers flashed with OpenWRT, we began to map out the technical implementation. Our approach would evolve over time as I researched the capabilities and limitations of the chosen platform. 
+
+		{\bf High level overview of our idea}
+		\begin{itemize}
+			\item[1] A daemon will run on each router, that monitors traffic coming through the router, and will decide (based on some selection algorithm) whether or not to perform bandwidth aggregation for the request
+			\item[2] The router will ask neighboring routers to participate in an aggregation session for the specified request
+			\item[3] The initiating router will then divide the request into a number of chunks, and hand them to each neighbor.
+			\item[4] Each neighbor will download the chunk, and forward the response data to the initiating router, who will send it to the client.
+		\end{itemize}
+
+		Our first hurdle was to figure out how to make the routers exchange data to and from the server, in a way that preserves the router's credentials. For instance, if router A sends a packet to router B that is meant for the server that the host originally requested a file from, B would not know the address of the server, as B only sees the src address from A, and the dest address as its own. We quickly realized that encapsulation was needed. 
+
+		\comment{Make a diagram of the packet exchange before encapsulation}
+
+		Because the two routers need to exchange information freely, we would have to open a TCP connection between both routers. This connection would be set up when a router agreed to participate in an aggregation session. The initiating router would then send request information (URL of server, the size of the file) to the participating router, who would then issue its own request to the destination. The participating router would then set up a mapping, perhaps using Network Address Translation, to forward the responses it gets from the server back to the initiating router, who would then deal with the data accordingly. Eventually, we came to a model similar to this
+
+		\comment{Insert diagram of the routers doing their thing}
+
+
+
+
 
 	\subsection{Implementing on a Proxy}
+
+		We realized that running a Proxy server on each router would give us the authority to do as much as we wanted with each packet going through the router. For this reason, a number of proxy solutions were researched briefly. 
+
+		\subsubsection{Squid Proxy}
+
+			Squid Proxy, commonly refereed to as Squid Cache, is a caching proxy server for Linux that supports a wide array of features out of the box. It's behaviors are entirely defined by a configuration file that gives a reputable amount of flexibility to the Proxy. Some out of the box features include URL rewriting, request forwarding, dropping, and redirection, content caching, and transparent Proxying. 
+
+			For the project to be implemented, the proxy would need to be able to inspect a packet, create two sub requests based on that packets headers, and split these requests up between multiple TCP connections. However, since Squid's capabilities are strictly defined by the configuration file, if any functionality wasn't supported out of the box, then Squid's source would have to be modified to accommodate. 
+
+			Squid enables all of the standard Proxying functions: URL rewriting, content modification, request forwarding, and caching, to name just a few. However, splitting a single request into multiple smaller requests, a necessity for the project, was not supported. This left us with a choice to either modify the Squid source code, or find another solution. After digging through the source, I found that the documentation was very spotty, and the code was largely unreadable. So although Squid would have been the goto for most Proxy needs, we decided to look for a more script-able solution.
+
+		\subsubsection{Proxying with Python}
+
+			Python is a popular high level programming language with a meaty standard library that can accomplish both small and large scale needs. With the language focus on ease of use and readability, implementing a Proxy from scratch was both achievable and realistic under our time constraints. 
+
+			As it turns out, a variety of networking frameworks for Python already exist. At the top of these frameworks, lies Twisted. Twisted is an event driven networking framework for Python. It allows for a fully functioning HTTP Proxy to be created in less then 100 lines of code. Because Twisted is a programming framework, defining new tools and custom functionality is a simple matter of extending the existing tools and combining them in a useful way. 
+
+			After spending only a few weeks with Twisted, it became obvious that it was the right tool for the job. 
+
+	\subsection{Developing a Prototype}
+
+		\begin{itemize}
+			\item Developed a 
+		\end{itemize}
+
+
+
+		
 
 
 \section{Evaluation}
