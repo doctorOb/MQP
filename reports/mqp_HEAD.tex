@@ -10,6 +10,9 @@
 \newcommand{\comment}[1]
 {\par {\bfseries \color{blue} #1 \par}}
 
+\newcommand{\lcite}[1]
+{{\bfseries\color{orange}[#1]}}
+
 
 
 
@@ -94,26 +97,29 @@
 \section{Intro}
 
 
-\section{Background, Related works}
+\section{Background, Related Work}
 
 	\begin{itemize}
 		\item Bandwidth aggregation is a novel practice frequently employed by network engineers who wish to supercharge their network's bandwidth without upgrading their links. 
 		\item In most cases, this means combining multiple outgoing physical links at a switch to create one logical link that offers the bandwidth equivalent to the sum of the outgoing links. 
 		\item Current work in this field targets aggregating different Radio Access Technologies (RATs).
 		\item Transmission Control Protocol (TCP).
+		\item AT\&T Mobility li LLC holds a patent that applies similar strategies used in this MQP to aggregate WWAN clients who each have a static bandwidth allowance that is rarely in use. At a high level, the patent discusses a strikingly similar approach as this MQP, but is expressed strictly in terms of WWAN. Since this project aims to aggregate WLAN bandwidth, it is not a realization of the invention defined in patent no US7720098 B1 \lcite{Patent US7720098}.
 	\end{itemize}
 
 
-	The practice of link aggregation was standardized in November 1997, by the IEEE 802.3 group. They recognized that Ethernet was most of the market, and that several vendors already had solutions for aggregating physical links to provide a faster Ethernet connection. However, an inter-operable solution was desired. The protocol they developed became known as the ``Link Aggregation Control Protocol''(LACP), officially as 802.3ad, but later renamed to 802.3AX. LACP allows networking devices which implement the protocol to send LACP packets to their similar peers in order to negotiate a link bundling scheme. Amongst the many goals of the LACP protocol was to provide dynamic link addition and deletion for the logical link, as well as fail over points when a link was unexpectedly severed. \\
+	The practice of link aggregation was first standardized in the 802.3-2000 IEEE standard. It came as a continuation of the work started by a task force that the 802 group assembled on November of 1997, to address the then disparate trend of link aggregation \lcite{802 trunking tutorial}. They recognized that Ethernet was most of the market, and that several vendors already had solutions for aggregating physical links to provide a faster Ethernet connection. However, an inter-operable solution was desired. The protocol they developed became known as the ``Link Aggregation Control Protocol''(LACP), officially as 802.3ad, but later moved to 802.1ax \lcite{IEEE 802.1ax}. LACP provides a reliable mechanism for aggregating Ethernet links which implement the same protocol. It allows for the controlled addition and removal of links from an aggregation group without disrupting the stream of data frames \lcite{IBM IEEE}.
 
-	One of the core principles behind link aggregation, and this MQP, is cost. Upgrading to a higher speed link is always an option, but trunking together multiple existing lower speed links can satisfy most, if not all, of the same needs. The added bonus is resilience, a failure of one link just means a decrease in throughput, instead of a total loss. It is important to note however, that Ethernet was the main focus during the time in which the LACP protocol came into being. It dealt with aggregating multiple physical links using a switch. Wireless link aggregation was never detailed in their report. \\
+	One of the core principles behind link aggregation, and this MQP, is cost. Upgrading to a higher speed link is always an option, but trunking together multiple existing lower speed links can satisfy most, if not all, of the same needs. The added bonus is resilience, a failure of one link just means a decrease in throughput, instead of a total loss, as LACP will automatically load balances between the remaining available links. LACP works great for enterprise network operators who have access to the necessary physical links and switches, but has a few short comings. LACP is inherently targeted for neighboring physical connections, which can only be combined through use of additional hardware (namely, a switch). These shortcoming would become more apparent as demand for high bandwidth wireless LAN and WWAN grew.
 
-	Link aggregation can be separated into two breadths. adaptive, which focuses on dynamically shifting traffic distribution methods based on mutating network characteristics, and Non-adaptive, which relies on purely static configurations. \\
+	With the surging popularity of video streaming, high definition content, and online gaming, bandwidth limits are again becoming a problem. Multinode terminal devices (such as smart phones) have the power to actively switch between RATs, but few actively use this technique. Aggregating several Radio Access Technologies (RATs), such as LTE and WiFi, would give these devices better fail over redundancy and increased bandwidth. 
+
+	Ramaboli et. al present a comprehensive review of the current climate of bandwidth aggregation in heterogeneous wireless networks. The identify a number of common concerns that various bandwidth aggregation techniques must address, in order to be proficient. Packet reordering becomes necessary in any situation when items are delivered out of order. A variety of link conditions, such as capacity, latency, and buffer space, all contribute to out of order delivery.\lcite{Heterogenous} The second issue, battery power, becomes more of an issue on free roaming mobile devices which aren't constantly tethered to a power source. This MQP effectively sidesteps this issue by performing all aggregation logic on the router.
 
 
 	\subsection{Heterogeneous Wireless Networks - Bringing Link Aggregation to Radio Access Technologies}
 
-		With the surging popularity of video streaming, high definition content, and online gaming, bandwidth limits are again becoming a problem. Aggregating several Radio Access Technologies (RATs), such as LTE and WiFi. Multinode terminal devices (such as smart phones) have the power to actively switch between RATs, but to use both simultaneously is a possibility not currently in use. This is because of a few major set backs. First, for real time and TCP applications, splitting traffic between links with different latencies can result in out of order delivery, which adversely affects TCP throughput. Second, battery power usage becomes an issue when multiple RATs are being used simultaneously. This MQP is less concerned with battery usage, but the issue of packet reordering is at the forefront of any of these techniques. \\
+		 First, for real time and TCP applications, splitting traffic between links with different latencies can result in out of order delivery, which adversely affects TCP throughput. Second, battery power usage becomes an issue when multiple RATs are being used simultaneously. This MQP is less concerned with battery usage, but the issue of packet reordering is at the forefront of any of these techniques. \\
 
 		\begin{itemize}
 
@@ -134,12 +140,16 @@
 		Bandwidth aggregation has been realized on all network layers except the Physical. These solutions each have their advantages and disadvantages, which are summarized below.
 
 		\subsubsection{Application Layer}
-			Here, the application has access to multiple outgoing interfaces, and can split the data into several application layer chunks (as this MQP attempts to do with HTTP) which it transmits simultaneously over these interfaces. The obvious issue here, is that the aggregation must be application specific, and does not provide more general, application agnostic aggregation. Examples include XFTP, MuniSockets and Parallel Sockets. They all provide similar solutions that combine multiple TCP connections into one logical one.
+			Here, the application has access to multiple outgoing interfaces, and can split the data into several application layer chunks (as this MQP attempts to do with HTTP) which it transmits simultaneously over these interfaces. The obvious issue here, is that the aggregation must be application specific, and does not provide more general, application agnostic aggregation. Examples include XFTP, MuniSockets and parallel sockets\lcite{HBA}. Parallel Sockets maintains multiple TCP connections over a single interface to any number of distributed servers, requesting different segments of the same file from each. Multiple TCP protocols (Rome, Paris) leverage the idea of parallel sockets for downloading file portions form distributed servers. Note that while these methods do not aggregate multiple network interfaces, they do share some common ground with this MQP through their technique of parallel segmented downloading. MuniSockets perform true aggregation of multiple physical interfaces, maintaining a separate thread for each connection. 
 
 		\subsubsection{Transport Layer}
-			Multipath TCP (MTCP) has been defined by the IETF in 2011. It breaks outgoing data from the application layer into multiple streams that can travel out different interfaces. Segments that share an interface are considered sub flows. It doesn't have support for some of the more desirable bandwidth aggregation techniques, such as intelligent interface selection. To deal with reordering, MPTCP maintains a buffer for out of order packets that are kept until the can be reordered into the stream. 
+			Multipath TCP (MTCP) has been defined by the IETF in 2011. A Linux Kernel implementation of MPTCP has been developed and is currently undergoing numerous experimentation, as its popularity grows. Apple caused a spike in interest in MPTCP by subtly building it into their iOS7 software.\footnote{Their technical documentation does not advertise their use of MPTCP, but WireShark captures reveal that iOS7 sends MPTCP specific requests in certain scenarios.} While it is only used for their Siri service in order to provide smooth internet access when one RAT unexpectedly cuts out, it represents the first commercial adoption of the protocol. 
 
-			TCP isn't inherently optimized for timely delivery, so using it as a mechanism for aggregation only provides so much gain. Further, new TCP protocols will not be interoperable with existing network infrastructure. 
+			Multipath TCP works by breaking outgoing data from the application layer into multiple streams that can travel out different interfaces. The MPTCP stack on the host handles seperating each TCP subflow out and gluing returning data from these flows back togeather, so they can be delivered to the application. Accross the network, these subflows are just typical TCP connections, which are handled by each hop as they would normally. This transparency enables MPTCP to work in any situation which traditional TCP would have worked.\lcite{MPTCP netys}
+
+			It doesn't have support for some of the more desirable bandwidth aggregation techniques, such as intelligent interface selection. To deal with reordering, MPTCP maintains a buffer for out of order packets that are kept until the can be reordered into the stream. 
+
+			TCP isn't inherently optimized for timely delivery, so using it as a mechanism for aggregation only provides so much gain. Since bandwidth intensive UDP streaming applications, such as Netflix and Spotify, can't be remedied by MPTCP.
 
 		\subsubsection{Network Layer Solutions}
 

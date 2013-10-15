@@ -1,15 +1,15 @@
 [0] Config.pm:387> INFO - This is Biber 1.6
-[0] Config.pm:390> INFO - Logfile is 'mqp_HEAD.blg'
-[75] biber-darwin:218> INFO - === Mon Oct  7, 2013, 16:18:57
-[75] Biber.pm:325> INFO - Reading 'mqp_HEAD.bcf'
-[144] Biber.pm:623> INFO - Found 1 citekeys in bib section 0
-[157] Biber.pm:2995> INFO - Processing section 0
-[173] Biber.pm:3129> INFO - Looking for bibtex format file 'mqp_bib.bib' for section 0
-[182] bibtex.pm:775> INFO - Found BibTeX data source 'mqp_bib.bib'
-[183] Utils.pm:169> WARN - Name "Konstantinos Dimou, Ramon Ag��ero, Marcin Bortnik, Reza Karimi, Georgios P. Koudouridis,Stephen Kaminski, Horst Lederer, Joachim Sachs" has too many commas: skipping name
-[218] Biber.pm:2881> INFO - Overriding locale 'en_US.UTF-8' default tailoring 'variable = shifted' with 'variable = non-ignorable'
-[218] Biber.pm:2887> INFO - Sorting 'entry' list 'nty' keys
-[218] Biber.pm:2891> INFO - No sort tailoring available for locale 'en_US.UTF-8'
-[226] bbl.pm:472> INFO - Writing 'mqp_HEAD.bbl' with encoding 'ascii'
-[226] bbl.pm:545> INFO - Output to mqp_HEAD.bbl
-[226] Biber.pm:105> INFO - WARNINGS: 1
+[1] Config.pm:390> INFO - Logfile is 'mqp_HEAD.blg'
+[72] biber-darwin:218> INFO - === Tue Oct 15, 2013, 13:14:31
+[72] Biber.pm:325> INFO - Reading 'mqp_HEAD.bcf'
+[146] Biber.pm:623> INFO - Found 1 citekeys in bib section 0
+[158] Biber.pm:2995> INFO - Processing section 0
+[174] Biber.pm:3129> INFO - Looking for bibtex format file 'mqp_bib.bib' for section 0
+[175] bibtex.pm:775> INFO - Found BibTeX data source 'mqp_bib.bib'
+[176] Utils.pm:169> WARN - I didn't find a database entry for 'GLL:2005' (section 0)
+[204] Biber.pm:2881> INFO - Overriding locale 'en_US.UTF-8' default tailoring 'variable = shifted' with 'variable = non-ignorable'
+[204] Biber.pm:2887> INFO - Sorting 'entry' list 'nty' keys
+[204] Biber.pm:2891> INFO - No sort tailoring available for locale 'en_US.UTF-8'
+[212] bbl.pm:472> INFO - Writing 'mqp_HEAD.bbl' with encoding 'ascii'
+[212] bbl.pm:545> INFO - Output to mqp_HEAD.bbl
+[212] Biber.pm:105> INFO - WARNINGS: 1
