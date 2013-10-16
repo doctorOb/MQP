@@ -19,10 +19,22 @@ KILOBYTE = 1024
 	  where the link cost (router to router bandwidth) outweighs the benefit 
 	  of adding another peer to the download."""
 
-def downloadTime(fsize,bandwidth):
+def downloadTime(fsize,bandwidth,chunk=None,overhead=None):
 	"""compute the estimated download time (in seconds) of a packet given its size
-	(in megabytes), and the available bandwidth in mbps"""
-	return ((fsize * 8388608) / bandwidth) / 1000000 #return number of seconds
+	(in megabytes), and the available bandwidth in mbps
+
+	chunk is assumbed to be in killobytes
+
+	allows to optionally specify chunk size and overhead (end to end delay)"""
+	fsize *= (KILOBYTE)#convert mb to bits
+	bandwidth = float((bandwidth * 1000000) / 8) / KILOBYTE#convert mbps to KBps
+	if chunk and overhead:
+		oneChunkTime = (float((chunk) / bandwidth) * 1000) + overhead #ms
+		numChunks = fsize / (chunk)
+		return (oneChunkTime * numChunks), (numChunks * overhead)
+		
+	return float((fsize) / bandwidth) * 1000 #return number of ms
+
 
 def btom(bytes):
 	"""convert the given number of bytes to a megabyte"""
@@ -107,17 +119,9 @@ if __name__ == '__main__':
 	#file download size
 	fileSize = 12 * GIGABYTE
 	#define routers
-	a = Router('a (2mbps)',2,54,[])
-	b = Router('b (3mpbs)',3,54,[])
-	c = Router('c (10mbps)',10,54,[])
-	d = Router('d (6mbps)',6,54,[])
-	e = Router('e (5mbps)',5,54,[])
-	f = Router('f (7mbps)',7,54,[])
+	print ((downloadTime(1000,10) / 1000) / 60)
+	dl = downloadTime(1000 / 2,10,200,30)
+	print dl[0]/dl[1]
+	print (dl[0] / 1000 )/ 60
 
-	#set peers
-	a.peers = [b,e]
-	b.peers = [c,d]
-	e.peers = [f]
-
-	a.dividePacket(0,fileSize)
 

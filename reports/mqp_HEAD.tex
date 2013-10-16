@@ -7,9 +7,15 @@
 \bibliography{mqp_bib.bib}
 \usepackage[draft]{todonotes}
 
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+
 \newcommand{\comment}[1]
 {\par {\bfseries \color{blue} #1 \par}}
 
+%a lazy citation placeholder.
 \newcommand{\lcite}[1]
 {{\bfseries\color{orange}[#1]}}
 
@@ -17,69 +23,6 @@
 
 
 \begin{document}
-\comment{
-
-	{\bf Heilmeier's Catechism}\hfil\\
-	\begin{description}
-		\item[{\it What are you trying to do? Articulate your objectives using absolutely no jargon}]
-			We want to make neighboring routers work together for large file downloads, such that download time is significantly decreased.
-		\item[{\it How is it done today, and what are the limits of current practice?\\}]
-			Currently, bandwidth aggregation is achieved by combining multiple interfaces into one logical one. These interfaces may be physical links combined at a switch, or TCP sub-flows which are managed at or near the receiver. In the latter case, packet reordering caused by out of order delivery is the biggest issue.
-
-		\item[{\it What's new in your approach and why do you think it will be successful?\\}]
-
-			Bandwidth aggregation has always been the preferred option for those seeking to increase bandwidth without flexing their budget too much. Our approach makes it possible for any pair of apartment owners with their own Internet line to achieve bandwidth aggregation without dropping a dime. By implementing at the router, we sidestep some of the common issues presented by bandwidth aggregation at lower levels (such as link quality variation, and out of order delivery). The approach can be viewed as the low hanging fruit of the aggregation approaches.
-
-		\item[{\it Who cares? If you're successful, what difference will it make?\\}]
-
-		\item[{\it What are the risks and the payoffs?\\}]
-
-		\item[{\it How much will it cost? How long will it take?\\}]
-
-		\item[{\it What are the midterm and final exam to check for success?\\}]
-
-	\end{description}
-	{\bf Needs} - what are the needs of the project?\\
-		\begin{itemize}
-			\item Faster download speeds for large downloads.
-			\item Cheap DIY solution, with minimal infrastructure overhead
-			\item A fair and safe protocol that handles issues of liability and privacy
-			\item achieve bandwidth aggregation while side stepping concerns like packet reordering.
-			\item A client cannot hog a neighbors bandwidth
-		\end{itemize}
-	{\bf Approach} - how do we achieve these needs?\\
-		Aggregate bandwidth by coordinating file download between nearby cooperating routers. The following will occur on a per request basis:
-		\begin{itemize}
-			\item Routers will communicate via a defined protocol.
-			\item The root router (who gets the original download request from a client on his subnet) will poll his peers to request their participation in a group download.
-			\item It will be up to each peer to decide whether they can afford to commit a percentage of their bandwidth to the download.
-		\end{itemize}
-		Proxy server to run on router and manage aggregation. 
-		\begin{itemize}
-			\item For each incoming GET request, decide whether it is for a file download (uri parsing). 
-			\item Divide the file into [start, end] chunks that peers can download with HTTP range field.
-			\item Manager thread that waits for response from peers and buffers (if it is ahead of the current file position), or sends to client
-		\end{itemize}
-		Security, fairness, and Liability
-		\begin{itemize}
-			\item A neighboring client should not have access to anything that the recipient client is downloading.
-			\item Peer routers should only know WHERE to get the file, and WHAT part to download.
-			\item A router will ALWAYS prioritize traffic from its own clients over peer clients.
-			\item It must be clear from an ISPs perspective that potentially illegal traffic going to peer routers are actually for the client router.
-		\end{itemize}
-	{\bf Benefits} - should the needs be met, what is the gain?\\
-		\begin{itemize}
-			\item Bandwidth aggregation realized using only existing infrastructure and open source software.
-			\item Utilize unused bandwidth of nearby participating routers during off-peak hours.
-			\item Application agnostic aggregation, compatible with any existing infrastructure or endpoint.
-		\end{itemize}
-	{\bf Competition} - has this been done before?\\
-		\begin{itemize}
-			\item Bandwidth aggregation has been achieved.
-			\item Various proprietary solutions already exist, each achieving the goals in their own ways?
-		\end{itemize}
-}
-
 
 \title{BAMQP}
 \author{Dan Robertson}
@@ -99,85 +42,73 @@
 
 \section{Background, Related Work}
 
-	\begin{itemize}
-		\item Bandwidth aggregation is a novel practice frequently employed by network engineers who wish to supercharge their network's bandwidth without upgrading their links. 
-		\item In most cases, this means combining multiple outgoing physical links at a switch to create one logical link that offers the bandwidth equivalent to the sum of the outgoing links. 
-		\item Current work in this field targets aggregating different Radio Access Technologies (RATs).
-		\item Transmission Control Protocol (TCP).
+	Related Products:\begin{itemize}
 		\item AT\&T Mobility li LLC holds a patent that applies similar strategies used in this MQP to aggregate WWAN clients who each have a static bandwidth allowance that is rarely in use. At a high level, the patent discusses a strikingly similar approach as this MQP, but is expressed strictly in terms of WWAN. Since this project aims to aggregate WLAN bandwidth, it is not a realization of the invention defined in patent no US7720098 B1 \lcite{Patent US7720098}.
+
+		\item Octopus+ is a daemon that allows a computer with multiple means of accessing the internet to dynamically combine the potential links to increase speed. This is most likely a round robin approach between the same internet connections, and the product doesn't do any request splitting. It does gracefully handle link failures and selects the best link for each packet.
 	\end{itemize}
 
-
+%=====================HISTORY=================================================%
 	The practice of link aggregation was first standardized in the 802.3-2000 IEEE standard. It came as a continuation of the work started by a task force that the 802 group assembled on November of 1997, to address the then disparate trend of link aggregation \lcite{802 trunking tutorial}. They recognized that Ethernet was most of the market, and that several vendors already had solutions for aggregating physical links to provide a faster Ethernet connection. However, an inter-operable solution was desired. The protocol they developed became known as the ``Link Aggregation Control Protocol''(LACP), officially as 802.3ad, but later moved to 802.1ax \lcite{IEEE 802.1ax}. LACP provides a reliable mechanism for aggregating Ethernet links which implement the same protocol. It allows for the controlled addition and removal of links from an aggregation group without disrupting the stream of data frames \lcite{IBM IEEE}.
 
 	One of the core principles behind link aggregation, and this MQP, is cost. Upgrading to a higher speed link is always an option, but trunking together multiple existing lower speed links can satisfy most, if not all, of the same needs. The added bonus is resilience, a failure of one link just means a decrease in throughput, instead of a total loss, as LACP will automatically load balances between the remaining available links. LACP works great for enterprise network operators who have access to the necessary physical links and switches, but has a few short comings. LACP is inherently targeted for neighboring physical connections, which can only be combined through use of additional hardware (namely, a switch). These shortcoming would become more apparent as demand for high bandwidth wireless LAN and WWAN grew.
 
+\subsection{Heterogeneous Wireless Networks}
+
+%===============HETEROGENOUS WIRELESS=====================================%
 	With the surging popularity of video streaming, high definition content, and online gaming, bandwidth limits are again becoming a problem. Multinode terminal devices (such as smart phones) have the power to actively switch between RATs, but few actively use this technique. Aggregating several Radio Access Technologies (RATs), such as LTE and WiFi, would give these devices better fail over redundancy and increased bandwidth. 
 
-	Ramaboli et. al present a comprehensive review of the current climate of bandwidth aggregation in heterogeneous wireless networks. The identify a number of common concerns that various bandwidth aggregation techniques must address, in order to be proficient. Packet reordering becomes necessary in any situation when items are delivered out of order. A variety of link conditions, such as capacity, latency, and buffer space, all contribute to out of order delivery.\lcite{Heterogenous} The second issue, battery power, becomes more of an issue on free roaming mobile devices which aren't constantly tethered to a power source. This MQP effectively sidesteps this issue by performing all aggregation logic on the router.
+	Ramaboli et. al present a comprehensive review of the current climate of bandwidth aggregation in heterogeneous wireless networks. The identify a number of common concerns that various bandwidth aggregation techniques must address, in order to be proficient. Packet reordering becomes necessary in any situation when items are delivered out of order. For real time TCP applications, splitting traffic between links with varying conditions such as latency, capacity, and buffer space, results in out of order delivery.\lcite{HBA} The second issue, battery power, becomes more of an issue on free roaming mobile devices which aren't constantly tethered to a power source. This MQP effectively sidesteps this issue by performing all aggregation logic on the router.
+
+	A tenet of successful bandwidth aggregation is the preservation of packet order. Combining multiple RATs can yield throughput equivalent to the sum of the individual lines. Helps reduce load on a particular link by evenly distributing it over many links. Distribution order must preserve packet order. Packet reordering does not just exhume buffer space, or slow down reassembly at the client end. Packet reordering outside a certain sequence range will trigger a TCP loss event, which shrinks the transmission window and negatively affect throughput, leading to an underutilization of the aggregate bandwidth capacity.\lcite{HBA}
+
+	Jayasumana et. al suggest a set of metrics to help evaluate packet reordering, these are Reorder Density (RD) and Reorder Buffer-occupancy Density (RBD). Reorder Density describes the distribution of out of order packets, normalized to the number of packets, for any given sequence. Reorder Buffer-occupancy Density measures the buffer occupancy frequencies normalized to the number of non duplicate packets. This metric can be good for predicting the amount of resources required to preform packet reordering.\lcite{RFC5236}
+
+	Ramaboli et al conclude that all wireless bandwidth aggregation techniques can be pigeon holed into one of two slots, based on how they deal with packet reordering. Adaptive bandwidth aggregation observes various link conditions in order to smartly route packets of varrying size between interfaces. This would obviously be the prefered method, as it lowers the chances of out of order delivery. Non-adaptive bandwidth aggregation uses static link selection (such as round robin) in order to route sub-flows. This can lead to lower throughput when link and traffic conditions are not constant (as a result of factors such as jitter).\lcite{HBA}
 
 
-	\subsection{Heterogeneous Wireless Networks - Bringing Link Aggregation to Radio Access Technologies}
+\subsection{A solution for every layer}
 
-		 First, for real time and TCP applications, splitting traffic between links with different latencies can result in out of order delivery, which adversely affects TCP throughput. Second, battery power usage becomes an issue when multiple RATs are being used simultaneously. This MQP is less concerned with battery usage, but the issue of packet reordering is at the forefront of any of these techniques. \\
+	Bandwidth aggregation has been realized on all network layers except the Physical. These solutions each have their advantages and disadvantages, which are summarized below.
 
-		\begin{itemize}
+	\subsubsection{Application Layer}
+		Here, the application has access to multiple outgoing interfaces, and can split the data into several application layer chunks (as this MQP attempts to do with HTTP) which it transmits simultaneously over these interfaces. The obvious issue here, is that the aggregation must be application specific, and does not provide more general, application agnostic aggregation. Examples include XFTP, MuniSockets and parallel sockets. Parallel Sockets maintains multiple TCP connections over a single interface to any number of distributed servers, requesting different segments of the same file from each\lcite{Parallel TCP}. Multiple TCP protocols (Rome, Paris) leverage the idea of parallel sockets for downloading file portions form distributed servers\lcite{TCP paris}. Note that while these methods do not aggregate multiple network interfaces, they do share some common ground with this MQP through their technique of parallel segmented downloading. MuniSockets perform true aggregation of multiple physical interfaces, maintaining a separate thread for each connection. 
 
-			\item Combining multiple RATs can yield throughput equivalent to the sum of the individual lines. Helps reduce load on a particular link by evenly distributing it over many links. Distribution order must preserve packet order. 
+	\subsubsection{Transport Layer}
+		Multipath TCP (MTCP) has been defined by the IETF in 2011. A Linux Kernel implementation of MPTCP has been developed and is currently undergoing community experimentation, as its popularity grows.\lcite{http://multipath-tcp.org/} Apple caused a spike in interest in MPTCP by subtly building it into their iOS7 software.\footnote{Their technical documentation does not advertise their use of MPTCP, but WireShark captures reveal that iOS7 sends MPTCP specific requests in certain scenarios.} While it is only used for their Siri service in order to provide smooth internet access when one RAT unexpectedly cuts out, it represents the first commercial adoption of the protocol. 
 
-			\item Packet reordering outside a certain sequence range will trigger a TCP loss event, which shrinks the transmission window and negatively affect throughput.
+		Multipath TCP works by breaking outgoing data from the application layer into multiple streams that can travel out different interfaces. The MPTCP stack on the host handles separating each TCP subflow out and gluing returning data from these flows back together, so they can be delivered to the application. Across the network, these subflows are just typical TCP connections, which are handled by each hop as they would normally. This transparency enables MPTCP to work in any situation which traditional TCP would have worked.\lcite{MPTCP netys}
 
-			\item Packet reordering metrics: Reorder Density (RD) and Reorder Buffer-occupancy Density (RBD). 
+		It doesn't have support for some of the more desirable bandwidth aggregation techniques, such as intelligent interface selection. To deal with reordering, MPTCP maintains a buffer for out of order packets that are kept until the can be reordered into the stream. 
 
-			\item RD - distribution of out of order packets, normalized to the number of packets, for any given sequence.
+		TCP isn't inherently optimized for timely delivery, so using it as a mechanism for aggregation only provides so much gain. Also, bandwidth intensive UDP streaming applications, such as Netflix and Spotify, can't be remedied by MPTCP.
 
-			\item RBD - measures the buffer occupancy frequencies normalized tot he number of non duplicate packets. Good for predicting amount of resources required to preform reordering.
+	\subsubsection{Network Layer Solutions}
 
-		\end{itemize}
+		IP protocol is easier to leverage to obtain bandwidth aggregation. Unfortunately, it is prone to more out of sequence arrivals.
 
-	\subsection{A solution for every layer}
+		The Round Robin packet scheduling algorithm, which runs in O(1) time, is a simple preexisting network layer approach to bandwidth aggregation. Packets (assumed to be of the same size) from the same flow are assigned to multiple paths in a circular matter. The RR scheduler only works so well in theory because it assumes homogeneous packet size and transmission rate. This is very rarely the case however, so the approach falls short.
 
-		Bandwidth aggregation has been realized on all network layers except the Physical. These solutions each have their advantages and disadvantages, which are summarized below.
+		Kim et al. (2008) proposed a BA scheme that employs two metrics for scheduling, bandwidth estimation and packet partition scheduling. The former determines the amount of bytes that can safely be transmitted across a link without triggering congestion. 
 
-		\subsubsection{Application Layer}
-			Here, the application has access to multiple outgoing interfaces, and can split the data into several application layer chunks (as this MQP attempts to do with HTTP) which it transmits simultaneously over these interfaces. The obvious issue here, is that the aggregation must be application specific, and does not provide more general, application agnostic aggregation. Examples include XFTP, MuniSockets and parallel sockets\lcite{HBA}. Parallel Sockets maintains multiple TCP connections over a single interface to any number of distributed servers, requesting different segments of the same file from each. Multiple TCP protocols (Rome, Paris) leverage the idea of parallel sockets for downloading file portions form distributed servers. Note that while these methods do not aggregate multiple network interfaces, they do share some common ground with this MQP through their technique of parallel segmented downloading. MuniSockets perform true aggregation of multiple physical interfaces, maintaining a separate thread for each connection. 
+		Issues with round robin: the bandwidth may be limited to that of the slowest path.
 
-		\subsubsection{Transport Layer}
-			Multipath TCP (MTCP) has been defined by the IETF in 2011. A Linux Kernel implementation of MPTCP has been developed and is currently undergoing numerous experimentation, as its popularity grows. Apple caused a spike in interest in MPTCP by subtly building it into their iOS7 software.\footnote{Their technical documentation does not advertise their use of MPTCP, but WireShark captures reveal that iOS7 sends MPTCP specific requests in certain scenarios.} While it is only used for their Siri service in order to provide smooth internet access when one RAT unexpectedly cuts out, it represents the first commercial adoption of the protocol. 
+	\subsubsection{Data link Layer}
+		The data link layer was what most of the older solutions to bandwidth aggregation used. It was not until the mobile network boom that attempts to aggregate heterogeneous RATs at the link layer began. One such realization of this practice is the Generic Link Layer (GLL) protocol. GLL is a multi access radio architecture that aims to unite differing RATs under a transparent session. GLL allows for Multi Radio Transmission Diversity.
+		 ``MRTD is defined as the data flow split (on IP or MAC PDU level) between two communicating entities over more than one RAT. This comprises parallel transmission, or dynamic switching between the available RATs.''\cite{GLL:2005}
+		MRTD can select its links based off criteria such as traffic requirements and estimated link quality. However, like many others, this approach to bandwidth aggregation struggles with the issues of packet reordering and unbalanced load distribution.
 
-			Multipath TCP works by breaking outgoing data from the application layer into multiple streams that can travel out different interfaces. The MPTCP stack on the host handles seperating each TCP subflow out and gluing returning data from these flows back togeather, so they can be delivered to the application. Accross the network, these subflows are just typical TCP connections, which are handled by each hop as they would normally. This transparency enables MPTCP to work in any situation which traditional TCP would have worked.\lcite{MPTCP netys}
+\subsection{Adaptive bandwidth aggregation}
+	The pitfalls of the naieve approach (non-adaptive bandwidth aggregation) manifest themselves at every layer. Static decision making for link selection ultimately lead to out of order delivery of differing data segments, which must then be addressed by packet reordering. Adaptive bandwidth aggregation considers the varying link and traffic conditions when organizing sub-flows between multiple interfaces.
 
-			It doesn't have support for some of the more desirable bandwidth aggregation techniques, such as intelligent interface selection. To deal with reordering, MPTCP maintains a buffer for out of order packets that are kept until the can be reordered into the stream. 
-
-			TCP isn't inherently optimized for timely delivery, so using it as a mechanism for aggregation only provides so much gain. Since bandwidth intensive UDP streaming applications, such as Netflix and Spotify, can't be remedied by MPTCP.
-
-		\subsubsection{Network Layer Solutions}
-
-			IP protocol is easier to leverage to obtain bandwidth aggregation. Unfortunately, it is prone to more out of sequence arrivals.
-
-			The Round Robin packet scheduling algorithm, which runs in O(1) time, is a simple preexisting network layer approach to bandwidth aggregation. Packets (assumed to be of the same size) from the same flow are assigned to multiple paths in a circular matter. The RR scheduler only works so well in theory because it assumes homogeneous packet size and transmission rate. This is very rarely the case however, so the approach falls short.
-
-			Kim et al. (2008) proposed a BA scheme that employs two metrics for scheduling, bandwidth estimation and packet partition scheduling. The former determines the amount of bytes that can safely be transmitted across a link without triggering congestion. 
-
-			Issues with round robin: the bandwidth may be limited to that of the slowest path.
-
-		\subsubsection{Data link Layer}
-			The data link layer was what most of the older solutions to bandwidth aggregation used. It was not until the mobile network boom that attempts to aggregate heterogeneous RATs at the link layer began. One such realization of this practice is the Generic Link Layer (GLL) protocol. GLL is a multi access radio architecture that aims to unite differing RATs under a transparent session. GLL allows for Multi Radio Transmission Diversity.
-			 ``MRTD is defined as the data flow split (on IP or MAC PDU level) between two communicating entities over more than one RAT. This comprises parallel transmission, or dynamic switching between the available RATs.''\cite{GLL:2005}
-			MRTD can select its links based off criteria such as traffic requirements and estimated link quality. However, like many others, this approach to bandwidth aggregation struggles with the issues of packet reordering and unbalanced load distribution.
-
-	\subsection{Adaptive bandwidth aggregation}
-		The pitfalls of the naieve approach (non-adaptive bandwidth aggregation) manifest themselves at every layer. Static decision making for link selection ultimately lead to out of order delivery of differing data segments, which must then be addressed by packet reordering. 
-		Adaptive bandwidth aggregation considers the varying link and traffic conditions when organizing sub-flows between multiple interfaces.w
-
-		Some solutions used at various layers:
-		\begin{itemize}
-			\item Luo et all (2003) Split traffic into important and non-important stream, delivering each stream over a different RAT. A small training packet is sent along each link to calculate the RTT and delays, this is done intermittently and allows their implementation to better split traffic between different links.
-			\item Splitting traffic into streams is often done with video content, where a base layer (necessary for decoding the video) is separated from different high level enhancement layers, which enrich viewing of the video.
-			\item W-SCTP, an extension of the stream control protocol, which uses a bandwidth aware scheduler (implemented on the sending end) to manage subflows across multiple paths [Casetti and Gaiotto (2004)]. It maintains separate send buffers per interface, and sends each segment down the fastest one until each path has reached its congestion window limit. This approach does not deal with segment reordering, and fails to use the vast majority of metrics for optimal link selection.
-			\item Also see LS-SCTP, which achieves one logical congestion window made up of the aggregate of the participating paths.
-			\item Multipath TCP is a big contender. Arrival time matching load balancing (ATLB) [Hasegawa et al. (2005)], presents a solution to the ordering problem. ATLB scores each path by end-to-end delay, and uses this heuristic (lower is better) to assign each segment to a path. This significantly cuts down on out of order delivery, but a reorder buffer at the client is still maintained to deal with infrequent reordering issues.
-		\end{itemize}
+	Some solutions used at various layers:
+	\begin{itemize}
+		\item Luo et all (2003) Split traffic into important and non-important stream, delivering each stream over a different RAT. A small training packet is sent along each link to calculate the RTT and delays, this is done intermittently and allows their implementation to better split traffic between different links.
+		\item Splitting traffic into streams is often done with video content, where a base layer (necessary for decoding the video) is separated from different high level enhancement layers, which enrich viewing of the video.
+		\item W-SCTP, an extension of the stream control protocol, which uses a bandwidth aware scheduler (implemented on the sending end) to manage subflows across multiple paths [Casetti and Gaiotto (2004)]. It maintains separate send buffers per interface, and sends each segment down the fastest one until each path has reached its congestion window limit. This approach does not deal with segment reordering, and fails to use the vast majority of metrics for optimal link selection.
+		\item Also see LS-SCTP, which achieves one logical congestion window made up of the aggregate of the participating paths.
+		\item Multipath TCP is a big contender. Arrival time matching load balancing (ATLB) [Hasegawa et al. (2005)], presents a solution to the ordering problem. ATLB scores each path by end-to-end delay, and uses this heuristic (lower is better) to assign each segment to a path. This significantly cuts down on out of order delivery, but a reorder buffer at the client is still maintained to deal with infrequent reordering issues.
+	\end{itemize}
 
 \section{Approach}
 
@@ -210,8 +141,6 @@
 			\item Downloading by 1 Kb per chunk versus 
 			\item Who buffers the responses? If every peer buffers their result and waits until the coordinating router is ready, then we distribute the buffer requirement over all the available routers, which allows for a bigger virtual buffer.
 		\end{itemize}
-
-		{\bf }
 
 
 	\subsection{Deciding on a Device}
@@ -272,9 +201,11 @@
 
 			Python is a popular high level programming language with a meaty standard library that can accomplish both small and large scale needs. With the language focus on ease of use and readability, implementing a Proxy from scratch was both achievable and realistic under our time constraints. 
 
-			As it turns out, a variety of networking frameworks for Python already exist. At the top of these frameworks, lies Twisted. Twisted is an event driven networking framework for Python. It allows for a fully functioning HTTP Proxy to be created in less then 100 lines of code. Because Twisted is a programming framework, defining new tools and custom functionality is a simple matter of extending the existing tools and combining them in a useful way. 
+			Python has a number of easy to implement http proxy solutions. A convenient list is maintained at: \url{http://proxies.xhaus.com/python/}. Most of these proxies extend the httplib python library, which provides a simple interface for setting up stable http connections. Python also has a native socket library for TCP/UDP flows, as well as a fair count of other choices for HTTP connections.
+			
+			At the top of these frameworks, lies Twisted. Twisted is an event driven networking framework for Python. It allows for a fully functioning HTTP Proxy to be created in less then 100 lines of code. Because Twisted is a programming framework, defining new tools and custom functionality is a simple matter of extending the existing tools and combining them in a useful way. 
 
-			After spending only a few weeks with Twisted, it became obvious that it was the right tool for the job. 
+			
 
 	\subsection{Developing a Prototype}
 
@@ -292,6 +223,49 @@
 
 \section{Discussion}
 
+	\subsection{Rationale for various Design decisions (and their alternatives)}
+
+		\subsubsection{Packet Segmentation Algorithm}
+
+			The naieve approach, was fairly straight forward. Given a peer network of n routers, give each router: $$\frac{FILESIZE}{n} bytes$$ This has a major shortcoming however: different routers download at different rates, so the file download isn't complete until the slowest router has downloaded and transmited its chunk back to the host. So the download time becomes the download speed of the slowest router. A better approach is to divy up the file into chunks using a relation between individual router bandwidth and total pool bandwidth. 
+
+			A consideration to keep in mind is that the host router may not be directly connected to each available peer, and certain peers may be connected to each other better then the host router. It could be the case that the host has 3 peers, who each have 3 other peers in wireless communication range. When the router divies up these chunks, the advertised bandwidth of a router that he is directly connected too should reflect the average bandwidth of all of that routers peers. So if A connects to B, who has 2mbps of bandwidth, but B can talk to C and D, who each have a 10mbps connection, B should advertise to A that his bandwidth is $$\frac{B + C + D}{3}$$ mbps. This will help A more accurately decide how to manage the file segmenting. When B is passed this chunk, he can do the same with each peer in his network.
+
+			The problem of overlapping neighbors does immediately become an issue. I plan to address this at the implementation level, and assume without loss of generality that this can be accomplished. My plan so far is to have the host generate a random session key, and pass the key along when it communicates with its neighbors during the negotiation period. Each neighbor will store this key, and until a cancel request is sent from the host, the router will reject any negotiationg requests whose key matches their stored key. This way, a router will not commit its bandwidth too two different neighbors on the same file download.
+
+			The second issue might be link cost. Presumably, routers will communicate with each other over 802.11 b/g at 54 mbps. However, this link cost is negligible, as to reach a point of diminishing returns would take an unusual amount of hops.
+
+			Pseudo code of the algorithm:
+
+			\begin{algorithmic}
+				\ForAll{peer in neighbors(host)}
+					\State $netBandwidth\gets netBandwidth + peer.bandwidth$
+				\EndFor
+
+				\ForAll{peer in neighbors(host)}
+					\State $Chunk_{peer} \gets \frac{peer.bandwidth}{netBandwidth} \times{fileSize}$
+				\EndFor
+
+				\ForAll{peer in neighbors(host)}
+					Delegate $Chunk_{peer}$
+					\State $AmountRemaining \gets AmountRemaining - Chunk_{peer}$
+				\EndFor\\
+				Issue HTTP GET for $AmountRemaining$
+			\end{algorithmic}
+
+		\subsubsection{Boundaries on segment size}
+
+			There are a number of problematic pitfalls that this type of segmentation produces. When a file is downloaded in one session under normal conditions, the round trip time for the request (reaching the server, getting the first response) has a negligible impact. As TCP's sawtooth pattern kicks in, an appropriate window size is established and transmission time smooths out. The TCP overhead can be avoided because HTTP 1.1 uses persistent TCP connections, so the setup only has to happen once for each peer, just as with a normal download.
+
+			The round trip delay (RTT), while negligible for single session downloads, presents an issue when the download is broken into segments. The RTT overhead is applied to each segment request, for each peer. This gives the following relation:
+			$Overhead = \frac{file size}{segment size} * RTT$
+			The overhead grows as segment size decreases, so a larger segment is desirable. This presents a problem for devices with limited buffer space. For example, a typical home router usually has only a few kilobytes of total buffer space. To use all the available buffer would result in buffer bloat, leading to congestion at the link, so a fraction, no bigger then perhaps half the available space, should be used. This means that each router can only download one chunk at a time, and must wait until the client is ready to request more. This idle time should also be considered.
+
+			Fortunately, the overhead is outweighed by the gains of downloading in parallel.
+
+	\subsection{Security Goals}
+
+		The biggest problem with our approach to bandwidth aggregation, is that it puts the end client in control. A level of trust is necessary between the involved peers in order for the scheme to be fairly deployed. 
 
 \section{Conclusion, Future work}
 

@@ -1,0 +1,24 @@
+\BOOKMARK [1][-]{section.1}{Intro}{}% 1
+\BOOKMARK [1][-]{section.2}{Background, Related Work}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Heterogeneous Wireless Networks}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{A solution for every layer}{section.2}% 4
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Application Layer}{subsection.2.2}% 5
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Transport Layer}{subsection.2.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.2.3}{Network Layer Solutions}{subsection.2.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.2.4}{Data link Layer}{subsection.2.2}% 8
+\BOOKMARK [2][-]{subsection.2.3}{Adaptive bandwidth aggregation}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{Approach}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{Big Design Components}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.2}{Deciding on a Device}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.3}{First Design Iteration}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.4}{Implementing on a Proxy}{section.3}% 14
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Squid Proxy}{subsection.3.4}% 15
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Proxying with Python}{subsection.3.4}% 16
+\BOOKMARK [2][-]{subsection.3.5}{Developing a Prototype}{section.3}% 17
+\BOOKMARK [1][-]{section.4}{Evaluation}{}% 18
+\BOOKMARK [1][-]{section.5}{Discussion}{}% 19
+\BOOKMARK [2][-]{subsection.5.1}{Rationale for various Design decisions \(and their alternatives\)}{section.5}% 20
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Packet Segmentation Algorithm}{subsection.5.1}% 21
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Boundaries on segment size}{subsection.5.1}% 22
+\BOOKMARK [2][-]{subsection.5.2}{Security Goals}{section.5}% 23
+\BOOKMARK [1][-]{section.6}{Conclusion, Future work}{}% 24

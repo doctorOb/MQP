@@ -1,0 +1,64 @@
+\documentclass{article}
+\begin{document}
+
+{\bf Heilmeier's Catechism}\hfil\\
+	\begin{description}
+		\item[{\it What are you trying to do? Articulate your objectives using absolutely no jargon}]
+			We want to make neighboring routers work together for large file downloads, such that download time is significantly decreased.
+		\item[{\it How is it done today, and what are the limits of current practice?\\}]
+			Currently, bandwidth aggregation is achieved by combining multiple interfaces into one logical one. These interfaces may be physical links combined at a switch, or TCP sub-flows which are managed at or near the receiver. In the latter case, packet reordering caused by out of order delivery is the biggest issue.
+
+		\item[{\it What's new in your approach and why do you think it will be successful?\\}]
+
+			Bandwidth aggregation has always been the preferred option for those seeking to increase bandwidth without flexing their budget too much. Our approach makes it possible for any pair of apartment owners with their own Internet line to achieve bandwidth aggregation without dropping a dime. By implementing at the router, we sidestep some of the common issues presented by bandwidth aggregation at lower levels (such as link quality variation, and out of order delivery). The approach can be viewed as the low hanging fruit of the aggregation approaches.
+
+		\item[{\it Who cares? If you're successful, what difference will it make?\\}]
+
+		\item[{\it What are the risks and the payoffs?\\}]
+
+		\item[{\it How much will it cost? How long will it take?\\}]
+
+		\item[{\it What are the midterm and final exam to check for success?\\}]
+
+	\end{description}
+	{\bf Needs} - what are the needs of the project?\\
+		\begin{itemize}
+			\item Faster download speeds for large downloads.
+			\item Cheap DIY solution, with minimal infrastructure overhead
+			\item A fair and safe protocol that handles issues of liability and privacy
+			\item achieve bandwidth aggregation while side stepping concerns like packet reordering.
+			\item A client cannot hog a neighbors bandwidth
+		\end{itemize}
+	{\bf Approach} - how do we achieve these needs?\\
+		Aggregate bandwidth by coordinating file download between nearby cooperating routers. The following will occur on a per request basis:
+		\begin{itemize}
+			\item Routers will communicate via a defined protocol.
+			\item The root router (who gets the original download request from a client on his subnet) will poll his peers to request their participation in a group download.
+			\item It will be up to each peer to decide whether they can afford to commit a percentage of their bandwidth to the download.
+		\end{itemize}
+		Proxy server to run on router and manage aggregation. 
+		\begin{itemize}
+			\item For each incoming GET request, decide whether it is for a file download (uri parsing). 
+			\item Divide the file into [start, end] chunks that peers can download with HTTP range field.
+			\item Manager thread that waits for response from peers and buffers (if it is ahead of the current file position), or sends to client
+		\end{itemize}
+		Security, fairness, and Liability
+		\begin{itemize}
+			\item A neighboring client should not have access to anything that the recipient client is downloading.
+			\item Peer routers should only know WHERE to get the file, and WHAT part to download.
+			\item A router will ALWAYS prioritize traffic from its own clients over peer clients.
+			\item It must be clear from an ISPs perspective that potentially illegal traffic going to peer routers are actually for the client router.
+		\end{itemize}
+	{\bf Benefits} - should the needs be met, what is the gain?\\
+		\begin{itemize}
+			\item Bandwidth aggregation realized using only existing infrastructure and open source software.
+			\item Utilize unused bandwidth of nearby participating routers during off-peak hours.
+			\item Application agnostic aggregation, compatible with any existing infrastructure or endpoint.
+		\end{itemize}
+	{\bf Competition} - has this been done before?\\
+		\begin{itemize}
+			\item Bandwidth aggregation has been achieved.
+			\item Various proprietary solutions already exist, each achieving the goals in their own ways?
+		\end{itemize}
+
+\end{document}
