@@ -19,7 +19,6 @@ from twisted.internet import reactor
 from twisted.web.server import Site
 from twisted.web.resource import Resource
 from twisted.web.server import NOT_DONE_YET
-from twisted.web.resource import NoResource
 
 
 import urlparse
@@ -34,28 +33,6 @@ sys.path.append('proxyHelpers.py')
 from proxyHelpers import *
 
 
-class PeerHelper():
-
-	def __init__(self):
-		self.isBuisy = False
-		self.neighbors = {
-			'127.0.0.1' : Neighbor('127.0.0.1')
-		}
-		self.connections = []
-		self.open_connections = 0
-		self.worker = PeerWorker()
-
-	def addConnection(self,request):
-		"""add a client to the connection"""
-		ip = request.getClientIP()
-		self.connections.append(request)
-		self.open_connections += 1
-
-	def handleChunk(self,request):
-		self.worker.getChunk(request)
-
-
-
 class RequestBodyReciever(Protocol):
 	"""
 	needed to actually send the response from a server (because of the way the response object works).
@@ -63,24 +40,17 @@ class RequestBodyReciever(Protocol):
 	architecture. A response object cannot pass it's body onwards without the use of this mitigating class
 	"""
 
-	def __init__(self,request,defered):
+	def __init__(self,peerHelper,defered):
 		self.request = request
 		self.recvd = 0
 		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
-		self.request.write(bytes) #consider passing self.recvd to save on len calculation in PPM_DATA
+		request.write(bytes) #consider passing self.recvd to save on len calculation in PPM_DATA
 
 	def connectionLost(self,reason):
 		self.request.finish()
-
-def _headers(request):
-	"""return a dict of all request headers"""
-	headers = dict()
-	for key,val in request.requestHeaders.getAllRawHeaders():
-		headers[key] = val
-	return headers
 
 		
 class PeerWorker():
@@ -94,83 +64,83 @@ class PeerWorker():
 
 	def getChunk(self,request):
 		"""issue the HTTP GET request for the range of the file specified"""
-		try:
-			headers = _headers(request)
-			print headers
-			range = headers['Range']
-			uri = headers['Target'][0]
-		except:
-			request.write("INVALID: no target or range specified in request")
-			request.finish()
-			return
+		headers = dict()
+		for key,val in list(request.headers.getAllRawHeaders()):
+	 		headers[key] = val
+
 		defered = self.agent.request(
 			'GET',
-			uri,
+			headers['uri'],
 			Headers({
-				'Range' : range
+				'Range' : headers['Range']
 				}),
 			None)
 		defered.addCallback(self.responseRecieved,request)
 		return defered
 
-	def responseRecieved(self,response,request):
+	def responseRecieved(self,request,response):
 
-		print response.code,request.code
 		if response.code > 206: #206 is the code returned for http range responses
 	 		print("error with response from server")
 
 	 	finished = Deferred()
+
 	 	recvr = self.responseWriter(request,finished) 
 		response.deliverBody(recvr)
 		return finished
 
+class peerHelper(Protocol):
+	"""
+	this class manages the connection between the feeding client and the server. This acts 
+	as a control layer that receiving data requests from the client and handing them to HTTP deferred
+	that talk to the actual server. The deferreds will write their data back to the client through a reference 
+	to this class's transport object
+	"""
 
-class InitRequest(Resource):
-	"""handles an INIT peer message"""
-
-	def __init__(self,peerHelper):
-		Resource.__init__(self)
-		self.ph = peerHelper
-
-	def render_GET(self,request):
-		if self.ph.isBuisy:
-			return 'DECLINE'
-		else:
-			self.ph.addConnection(request)
-			headers = request.getAllHeaders()
-			return 'ip:{}'.format(request.getClientIP())
+	def __init__(self):
+		self.uri = None
+		self.PeerClientFactory = None
+		self.headers = {}
+		self.rest = None
+		self.todo = []
+		self.client = PeerWorker()
 
 
-class ChunkRequest(Resource):
-	"""handles a CHUNK peer message"""
 
-	def __init__(self,peerHelper):
-		Resource.__init__(self)
-		self.ph = peerHelper
+	def handleHeader(self, key, value):
+		pass
 
-	def render_GET(self,request):
-		self.ph.handleChunk(request)
-		return NOT_DONE_YET
+	def handleResponseCode(self, version, code, message):
+		pass
 
-class Dispatcher(Resource):
-	"""the actual twisted resource that catches all requests to the router. dispatches them 
-	to the appropriate handler, and maintains session information"""
-	def __init__(self,peerHelper):
-		Resource.__init__(self)
-		self.ph = peerHelper
 
-	def getChild(self,name,request):
-		print('dispatching request to {} from {}'.format(name,request.getClientIP()))
-		if name == 'init':
-			return InitRequest(self.ph)
-		elif name == 'chunk':
-			return ChunkRequest(self.ph)
-		else:
-			return NoResource()
+	def connectionMade(self):
+		print('recieved connection')
 
-if __name__ == '__main__':
-	ph = PeerHelper()
-	root = Dispatcher(ph)
-	factory = Site(root)
-	reactor.listenTCP(8080, factory)
-	reactor.run()
+	def dataReceived(self,data):
+		message = peerProtocolMessage(data)
+		self.handleMessage(message)
+
+	def handleMessage(self,message):
+		print('got message',message.data)
+
+		if message == None:
+			return
+		if message.type == 'END':
+			self.connectionLost()
+			print("done")
+			return
+		if message.type == 'INIT':
+			self.transport.write(PPM_ACCEPT())
+			self.uri = message.uri
+			parsed = urlparse.urlparse(self.uri)
+			self.headers['host'] = parsed[1]
+			self.rest = urlparse.urlunparse(('','') + parsed[2:])
+			self.client = PeerWorker(self.uri,self,RequestBodyReciever)
+			return
+		if message.type == 'CHUNK' and message.range:
+			self.res_len = message.getChunkSize()
+			self.headers['Range'] = httpRange(message.range)
+
+			print('uri:{} range: {}'.format(self.uri,self.headers['Range']))
+			self.client.getChunk(message.range)

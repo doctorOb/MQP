@@ -1,3 +1,8 @@
+
+"""
+proxyHelpers.py defines a set of common functions used by both the DLPool and peerDaemon files. Included is the protocol used by each peer when inter-communicating. 
+"""
+
 from twisted.internet import reactor
 from twisted.internet.defer import Deferred, DeferredList
 from twisted.internet.protocol import Protocol, Factory
@@ -9,14 +14,14 @@ from twisted.internet.protocol import Protocol
 import urllib2
 import re
 
-MINIMUM_FILE_SIZE = 10485760 / 5
+MINIMUM_FILE_SIZE = 1048576 * 2 #2 mb
 PEERPORT = 7779
 GIGABYTE = 1073741824
 MEGABYTE = 1048576
 KILOBYTE = 1024
 TEST_FILE = 'http://a1408.g.akamai.net/5/1408/1388/2005110403/1a1a1ad948be278cff2d96046ad90768d848b41947aa1986/sample_iPod.m4v.zip'
 
-PPM_RE = re.compile('[PPM\.(?=\r\n)]+')
+PPM_RE = re.compile(r'[\bPPM\.\b]+(?=\r\n)')
 def PPM_INIT(url):
 	return "PPM.INIT\r\nPPM.HOST:{}\r\n".format(url)
 
@@ -33,6 +38,24 @@ def PPM_ACCEPT():
 def PPM_DATA(data):
 	return "PPM.DATA\r\nPPM.PAYLOAD:{}".format(data)
 
+class Neighbor():
+	"""
+	A data object that holds information about a neighboring router. Trust and reliability 
+	score is kept here, as well as connection information like IP, port, ect. 
+
+	This class can be serialized to a file so peer information can persist between sessions
+	"""
+
+	def __init__(self,ip):
+		self.ip = ip
+		self.public_key = None
+		self.filename = '{}.info'.format(ip.replace('.','-'))
+		self.alpha_trust = 0
+		self.beta_trust = 0
+		self.reliability = 0
+		self.offeredBandwidth = 0
+
+
 class peerProtocolMessage():
 	"""
 	class for casting data sent from a peer
@@ -46,25 +69,33 @@ class peerProtocolMessage():
 		self.uri = None
 		self.range = None
 		self.payload = None
-		print(data)
 		if (data[:3]) != 'PPM':
 			print("invalid protocol message recieved")
 			return None
 
 		self.type = data[4:data.index('\r\n')]
-		for field in PPM_RE.split(data[data.index('\r\n'):]):
+		if self.type not in ['ACCEPT','END']:
+			self.parseParams()
+
+	def parseParams(self):
+		for field in PPM_RE.split(self.data[self.data.index('\r\n'):]):
+
+			field = re.sub('\r\n','',field)
 			if len(field) < 1:
 				continue
 			type = field[0:field.index(':')]
-			payload = field[field.index(':')+1:]
-			print(type,payload)
 
-			if type in 'PAYLOAD':
+			payload = field[field.index(':')+1:]
+
+			if 'PAYLOAD' in type:
 				self.payload = payload
-			elif type in 'HOST':
+				break
+			elif 'HOST' in type:
 				self.uri = payload
-			elif type in 'RANGE':
+				break
+			elif 'RANGE' in type:
 				self.range = payload.split(',')
+				break
 
 	def getUri(self):
 		return self.payload[0]
@@ -106,7 +137,6 @@ def httpRange(range):
 def TIMEOUT_THRESH():
 	return 10000000000 #some really long time idk
 
-
 class PersistentProxyClient():
 	"""
 	since twisted's HTTPClient class does not support persistent HTTP connections, a custom class had 
@@ -124,13 +154,12 @@ class PersistentProxyClient():
 		self.responseWriter = responseWriter
 		self.headersWritten = False
 
-		if self.id == 0 and self.id != None: #start immediately
-			self.getChunk(self.father.getNextChunk(self.id))
-
 	def getChunk(self,range):
 		"""issue the HTTP GET request for the range of the file specified"""
-		print(range)
-		self.id = range[0]
+		if not range:
+			print("no range given for getChunk, exiting")
+			return None
+		print("getting chunk: {}".format(range))
 		defered = self.agent.request(
 			'GET',
 			self.uri,
@@ -147,7 +176,6 @@ class PersistentProxyClient():
 	 		print("error with response from server")
 
 	 	finished = Deferred()
-
 	 	if not self.headersWritten:
 	 		for key,val in list(response.headers.getAllRawHeaders()):
 	 			self.father.handleHeader(key,val)

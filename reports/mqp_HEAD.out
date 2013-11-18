@@ -15,10 +15,13 @@
 \BOOKMARK [3][-]{subsubsection.3.4.1}{Squid Proxy}{subsection.3.4}% 15
 \BOOKMARK [3][-]{subsubsection.3.4.2}{Proxying with Python}{subsection.3.4}% 16
 \BOOKMARK [2][-]{subsection.3.5}{Developing a Prototype}{section.3}% 17
-\BOOKMARK [1][-]{section.4}{Evaluation}{}% 18
-\BOOKMARK [1][-]{section.5}{Discussion}{}% 19
-\BOOKMARK [2][-]{subsection.5.1}{Rationale for various Design decisions \(and their alternatives\)}{section.5}% 20
-\BOOKMARK [3][-]{subsubsection.5.1.1}{Packet Segmentation Algorithm}{subsection.5.1}% 21
-\BOOKMARK [3][-]{subsubsection.5.1.2}{Boundaries on segment size}{subsection.5.1}% 22
-\BOOKMARK [2][-]{subsection.5.2}{Security Goals}{section.5}% 23
-\BOOKMARK [1][-]{section.6}{Conclusion, Future work}{}% 24
+\BOOKMARK [2][-]{subsection.3.6}{Peer communication protocol}{section.3}% 18
+\BOOKMARK [1][-]{section.4}{Evaluation}{}% 19
+\BOOKMARK [1][-]{section.5}{Discussion}{}% 20
+\BOOKMARK [2][-]{subsection.5.1}{Rationale for various Design decisions \(and their alternatives\)}{section.5}% 21
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Packet Segmentation Algorithm}{subsection.5.1}% 22
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Boundaries on segment size}{subsection.5.1}% 23
+\BOOKMARK [2][-]{subsection.5.2}{Security Goals}{section.5}% 24
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Trust Platform, and Reliability}{subsection.5.2}% 25
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Responsibility with Asymmetric Cryptography}{subsection.5.2}% 26
+\BOOKMARK [1][-]{section.6}{Conclusion, Future work}{}% 27
