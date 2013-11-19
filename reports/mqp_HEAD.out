@@ -24,4 +24,5 @@
 \BOOKMARK [2][-]{subsection.5.2}{Security Goals}{section.5}% 24
 \BOOKMARK [3][-]{subsubsection.5.2.1}{Trust Platform, and Reliability}{subsection.5.2}% 25
 \BOOKMARK [3][-]{subsubsection.5.2.2}{Responsibility with Asymmetric Cryptography}{subsection.5.2}% 26
-\BOOKMARK [1][-]{section.6}{Conclusion, Future work}{}% 27
+\BOOKMARK [3][-]{subsubsection.5.2.3}{Peer selection by a variety of metrics}{subsection.5.2}% 27
+\BOOKMARK [1][-]{section.6}{Conclusion, Future work}{}% 28

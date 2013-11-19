@@ -1,15 +1,15 @@
 [0] Config.pm:387> INFO - This is Biber 1.6
 [0] Config.pm:390> INFO - Logfile is 'mqp_HEAD.blg'
-[67] biber-darwin:218> INFO - === Mon Nov 11, 2013, 13:35:26
-[67] Biber.pm:325> INFO - Reading 'mqp_HEAD.bcf'
-[142] Biber.pm:623> INFO - Found 1 citekeys in bib section 0
-[153] Biber.pm:2995> INFO - Processing section 0
-[168] Biber.pm:3129> INFO - Looking for bibtex format file 'mqp_bib.bib' for section 0
-[169] bibtex.pm:775> INFO - Found BibTeX data source 'mqp_bib.bib'
-[178] Utils.pm:169> WARN - I didn't find a database entry for 'GLL:2005' (section 0)
-[209] Biber.pm:2881> INFO - Overriding locale 'en_US.UTF-8' default tailoring 'variable = shifted' with 'variable = non-ignorable'
-[209] Biber.pm:2887> INFO - Sorting 'entry' list 'nty' keys
-[210] Biber.pm:2891> INFO - No sort tailoring available for locale 'en_US.UTF-8'
-[220] bbl.pm:472> INFO - Writing 'mqp_HEAD.bbl' with encoding 'ascii'
-[220] bbl.pm:545> INFO - Output to mqp_HEAD.bbl
-[220] Biber.pm:105> INFO - WARNINGS: 1
+[72] biber-darwin:218> INFO - === Mon Nov 18, 2013, 13:56:52
+[72] Biber.pm:325> INFO - Reading 'mqp_HEAD.bcf'
+[136] Biber.pm:623> INFO - Found 1 citekeys in bib section 0
+[146] Biber.pm:2995> INFO - Processing section 0
+[161] Biber.pm:3129> INFO - Looking for bibtex format file 'mqp_bib.bib' for section 0
+[163] bibtex.pm:775> INFO - Found BibTeX data source 'mqp_bib.bib'
+[171] Utils.pm:169> WARN - I didn't find a database entry for 'GLL:2005' (section 0)
+[202] Biber.pm:2881> INFO - Overriding locale 'en_US.UTF-8' default tailoring 'variable = shifted' with 'variable = non-ignorable'
+[202] Biber.pm:2887> INFO - Sorting 'entry' list 'nty' keys
+[202] Biber.pm:2891> INFO - No sort tailoring available for locale 'en_US.UTF-8'
+[210] bbl.pm:472> INFO - Writing 'mqp_HEAD.bbl' with encoding 'ascii'
+[210] bbl.pm:545> INFO - Output to mqp_HEAD.bbl
+[210] Biber.pm:105> INFO - WARNINGS: 1
