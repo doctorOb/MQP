@@ -44,7 +44,11 @@ if __name__ == '__main__':
         print "Usage: <Peer IP> <target file>"
         sys.exit(1)
 
-    os.system('rm response.*')
+    try:
+        os.system('rm response.*')
+    except:
+        #doesn't exist, do nothing
+        pass
     agent = Agent(reactor)
     d = agent.request(
         'GET',
