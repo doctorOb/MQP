@@ -44,7 +44,7 @@ if __name__ == '__main__':
         print "Usage: <Peer IP> <target file>"
         sys.exit(1)
 
-    os.call('rm response.*')
+    os.system('rm response.*')
     agent = Agent(reactor)
     d = agent.request(
         'GET',
