@@ -6,6 +6,7 @@ with the host header re-purposed as the actual target of the request.
 
 from pprint import pformat
 import urlparse, os
+import sys
 
 from twisted.internet import reactor
 from twisted.internet.defer import Deferred
@@ -41,7 +42,7 @@ if __name__ == '__main__':
             ext = 'html'
     else:
         print "Usage: <Peer IP> <target file>"
-        return
+        sys.exit(1)
 
     os.call('rm response.*')
     agent = Agent(reactor)
