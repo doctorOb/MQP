@@ -33,9 +33,10 @@ from proxyHelpers import *
 MINIMUM_FILE_SIZE = KILOBYTE
 
 PEERPORT = 8080
+MYPORT = 1337
 CHUNK_SIZE = KILOBYTE
 VERIFY_SIZE = 5 #number of bytes to check in zero knowledge proof
-
+PEERS = [] #holds the peers to connect to (may be specified int he command line)
 
 #log.startLogging(sys.stdout)
 
@@ -420,7 +421,7 @@ class DownloadPool():
 	"""
 
 	def __init__(self,requestSize,father):
-		self.peerIPs = ['127.0.0.1'] #must be known ahead of time (perhaps read in from a config)
+		self.peerIPs = PEERS
 		self.peers = {}
 		self.requestSize = requestSize 
 		self.bytes_sent = 0
@@ -596,9 +597,17 @@ class DownloadPool():
 
 
 if __name__ == '__main__':
+
+	global PEERS
+	if len(sys.argv) > 2:
+		for ip in sys.argv[2:]:
+			PEERS.append(ip)
+	else:
+		PEERS.append('127.0.0.1') #assume we're testing locally
+
 	factory = http.HTTPFactory()
 	factory.protocol = Proxy
-	reactor.listenTCP(1337, factory)
+	reactor.listenTCP(MYPORT, factory)
 	reactor.run()
 
 
