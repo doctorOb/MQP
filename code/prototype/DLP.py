@@ -5,6 +5,15 @@ bandwidth aggregation when the content-length from a given response is over a ce
 a download pool is created which coordinates a round-robin style aggregation session between committed peer routers.
 """
 
+
+"""
+
+Router A: 10.18.229.213
+Router B: 10.18.233.49
+Client (Traflamadorian): 10.18.175.229
+
+"""
+
 from twisted.web import proxy, http
 from twisted.web.client import Agent, HTTPConnectionPool, _parse
 from twisted.web.http_headers import Headers
@@ -598,9 +607,9 @@ class DownloadPool():
 
 if __name__ == '__main__':
 
-	global PEERS
-	if len(sys.argv) > 2:
-		for ip in sys.argv[2:]:
+	
+	if len(sys.argv) > 1:
+		for ip in sys.argv[1:]:
 			PEERS.append(ip)
 	else:
 		PEERS.append('127.0.0.1') #assume we're testing locally
