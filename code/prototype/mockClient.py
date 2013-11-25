@@ -50,7 +50,7 @@ if __name__ == '__main__':
         'GET',
         ip,
         Headers({'User-Agent': ['Twisted Web Client Example'],
-        		'Host' : [page],
+        		'Host' : [url],
         		'Protocol' : ['http']}),
         None)
 
