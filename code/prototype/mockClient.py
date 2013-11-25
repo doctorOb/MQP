@@ -49,6 +49,7 @@ if __name__ == '__main__':
     except:
         #doesn't exist, do nothing
         pass
+
     agent = Agent(reactor)
     d = agent.request(
         'GET',
@@ -57,6 +58,7 @@ if __name__ == '__main__':
         		'Host' : [url],
         		'Protocol' : ['http']}),
         None)
+    print d
 
     def cbRequest(response):
         print 'Response version:', response.version
