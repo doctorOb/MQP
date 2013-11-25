@@ -87,8 +87,9 @@ class Neighbor():
 	This class can be serialized to a file so peer information can persist between sessions
 	"""
 
-	def __init__(self,ip):
+	def __init__(self,ip,id):
 		self.ip = ip
+		self.id = id #for each session, don't store longterm
 		self.public_key = None
 		self.filename = '{}.info'.format(ip.replace('.','-'))
 		self.alpha_trust = 0

@@ -495,7 +495,7 @@ class DownloadPool():
 		"""give shared request info to each peer"""
 		id = 1
 		for peer_ip in self.peerIPs:
-			peer = Neighbor(peer_ip)
+			peer = Neighbor(peer_ip,id)
 			self.peers[id] = PeerHandler(peer,id,self.uri,self)
 			self.peers[id].getInit()
 			id+=1
@@ -593,15 +593,20 @@ class DownloadPool():
 		except:
 			print("meant to write data, but no buffers were available")
 
-		print('writing {} bytes to client'.format(len(data)))
-		self.father.write(data)
+		try:
+			self.father.write(data)
+		except:
+			print('error writing to client')
+			raise
+			sys.exit(0)
 		buf.data = '' #clear it out incase their is more data to fill
 
 		if buf.done:
 			del self.sendBuffers[0] #remove the buffer, and update the index
 			self.bytes_sent+=buf.size
 
-		if self.bytes_sent >= self.requestSize:
+		print "wrote {}/{} bytes to the client".format(self.bytes_sent,self.requestSize)
+		if self.bytes_sent >= (self.requestSize - 10): #wiggle room
 			self.endSession()
 
 
