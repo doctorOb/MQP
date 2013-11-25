@@ -38,6 +38,47 @@ def PPM_ACCEPT():
 def PPM_DATA(data):
 	return "PPM.DATA\r\nPPM.PAYLOAD:{}".format(data)
 
+
+
+class BitVector():
+	"""a bit vector for storing chunk verification data"""
+
+	def __init__(self):
+		self.vector = []
+
+	def _btod(self,binary):
+		"""given an array of binary digits, convert to decimal (assume base 2)"""
+		p = 0
+		total = 0
+		for bit in reversed(binary):
+			total+=((2*int(bit))**p)
+			p+=1
+
+		return total
+
+	def _inverse(self,binary):
+		"""produce the inverse of a binary string"""
+		flip = []
+		for bit in binary:
+			flip.insert(0,1 if bit == 0 else 0)
+		return flip
+
+	def push(self,elt):
+		self.vector.insert(0,elt)
+
+	def value(self):
+		"""return the value of the bit vector"""
+		return self._btod(self.vector)
+
+	def complement(self):
+		"""return the value of the complement of the bit vector"""
+		print self._inverse(self.vector)
+		return self._btod(self._inverse(self.vector))
+
+
+
+
+
 class Neighbor():
 	"""
 	A data object that holds information about a neighboring router. Trust and reliability 
@@ -150,16 +191,26 @@ class PersistentProxyClient():
 		self.pool = HTTPConnectionPool(reactor) #the connection to be persisted
 		self.agent = Agent(reactor, pool=self.pool)
 		self.id = cid
+		self.index = 0
 		self.callback = callback 
 		self.responseWriter = responseWriter
 		self.headersWritten = False
+		
+		if 'http://' not in self.uri:
+			self.uri = 'http://' + self.uri
+
+		print self.uri
+
+
 
 	def getChunk(self,range):
 		"""issue the HTTP GET request for the range of the file specified"""
 		if not range:
 			print("no range given for getChunk, exiting")
 			return None
+
 		print("getting chunk: {}".format(range))
+		self.index = range[0]
 		defered = self.agent.request(
 			'GET',
 			self.uri,

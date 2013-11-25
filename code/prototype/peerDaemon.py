@@ -69,6 +69,7 @@ class RequestBodyReciever(Protocol):
 		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
 
 	def dataReceived(self,bytes):
+		print bytes
 		self.recvd += len(bytes)
 		self.request.write(bytes) #consider passing self.recvd to save on len calculation in PPM_DATA
 
@@ -96,13 +97,18 @@ class PeerWorker():
 		"""issue the HTTP GET request for the range of the file specified"""
 		try:
 			headers = _headers(request)
-			print headers
 			range = headers['Range']
-			uri = headers['Target'][0]
+			uri = headers['Target'][0] + ':80'
 		except:
-			request.write("INVALID: no target or range specified in request")
+			request.setResponseCode(400) #bad request
+			request.setHeader('Reason','INVALID')
+			request.write(" ")#send the headers
 			request.finish()
 			return
+
+		print uri,range
+
+		request.setResponseCode(202) #Accepted
 		defered = self.agent.request(
 			'GET',
 			uri,
@@ -115,7 +121,7 @@ class PeerWorker():
 
 	def responseRecieved(self,response,request):
 
-		print response.code,request.code
+		print response.code
 		if response.code > 206: #206 is the code returned for http range responses
 	 		print("error with response from server")
 
