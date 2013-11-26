@@ -67,6 +67,7 @@ class ProxyClient(HTTPClient):
 		self.stop = False
 
 	def connectionMade(self):
+		print('successful TCP connection established with target server')
 		self.sendCommand(self.command, self.rest)
 		for header, value in self.headers.items():
 			self.sendHeader(header,value)
@@ -157,7 +158,7 @@ class ProxyRequest(Request):
 		if self.uri == '/':
 			#from my python script, so use the host header
 			headers = self.getAllHeaders().copy()
-			self.host = headers['host']
+			self.host = headers['target']
 			self.port = 80
 			self.rest = '/'
 			print 'connecting to host:',self.host

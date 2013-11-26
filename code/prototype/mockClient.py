@@ -44,18 +44,16 @@ if __name__ == '__main__':
         print "Usage: <Peer IP> <target file>"
         sys.exit(1)
 
-    try:
-        os.system('rm response.*')
-    except:
-        #doesn't exist, do nothing
-        pass
+    for f in os.listdir('.'):
+        if 'response' in f[:len('response')]:
+            os.system('rm response.*')
 
     agent = Agent(reactor)
     d = agent.request(
         'GET',
         ip,
         Headers({'User-Agent': ['Twisted Web Client Example'],
-        		'Host' : [url],
+        		'Target' : [url],
         		'Protocol' : ['http']}),
         None)
     print d

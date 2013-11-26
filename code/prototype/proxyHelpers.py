@@ -225,7 +225,7 @@ class PersistentProxyClient():
 	def responseRecieved(self,response):
 
 		if response.code > 206: #206 is the code returned for http range responses
-	 		print("error with response from server")
+	 		print("error with response from server({})".format(response.code))
 
 	 	finished = Deferred()
 	 	if not self.headersWritten:
