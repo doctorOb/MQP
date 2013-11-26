@@ -384,7 +384,7 @@ class PeerHandler():
 			the instance from the father instance's records.
 		"""
 		#add makeup chunk to 
-		del self.father.peers[self.id]
+		pass
 
 	def responseRecieved(self,response):
 		"""
@@ -500,7 +500,7 @@ class DownloadPool():
 			self.peers[id].getInit()
 			id+=1
 
-
+	def terminatePeer(self,peer):
 		"""break it off with a peer. If they had work, push it onto the makeup queue.
 		Close the connection with the peer for the rest of the session."""
 		working = self._peerBuffer(peer)
@@ -515,8 +515,8 @@ class DownloadPool():
 		"""break off with every peer and do some cleanup"""
 		del self.peers[0] #remove the proxyclient on this router
 		for pid in self.peers:
-			if pid > 0:
-				self.peers[pid].terminateConnection()
+			self.peers[pid].terminateConnection()
+		del self.peers
 		self.finished = True
 		self.father.finish()
 

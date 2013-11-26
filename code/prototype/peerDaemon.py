@@ -39,7 +39,7 @@ class PeerHelper():
 	def __init__(self):
 		self.isBuisy = False
 		self.neighbors = {
-			'127.0.0.1' : Neighbor('127.0.0.1')
+			'127.0.0.1' : Neighbor('127.0.0.1',1)
 		}
 		self.connections = []
 		self.open_connections = 0
@@ -69,8 +69,8 @@ class RequestBodyReciever(Protocol):
 		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
 
 	def dataReceived(self,bytes):
-		print bytes
 		self.recvd += len(bytes)
+		print("writing {} bytes to peer".format(len(bytes)))
 		self.request.write(bytes) #consider passing self.recvd to save on len calculation in PPM_DATA
 
 	def connectionLost(self,reason):
@@ -121,7 +121,6 @@ class PeerWorker():
 
 	def responseRecieved(self,response,request):
 
-		print response.code
 		if response.code > 206: #206 is the code returned for http range responses
 	 		print("error with response from server")
 
