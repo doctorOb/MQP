@@ -1,11 +1,11 @@
 # Fdb version 3
-["biber mqp_HEAD"] 1385313757 "mqp_HEAD.bcf" "mqp_HEAD.bbl" "mqp_HEAD" 1385317855
-  "mqp_HEAD.bcf" 1385317855 89732 474eff590ef3e4361468ef58afa97ea5 ""
+["biber mqp_HEAD"] 1386884384 "mqp_HEAD.bcf" "mqp_HEAD.bbl" "mqp_HEAD" 1387304109
+  "mqp_HEAD.bcf" 1387304108 89732 474eff590ef3e4361468ef58afa97ea5 ""
   "mqp_bib.bib" 1381702737 881 8ead5c0eb333f10673012df72d08f8cd ""
   (generated)
   "mqp_HEAD.bbl"
   "mqp_HEAD.blg"
-["pdflatex"] 1385317854 "mqp_HEAD.tex" "mqp_HEAD.pdf" "mqp_HEAD" 1385317855
+["pdflatex"] 1387304107 "mqp_HEAD.tex" "mqp_HEAD.pdf" "mqp_HEAD" 1387304109
   "/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii" 1337017135 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2013/texmf-dist/tex/generic/ifxetex/ifxetex.sty" 1284331290 1458 43ab4710dc82f3edeabecd0d099626b2 ""
   "/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/etexcmds.sty" 1335995445 7612 c47308d923ec19888707b0f1792b326a ""
@@ -77,7 +77,6 @@
   "/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amstext.sty" 1362954379 2637 846ebe982d3549c7ede7ce135456f54a ""
   "/usr/local/texlive/2013/texmf-dist/tex/latex/base/article.cls" 1254151887 20571 b8bd218bf2e18b4f5817ee643cd9c515 ""
   "/usr/local/texlive/2013/texmf-dist/tex/latex/base/ifthen.sty" 1254151887 5022 2ec7815b07dc68e65542e23a180bc839 ""
-  "/usr/local/texlive/2013/texmf-dist/tex/latex/base/omscmr.fd" 1254151887 2109 c400bd6c901edc4a09e4d53fcffd3b3c ""
   "/usr/local/texlive/2013/texmf-dist/tex/latex/base/size12.clo" 1254151887 9053 a28d9b3c915d12545f3d5e7c4986be20 ""
   "/usr/local/texlive/2013/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx" 1368140502 1644 4d42a3eca295cede45aa88bb630daceb ""
   "/usr/local/texlive/2013/texmf-dist/tex/latex/biblatex/bbx/standard.bbx" 1368140502 23627 80d9311ec8846f3d19235f58217cb7bc ""
@@ -130,11 +129,11 @@
   "/usr/local/texlive/2013/texmf-dist/tex/latex/url/url.sty" 1264379145 21932 e3a9cf32ee9b853b42be14c2f25b873c ""
   "/usr/local/texlive/2013/texmf-dist/tex/latex/xcolor/xcolor.sty" 1169481954 55224 a43bab84e0ac5e6efcaf9a98bde73a94 ""
   "/usr/local/texlive/2013/texmf-dist/tex/latex/xkeyval/xkeyval.sty" 1350473462 4934 09bb8eb3760faa4ffb6107a36e5b3d76 ""
-  "mqp_HEAD.aux" 1385317855 5567 b4c423db58af9117a6d07f20c5fcde0b ""
-  "mqp_HEAD.bbl" 1385313762 466 eee6fac640b1f8bf0e5a58ce5ab3d3be "biber mqp_HEAD"
-  "mqp_HEAD.out" 1385317855 2066 45e0ac29ff4a6bdadc43e6d675c23bce ""
-  "mqp_HEAD.tdo" 1385317855 0 d41d8cd98f00b204e9800998ecf8427e ""
-  "mqp_HEAD.tex" 1385317848 55513 871e229287534464d0d9f4cb3c344478 ""
+  "mqp_HEAD.aux" 1387304108 5709 d12a6ebb7ab74fe34371450cac902da8 ""
+  "mqp_HEAD.bbl" 1386884389 466 eee6fac640b1f8bf0e5a58ce5ab3d3be "biber mqp_HEAD"
+  "mqp_HEAD.out" 1387304108 2115 6947998bf9f04eea116a9c97b6ff874f ""
+  "mqp_HEAD.tdo" 1387304108 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "mqp_HEAD.tex" 1387218096 72593 52008a150ed413cb8c317913ac2877ba ""
   (generated)
   "mqp_HEAD.pdf"
   "mqp_HEAD.aux"

@@ -11,8 +11,15 @@ from twisted.web.http_headers import Headers
 from twisted.web import proxy, http
 from twisted.web.client import Agent, HTTPConnectionPool
 from twisted.internet.protocol import Protocol
+
+from Crypto.PublicKey import RSA
+from Crypto import Random
+
+import socket, struct, fcntl
 import urllib2
 import re
+import os
+import time
 
 MINIMUM_FILE_SIZE = 1048576 * 2 #2 mb
 PEERPORT = 7779
@@ -21,23 +28,61 @@ MEGABYTE = 1048576
 KILOBYTE = 1024
 TEST_FILE = 'http://a1408.g.akamai.net/5/1408/1388/2005110403/1a1a1ad948be278cff2d96046ad90768d848b41947aa1986/sample_iPod.m4v.zip'
 
-PPM_RE = re.compile(r'[\bPPM\.\b]+(?=\r\n)')
-def PPM_INIT(url):
-	return "PPM.INIT\r\nPPM.HOST:{}\r\n".format(url)
+class SlidingWindow():
+	"""a Sliding Window class used for monitoring timeouts."""
+	def __init__(self,window_size):
+		self.time = time.now()
+		self.window_size = window_size if window_size else 0
 
-def PPM_CHUNK(range):
-	"""send ppm range chunk from the supplied tuple"""
-	return "PPM.CHUNK\r\nPPM.RANGE:{},{}\r\n".format(*range)
+	def reset():
+		self.time = time.now()
 
-def PPM_END():
-	return "PPM.END\r\n"
+	def elapsed():
+		return time.now() - self.time
 
-def PPM_ACCEPT():
-	return "PPM.ACCEPT\r\n"
+	def timedout():
+		if self.elapsed() > self.window_size:
+			return True
+		else:
+			return False
 
-def PPM_DATA(data):
-	return "PPM.DATA\r\nPPM.PAYLOAD:{}".format(data)
 
+def read_keys(fname):
+	"""read in the key objects from the stored dictionary, return a dict"""
+	with open(fname,'r') as f:
+		ret = ast.literal_eval(f.read())
+
+	for key,val in ret: #turn them into RSA key objects
+		ret[key] = RSA.importKey(val)
+	return ret
+
+
+if os.name != "nt":
+    def get_interface_ip(ifname):
+    	"""get ip for specific interface"""
+    	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    	return socket.inet_ntoa(fcntl.ioctl(
+    			s.fileno(),
+    			0x8915,  # SIOCGIFADDR
+    			struct.pack('256s', ifname[:15])
+    		)[20:24])
+
+
+
+def get_ip():
+	"""get ip address on both window and linux. 
+	Taken from Stack Overflow: http://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib
+	"""
+    ip = socket.gethostbyname(socket.gethostname())
+    if ip.startswith("127.") and os.name != "nt":
+    	interfaces = ["eth0","eth1","eth2","wlan0","wlan1","wifi0","ath0","ath1","ppp0"]
+    	for ifname in interfaces:
+    		try:
+    			ip = get_interface_ip(ifname)
+    			break
+    		except IOError:
+    			pass
+    return ip
 
 
 class BitVector():
@@ -76,7 +121,41 @@ class BitVector():
 		return self._btod(self._inverse(self.vector))
 
 
+class sendBuf():
+	"""
+	a smarter buffer used to hold data (and meta-data describing the data), 
+	that comes through from a peer helper
+	"""
 
+	def __init__(self,peer,range):
+		self.peer = peer
+		self.data = ''
+		self.range = range
+		self.size = range[1] - range[0]
+		self.done = False
+		self.verified = False if peer.id > 0 else True #trust yourself
+		self.received = 0
+		self.verifyIdx = 0
+		self.verifyRange = None
+
+		if not self.verified:
+			self.verifyIdx = random.randint(range[0],range[1] - VERIFY_SIZE)
+			self.verifyRange = self.verifyIdx, self.verifyIdx + VERIFY_SIZE
+
+	def writeData(self,data):
+		self.data += data
+		self.received += len(data)
+		if self.received >= self.size:
+			self.done = True
+
+	def getData(self):
+		return self.data
+
+	def getPeer(self):
+		return self.peer
+
+	def verify(self,verifyData):
+		self.verified = True if self.verified else self.data[self.verifyRange[0]:self.verifyRange[1]] == verifyData
 
 
 class Neighbor():
@@ -97,62 +176,6 @@ class Neighbor():
 		self.reliability = 0
 		self.offeredBandwidth = 0
 
-
-class peerProtocolMessage():
-	"""
-	class for casting data sent from a peer
-	message is of form
-	PPM/{type}\r\n
-	payload
-	"""
-
-	def __init__(self,data):
-		self.data = data
-		self.uri = None
-		self.range = None
-		self.payload = None
-		if (data[:3]) != 'PPM':
-			print("invalid protocol message recieved")
-			return None
-
-		self.type = data[4:data.index('\r\n')]
-		if self.type not in ['ACCEPT','END']:
-			self.parseParams()
-
-	def parseParams(self):
-		for field in PPM_RE.split(self.data[self.data.index('\r\n'):]):
-
-			field = re.sub('\r\n','',field)
-			if len(field) < 1:
-				continue
-			type = field[0:field.index(':')]
-
-			payload = field[field.index(':')+1:]
-
-			if 'PAYLOAD' in type:
-				self.payload = payload
-				break
-			elif 'HOST' in type:
-				self.uri = payload
-				break
-			elif 'RANGE' in type:
-				self.range = payload.split(',')
-				break
-
-	def getUri(self):
-		return self.payload[0]
-
-	def getHost(self):
-		return urlparse.urlparse(self.uri) if self.uri else None
-
-	def getRange(self):
-		return self.range[0],self.range[1] if self.range else None
-
-	def getChunkSize(self):
-		return int(self.range[1]) - int(self.range[0]) if self.range else None
-
-	def getPayload(self):
-		return self.payload if self.payload else None
 
 
 

@@ -5,10 +5,10 @@ GIGABYTE = 1073741824
 MEGABYTE = 1048576
 KILOBYTE = 1024
 
-"""A proof of concept pseudo class implementation of a download splitting router. This provides a base case to go by as I tighten up the algorithm, and will eventually be ported to the actual proxy.
-
+"""
+	A proof of concept pseudo class implementation of a download splitting router. This provides a base case to go by as I tighten up the algorithm, and will eventually be ported to the actual proxy.
+	
 	The basic premise is this:
-
 	> Query all neighboring routers for their available bandwidth.
 	> Routers respond with the average bandwidth between themselves and
 	  their peers (who have not yet been queried).
@@ -17,7 +17,8 @@ KILOBYTE = 1024
 	> Each peer then repeats the process with their chunk, further 
 	  dividing the download into more subchunks until the point is reach 
 	  where the link cost (router to router bandwidth) outweighs the benefit 
-	  of adding another peer to the download."""
+	  of adding another peer to the download.
+"""
 
 def downloadTime(fsize,bandwidth,chunk=None,overhead=None):
 	"""compute the estimated download time (in seconds) of a packet given its size

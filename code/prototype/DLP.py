@@ -35,279 +35,24 @@ import sys
 import random
 import urllib2
 import time
+from itertools import chain
 
 sys.path.append('proxyHelpers.py')
 from proxyHelpers import *
+from RecordKeeper import *
+from Logger import *
 
 MINIMUM_FILE_SIZE = KILOBYTE
 
 PEERPORT = 8080
 MYPORT = 1337
+IP = '127.0.0.1'
 CHUNK_SIZE = KILOBYTE
 VERIFY_SIZE = 5 #number of bytes to check in zero knowledge proof
 PEERS = [] #holds the peers to connect to (may be specified int he command line)
 
 #log.startLogging(sys.stdout)
 
-class ProxyClient(HTTPClient):
-	_finished = False
-	bytes_recvd = 0
-
-	def __init__(self, command, rest, version, headers, data, father):
-		self.father = father
-		self.command = command
-		self.rest = rest
-
-		if "proxy-connection" in headers:
-			del headers["proxy-connection"]
-		headers["connection"] = "close"
-		headers.pop('keep-alive', None)
-		self.headers = headers
-		self.data = data
-		self.stop = False
-
-	def connectionMade(self):
-		print('successful TCP connection established with target server')
-		self.sendCommand(self.command, self.rest)
-		for header, value in self.headers.items():
-			self.sendHeader(header,value)
-			if header == 'Range':
-				print("range request:{}".format(value))
-		self.endHeaders()
-		self.transport.write(self.data)
-
-	def handleStatus(self, version, code, message):
-		self.father.setResponseCode(int(code),message)
-
-	def handleHeader(self, key, value):
-		"""
-		Pass the headers to the father request object (which writes to the client)
-		If the content-length is larger then the minimum file size, stop the request
-		and start over with a download pool
-		"""
-		if key == 'Content-Length' and int(value) > MINIMUM_FILE_SIZE:
-			print('using two streams')
-			pool = DownloadPool(int(value),self.father)
-			pool.queryPeers()
-			self.stop = True
-		if key.lower() in ['server', 'date', 'content-type']:
-			self.father.responseHeaders.setRawHeaders(key, [value])
-		else:
-			self.father.responseHeaders.addRawHeader(key, value)
-
-	def handleResponsePart(self, buffer):
-		if self.stop:
-			self.handleResponseEnd()
-			return 
-		self.bytes_recvd += len(buffer)
-		self.father.write(buffer)
-
-	def handleResponseEnd(self):
-		if self.stop:
-			self.transport.loseConnection()
-		elif not self._finished:
-			self._finished = True
-			self.transport.loseConnection()
-			self.father.finish() #close normally (for a regular proxy request)
-
-
-class ProxyClientFactory(ClientFactory):
-
-	protocol = ProxyClient
-
-	def __init__(self, command, rest, version, headers, data, father):
-		self.command = command
-		self.rest = rest
-		self.version = version
-		self.headers = headers
-		self.data = data
-		self.father = father
-
-	def buildProtocol(self,addr):
-		return self.protocol(self.command, self.rest, self.version,
-			self.headers, self.data, self.father)
-
-class ProxyRequest(Request):
-	"""This class catches all HTTP connections coming from an end client and 
-	preforms the necessary proxy functions"""
-
-	protocols = {'http': ProxyClientFactory}
-	ports = {'http': 80}
-
-	def __init__(self, channel, queued, reactor=reactor):
-		Request.__init__(self, channel, queued)
-		self.reactor = reactor
-		self.peers = {}
-		self.protocol = None
-		self.host = None
-		self.port = None
-		self.rest = None
-
-	def parseHostInfo(self):
-		"""parse the protocol, url, and extension out of the 
-		uri provided in the request"""
-		parsed = urlparse.urlparse(self.uri)
-		self.protocol = parsed[0]
-		self.host = parsed[1]
-		try:
-			self.port = self.ports[self.protocol]
-		except KeyError:
-			print"no protocol provided, assuming http"
-			self.protocol = 'http'
-
-		if self.uri == '/':
-			#from my python script, so use the host header
-			headers = self.getAllHeaders().copy()
-			self.host = headers['target']
-			self.port = 80
-			self.rest = '/'
-			print 'connecting to host:',self.host
-			return
-
-		if ':' in self.host:
-			self.host, self.port = self.host.split(':')
-			self.port = int(self.port)
-		self.rest = urlparse.urlunparse(('','') + parsed[2:])
-		if not self.rest:
-			self.rest = self.rest + '/'
-
-	def process(self):
-		"""process the request for sending"""
-		self.parseHostInfo()
-		class_ = self.protocols[self.protocol]
-		headers = self.getAllHeaders().copy()
-		if 'host' not in headers:
-			headers['host'] = self.host
-		self.content.seek(0, 0)
-		s = self.content.read()
-		
-		#A client factory for the ProxyCLient needs to be created. The factory is then passed to 
-		#the reactor which will call it when a TCP connection is established with the host
-		self.uri = self.host
-		clientFacotry = class_(self.method, self.rest, self.clientproto, headers, s, self)
-		self.reactor.connectTCP(self.host,self.port,clientFacotry)
-
-
-class ZeroKnowledgeVerifier(Protocol):
-	"""
-	Recieves the small portion of data from the server used to verify a peer's response.
-	"""
-
-	def __init__(self,recvBuf):
-		self.recvBuf = recvBuf
-		self.recvd = ''
-
-	def dataReceived(self,bytes):
-		self.recvd += bytes
-
-	def connectionLost(self,reason):
-		self.recvBuf.verify(self.recvd)
-
-class ZeroKnowledgeConnection():
-
-	def __init__(self,downloadPool):
-		self.downloadPool = downloadPool
-		self.uri = downloadPool.uri
-		self.httpPool = HTTPConnectionPool(reactor) #the connection to be persisted
-		self.agent = Agent(reactor, pool=self.httpPool)
-
-
-	def getVerifyChunk(self,recvBuf):
-		"""Issue an HTTP GET request for the small chunk of 
-		data needed for verifying a peer response. The 
-		peer's data buffer is provided, as the confirmation
-		logic happens there"""
-		defered = self.agent.request(
-			'GET',
-			self.uri,
-			Headers({
-				'Range' : [httpRange(recvBuf.verifyRange)]
-				}),
-			None)
-		defered.addCallback(self.responseRecieved,recvBuf)
-		return defered
-
-	def responseRecieved(self,response,recvBuf):
-		if response.code > 206: #206 is the code returned for http range responses
-			print("error with veri from server")
-			return None #TODO: exit gracefully
-
-		finished = Deferred()
-		recvr = ZeroKnowledgeVerifier(recvBuf)
-		response.deliverBody(recvr)
-		return finished
-
-
-class RequestBodyReciever(Protocol):
-	"""
-	needed to actually send the response from a server (because of the way the response object works).
-	Passes any data it recieves to the Peer writer. This is an unfortunate side effect of the twisted 
-	architecture. A response object cannot pass it's body onwards without the use of this mitigating class
-	"""
-
-	def __init__(self,client,defered,doCallback=True):
-		self.client = client #reference to client class that holds an 
-									 #open TCP connection with the peer
-		self.recvd = 0
-		self.defered = defered #placeholder for a deferred callback (in-case one is eventually needed)
-		self.doCallback = doCallback
-	def dataReceived(self,bytes):
-		self.recvd += len(bytes)
-		self.client.father.appendData(self.client,bytes)
-
-	def connectionLost(self,reason):
-		if self.doCallback:
-			repeatCallback(self.client)
-		else:
-			print "connection terminated ({})".format(reason)
-
-class Proxy(HTTPChannel):
-	requestFactory = ProxyRequest
-
-
-class sendBuf():
-	"""
-	a smarter buffer used to hold data (and meta-data describing the data), 
-	that comes through from a peer helper
-	"""
-
-	def __init__(self,peer,range):
-		self.peer = peer
-		self.data = ''
-		self.range = range
-		self.size = range[1] - range[0]
-		self.done = False
-		self.verified = False if peer.id > 0 else True #trust yourself
-		self.received = 0
-		self.verifyIdx = 0
-		self.verifyRange = None
-
-		if not self.verified:
-			self.verifyIdx = random.randint(range[0],range[1] - VERIFY_SIZE)
-			self.verifyRange = self.verifyIdx, self.verifyIdx + VERIFY_SIZE
-
-	def writeData(self,data):
-		self.data += data
-		self.received += len(data)
-		if self.received >= self.size:
-			self.done = True
-
-	def getData(self):
-		return self.data
-
-	def getPeer(self):
-		return self.peer
-
-	def verify(self,verifyData):
-		self.verified = True if self.verified else self.data[self.verifyRange[0]:self.verifyRange[1]] == verifyData
-
-
-def repeatCallback(client):
-	range = client.father.getNextChunk(client.id)
-	if range != None:
-		client.getChunk(range)
-	else:
-		print("no new data to retrieve")
 
 def requestChunks(request_size,chunk_size):
 	"""generator that produces the chunk assignments (saves memory space)"""
@@ -316,96 +61,6 @@ def requestChunks(request_size,chunk_size):
 		yield last,i
 		last = i + 1
 	yield last,request_size
-
-
-class PeerHandler():
-	"""maintains a Persistent TCP connection with the supplied neighbor. Talks to the neighbor over the new
-	ppm API via HTTP deferreds. This class is meant to be instantiated for each session."""
-
-	def __init__(self,neighbor,id,target,father):
-		self.pool = HTTPConnectionPool(reactor) #the connection to be persisted
-		self.agent = Agent(reactor, pool=self.pool)
-		self.responseWriter = RequestBodyReciever
-		self.peer_ip = neighbor.ip
-		self.target = target
-		self.father = father
-		self.id = id
-		self.neighbor = neighbor
-		self.index = 0
-		self.recvd = 0
-		self.data_stop = 0
-		self.verified = False
-		self.trust_level = 0
-		#self.pool.peers[self.id] = self
-
-	def _url(self,path):
-		return 'http://{}:{}/{}'.format(self.peer_ip,PEERPORT,path)
-
-	def _baseHeaders(self):
-		"""return a dictionary of the base headers needed in a peer request"""
-		headers = Headers()
-		headers.addRawHeader('target',self.target)
-		return headers
-
-	def _responseHeaders(self,response):
-		"""process the headers from a response and return them as a dict"""
-		headers = {}
-		for key,val in response.headers.getAllRawHeaders():
-			headers[key] = val
-		return headers
-
-	def _doRequest(self,url,headers,doCallback=True):
-		defered = self.agent.request(
-			'GET',
-			url,
-			headers,
-			None)
-		defered.addCallback(self.responseRecieved)
-		return defered
-
-	def getInit(self):
-		"""Hit a peer with an init request for a session at the supplied url"""
-		headers = self._baseHeaders()
-		headers.addRawHeader('signature','placeholder')
-
-		return self._doRequest(self._url('init'),headers)
-
-
-	def getChunk(self,range):
-		"""Hit a peer with a /chunk request for the range specified"""
-		headers = self._baseHeaders()
-		headers.addRawHeader('Range',httpRange(range))
-
-		return self._doRequest(self._url('chunk'),headers)
-
-	def terminateConnection(self):
-		"""
-			called when the handler wishes to end its session,
-			usually by the wish of the peer. This involves removing 
-			the instance from the father instance's records.
-		"""
-		#add makeup chunk to 
-		pass
-
-	def responseRecieved(self,response):
-		"""
-			Hook in here before setting up the response body reader. 
-			Look at headers to determine if the signature is valid,
-			what the peer is sending back, ect.
-		"""
-
-		if response.code == 400: #peer wises to terminate it's involvement
-			#add makeup chunk to father's buffers
-			self.terminateConnection()
-			return 
-
-	 	headers = self._responseHeaders(response)
-
-	 	finished = Deferred()
-	 	recvr = self.responseWriter(self,finished,doCallback=True) 
-		response.deliverBody(recvr)
-
-		return finished
 
 
 
@@ -430,28 +85,29 @@ class DownloadPool():
 	its self to be called in a short time.
 	"""
 
-	def __init__(self,requestSize,father):
+	def __init__(self,requestSize,proxyRequest):
 		self.peerIPs = PEERS
 		self.peers = {}
 		self.requestSize = requestSize 
 		self.bytes_sent = 0
-		self.uri = father.uri
+		self.uri = proxyRequest.uri
 
 		#the proxy request (which maintains a TCP connection to the end client).
-		self.father = father 
+		self.proxyRequest = proxyRequest 
 		self.sendBuffers = [] #an array of buffers currently being filled by peer clients. 
 		
 		#the start index of the next chunk to send. This is used as a key into the pool's
 		#sending buffers. It will only be moved once the sendBuf it maps to has finished
 		#receiving its expected data
 		self.rangeIndex = 0 
-		self.makeup_chunks = []
 		self.chunkSize = CHUNK_SIZE
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
 		self.zeroKnowledgeProver = ZeroKnowledgeConnection(self)
 		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,0,repeatCallback)
 		self.peers[0] = self.client
 		self.finished = False
+		self.key = MINE
+		self.log = Logger()
 
 		#begin downloading immediately
 		if 'http://' not in self.uri:
@@ -467,11 +123,11 @@ class DownloadPool():
 		if key.lower() == 'Content-Range':
 			return #don't include
 		if key.lower() in ['server', 'date', 'content-type']:
-			self.father.responseHeaders.setRawHeaders(key, [value])
+			self.proxyRequest.responseHeaders.setRawHeaders(key, [value])
 		elif 'content-length' in key.lower():
-			self.father.responseHeaders.addRawHeader(key,requestSize)
+			self.proxyRequest.responseHeaders.addRawHeader(key,requestSize)
 		else:
-			self.father.responseHeaders.addRawHeader(key, value)
+			self.proxyRequest.responseHeaders.addRawHeader(key, value)
 
 	def handleResponseCode(self, version, code, message):
 		"""
@@ -482,14 +138,14 @@ class DownloadPool():
 		print("recieved response code:{} ({})".format(code,message))
 		if int(code) == 206: #206 is returned for partial content files.
 			code = 200
-		self.father.setResponseCode(int(code),message)
+		self.proxyRequest.setResponseCode(int(code),message)
 
 	def _peerBuffer(self,peer):
 		"""find the peers buffer in the send buffers"""
 		for buf in self.sendBuffers:
 			if buf.peer is peer:
 				return buf
-		print("no peer found in send buffers")
+		self.log.warn("no peer found in send buffers")
 		return None
 
 	def queryPeers(self):
@@ -501,12 +157,16 @@ class DownloadPool():
 			self.peers[id].getInit()
 			id+=1
 
+	def releaseChunk(self,chunk):
+		"""called by a peer who wants to give up on its assigned chunk"""
+		self.chunks = chain([(0,chunk)],self.chunks)
+
 	def terminatePeer(self,peer):
 		"""break it off with a peer. If they had work, push it onto the makeup queue.
 		Close the connection with the peer for the rest of the session."""
-		working = self._peerBuffer(peer)
+		working = self.peer.assigned_chunk
 		if working: #assign this request to another peer (or self)
-			self.makeup_chunks.insert(0,working.range)
+			self.chunks = chain([(0,working)],self.chunks) #add its chunk to the start of the chunks generator
 			del working
 		if peer.id > 0:
 			self.peers[peer.id].terminateConnection()
@@ -519,7 +179,7 @@ class DownloadPool():
 			self.peers[pid].terminateConnection()
 		del self.peers
 		self.finished = True
-		self.father.finish()
+		self.proxyRequest.finish()
 
 
 	def getNextChunk(self,sender):
@@ -530,14 +190,11 @@ class DownloadPool():
 		try:
 			peer = self.peers[sender]
 		except KeyError:
-			print("Peer ({}) for chunk request does not exist in this download pool".format(sender))
+			self.log.warn("Peer ({}) for chunk request does not exist in this download pool".format(sender))
 			return None
 
 		try:
-			if len(self.makeup_chunks) > 0:#if there is a chunk that failed, it must be recovered
-				range = self.makeup_chunks.pop()
-			else:
-				range = self.chunks.next()
+			range = self.chunks.next()
 		except StopIteration:
 			#no more chunks to download, so terminate
 			return None
@@ -577,7 +234,7 @@ class DownloadPool():
 				postpone = False
 				d.callback(buf)
 		except KeyError:
-			print('keyerror',self.rangeIndex)
+			self.log.warn('keyerror',self.rangeIndex)
 			
 		if postpone:
 			reactor.callLater(.01,self.waitForData,d)
@@ -592,12 +249,12 @@ class DownloadPool():
 			buf = self.sendBuffers[0]
 			data = buf.getData()
 		except:
-			print("meant to write data, but no buffers were available")
+			self.log.warn("meant to write data, but no buffers were available")
 
 		try:
-			self.father.write(data)
+			self.proxyRequest.write(data)
 		except:
-			print('error writing to client')
+			self.log.warn('error writing to client')
 			raise
 			sys.exit(0)
 		buf.data = '' #clear it out incase their is more data to fill
@@ -606,7 +263,7 @@ class DownloadPool():
 			del self.sendBuffers[0] #remove the buffer, and update the index
 			self.bytes_sent+=buf.size
 
-		print "wrote {}/{} bytes to the client".format(self.bytes_sent,self.requestSize)
+		self.log.info("wrote {}/{} bytes to the client".format(self.bytes_sent,self.requestSize))
 		if self.bytes_sent >= (self.requestSize - 10): #wiggle room
 			self.endSession()
 
@@ -620,6 +277,8 @@ if __name__ == '__main__':
 	else:
 		PEERS.append('127.0.0.1') #assume we're testing locally
 
+	KEYS = read_keys()
+	MINE = KEYS['127.0.0.1:{}'.format(MYPORT)]
 	factory = http.HTTPFactory()
 	factory.protocol = Proxy
 	reactor.listenTCP(MYPORT, factory)

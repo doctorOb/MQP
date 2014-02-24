@@ -21,6 +21,9 @@ from twisted.web.resource import Resource
 from twisted.web.server import NOT_DONE_YET
 from twisted.web.resource import NoResource
 
+from Crypto.Hash import MD5
+from Crypto.PublicKey import RSA
+
 
 import urlparse
 from urllib import quote as urlquote
@@ -33,6 +36,7 @@ import urllib2
 sys.path.append('proxyHelpers.py')
 from proxyHelpers import *
 
+MYPORT = 8080
 
 class PeerHelper():
 
@@ -44,6 +48,7 @@ class PeerHelper():
 		self.connections = []
 		self.open_connections = 0
 		self.worker = PeerWorker()
+		self.log = Logger()
 
 	def addConnection(self,request):
 		"""add a client to the connection"""
@@ -67,10 +72,11 @@ class RequestBodyReciever(Protocol):
 		self.request = request
 		self.recvd = 0
 		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
+		self.log = Logger()
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
-		print("writing {} bytes to peer".format(len(bytes)))
+		self.log.info("writing {} bytes to peer".format(len(bytes)))
 		self.request.write(bytes) #consider passing self.recvd to save on len calculation in PPM_DATA
 
 	def connectionLost(self,reason):
@@ -92,6 +98,7 @@ class PeerWorker():
 		self.pool = HTTPConnectionPool(reactor) #the connection to be persisted
 		self.agent = Agent(reactor, pool=self.pool)
 		self.responseWriter = RequestBodyReciever
+		self.log = Logger()
 
 	def getChunk(self,request):
 		"""issue the HTTP GET request for the range of the file specified"""
@@ -106,7 +113,7 @@ class PeerWorker():
 			request.finish()
 			return
 
-		print uri,range
+		self.log.logic(uri,range)
 
 		request.setResponseCode(202) #Accepted
 		defered = self.agent.request(
@@ -122,7 +129,7 @@ class PeerWorker():
 	def responseRecieved(self,response,request):
 
 		if response.code > 206: #206 is the code returned for http range responses
-	 		print("error with response from server")
+	 		self.log.warn("error with response from server")
 
 	 	finished = Deferred()
 	 	recvr = self.responseWriter(request,finished) 
@@ -163,9 +170,34 @@ class Dispatcher(Resource):
 	def __init__(self,peerHelper):
 		Resource.__init__(self)
 		self.ph = peerHelper
+		self.key = MINE
+		self.keys = KEYS
+
+	def verify_signature(self,request):
+		"""verify the signature of the request, to make sure it came form someone in our network
+		Log the information"""
+		headers = _headers(request)
+		try:
+			to_hash = "{}-{}".format(request.getClientIP(),headers['target'])
+			signature = headers['signature']
+
+			client_key = keys[request.getClientIP()]
+		except:
+			client_sig = keys[request.getClient]
+			self.log.warn("couldn't create hash for request from {}")
+			return False
+
+		hash = MD5.new(to_hash,'').digest()
+		if client_key.publickey().verify(hash,signature):
+			self.log.logic("verified signature")
+			return True
+		else:
+			self.log.logic("invalid signature")
+			return False
+
 
 	def getChild(self,name,request):
-		print('dispatching request to {} from {}'.format(name,request.getClientIP()))
+		self.log.info('dispatching request to {} from {}'.format(name,request.getClientIP()))
 		if name == 'init':
 			return InitRequest(self.ph)
 		elif name == 'chunk':
@@ -174,8 +206,12 @@ class Dispatcher(Resource):
 			return NoResource()
 
 if __name__ == '__main__':
+
+	KEYS = read_keys()
+	MINE = KEYS['127.0.0.1:{}'.format(MYPORT)]
+
 	ph = PeerHelper()
 	root = Dispatcher(ph)
 	factory = Site(root)
-	reactor.listenTCP(8080, factory)
+	reactor.listenTCP(MYPORT, factory)
 	reactor.run()

@@ -30,34 +30,12 @@
 \begin{tabular}{| m{3.0cm} | m{12.6cm} | m{2cm}|} \hline
 \textbf{Item} & \textbf{Notes and Discussion}\\ \hline
 
-Dead Ends With Squid Proxxy & 
+HEADING & 
 	\begin{itemize}
-		\item Squid proxxy was easy to set up, and had an impressive configuration file with full documentation. However, it provides no way too modify packet headers or create new packets to send to neighbors. 
-		\item To do this, we must modify squid's source and recompile it for openWRT, which may or may not be possible. The squid development environment is rather stale, so this route might not be worth the time.
+		\item
 	\end{itemize} 
 \\ \hline
-Open Wifi and Negligence Claims &
-	\begin{itemize}
-		\item Owners of open wifi networks can be held liable for negligence when their network is used to download illegal or copy protected material, even if they did not access the materials themselves.
-		\item In our case, neighbors who coordinate shared bandwidth can both be held liable for the content either of them download.
-		\item Dan will look up specific court cases involving these scenarios in order to get a better sense as to whether or not this might be an issue.
-	\end{itemize}
-\\ \hline
-Squid vs. Python &
-	\begin{itemize}
-		\item Looking through the squid source and adding functionality might not yeild a significant amount of success. Small changes might break the already unstable cross compiled binaries for OpenWRT.
-		\item Using a high level scripting language, such as Python or Perl, provides a less messy and more simple to deploy proof of concept.
-	\end{itemize}
-\\ \hline
 
-For Next Week &
-	\begin{itemize}
-		\item Come up with a method for splitting HTTP requests between n routers.
-		\item Start thinking about a security model
-		\item Produce a working proof of concept python proxxy to forward requests and
-		modify headers.
-	\end{itemize}
-\\ \hline
 
 \end{tabular}
 \end{center}
