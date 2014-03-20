@@ -25,6 +25,8 @@ sys.path.append('proxyHelpers.py')
 sys.path.append('RecordKeeper.py')
 from proxyHelpers import *
 from RecordKeeper import *
+from PyBAP import *
+
 
 
 def repeatCallback(client):

@@ -1,6 +1,8 @@
 
 """
-proxyHelpers.py defines a set of common functions used by both the DLPool and peerDaemon files. Included is the protocol used by each peer when inter-communicating. 
+CANDIDATE FOR CLEANING
+
+proxyHelpers.py defines a set of common functions and objects used by most classes. All global constants are defined here.
 """
 
 from twisted.internet import reactor
@@ -21,8 +23,8 @@ import re
 import os
 import time
 
-MINIMUM_FILE_SIZE = 1048576 * 2 #2 mb
-PEERPORT = 7779
+from PyBAP import * #for common globals
+
 GIGABYTE = 1073741824
 MEGABYTE = 1048576
 KILOBYTE = 1024
@@ -47,7 +49,7 @@ class SlidingWindow():
 			return False
 
 
-def read_keys(fname):
+def read_key(fname):
 	"""read in the key objects from the stored dictionary, return a dict"""
 	with open(fname,'r') as f:
 		ret = ast.literal_eval(f.read())
@@ -58,14 +60,14 @@ def read_keys(fname):
 
 
 if os.name != "nt":
-    def get_interface_ip(ifname):
-    	"""get ip for specific interface"""
-    	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    	return socket.inet_ntoa(fcntl.ioctl(
-    			s.fileno(),
-    			0x8915,  # SIOCGIFADDR
-    			struct.pack('256s', ifname[:15])
-    		)[20:24])
+	def get_interface_ip(ifname):
+		"""get ip for specific interface"""
+		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		return socket.inet_ntoa(fcntl.ioctl(
+				s.fileno(),
+				0x8915,  # SIOCGIFADDR
+				struct.pack('256s', ifname[:15])
+			)[20:24])
 
 
 
@@ -73,16 +75,16 @@ def get_ip():
 	"""get ip address on both window and linux. 
 	Taken from Stack Overflow: http://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib
 	"""
-    ip = socket.gethostbyname(socket.gethostname())
-    if ip.startswith("127.") and os.name != "nt":
-    	interfaces = ["eth0","eth1","eth2","wlan0","wlan1","wifi0","ath0","ath1","ppp0"]
-    	for ifname in interfaces:
-    		try:
-    			ip = get_interface_ip(ifname)
-    			break
-    		except IOError:
-    			pass
-    return ip
+	ip = socket.gethostbyname(socket.gethostname())
+	if ip.startswith("127.") and os.name != "nt":
+		interfaces = ["eth0","eth1","eth2","wlan0","wlan1","wifi0","ath0","ath1","ppp0"]
+		for ifname in interfaces:
+			try:
+				ip = get_interface_ip(ifname)
+				break
+			except IOError:
+				pass
+	return ip
 
 
 class BitVector():
@@ -166,10 +168,10 @@ class Neighbor():
 	This class can be serialized to a file so peer information can persist between sessions
 	"""
 
-	def __init__(self,ip,id):
+	def __init__(self,ip,id=None):
 		self.ip = ip
 		self.id = id #for each session, don't store longterm
-		self.public_key = None
+		self.key = None
 		self.filename = '{}.info'.format(ip.replace('.','-'))
 		self.alpha_trust = 0
 		self.beta_trust = 0

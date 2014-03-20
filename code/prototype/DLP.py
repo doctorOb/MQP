@@ -14,17 +14,12 @@ Client (Traflamadorian): 10.18.175.229
 
 """
 
-from twisted.web import proxy, http
-from twisted.web.client import Agent, HTTPConnectionPool, _parse
+from twisted.web import http
 from twisted.web.http_headers import Headers
 from twisted.internet import reactor, defer
-from twisted.internet.protocol import Protocol, Factory, ClientFactory, ClientCreator
+from twisted.internet.protocol import Protocol, Factory
 from twisted.python import log
-from twisted.web.resource import Resource
-from twisted.web.server import NOT_DONE_YET
-from twisted.web.http import HTTPClient, Request, HTTPChannel
-
-
+from twisted.web.http import HTTPClient, Request
 from twisted.internet.defer import inlineCallbacks, returnValue
 from twisted.internet.task import deferLater
 
@@ -37,19 +32,15 @@ import urllib2
 import time
 from itertools import chain
 
-sys.path.append('proxyHelpers.py')
 from proxyHelpers import *
 from RecordKeeper import *
 from Logger import *
+from PyBAP import *
 
 MINIMUM_FILE_SIZE = KILOBYTE
 
-PEERPORT = 8080
-MYPORT = 1337
-IP = '127.0.0.1'
 CHUNK_SIZE = KILOBYTE
 VERIFY_SIZE = 5 #number of bytes to check in zero knowledge proof
-PEERS = [] #holds the peers to connect to (may be specified int he command line)
 
 #log.startLogging(sys.stdout)
 
@@ -267,21 +258,5 @@ class DownloadPool():
 		if self.bytes_sent >= (self.requestSize - 10): #wiggle room
 			self.endSession()
 
-
-if __name__ == '__main__':
-
-	
-	if len(sys.argv) > 1:
-		for ip in sys.argv[1:]:
-			PEERS.append(ip)
-	else:
-		PEERS.append('127.0.0.1') #assume we're testing locally
-
-	KEYS = read_keys()
-	MINE = KEYS['127.0.0.1:{}'.format(MYPORT)]
-	factory = http.HTTPFactory()
-	factory.protocol = Proxy
-	reactor.listenTCP(MYPORT, factory)
-	reactor.run()
 
 

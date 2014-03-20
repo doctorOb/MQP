@@ -18,6 +18,8 @@ class RecordKeeper(object):
 		
 		if not new and os.path.exists('{}.json'.format(ename)):
 			self.load() #try to load in an old book
+		else:
+			self.save(); #create the file
 
 
 	def __getitem__(self,key):

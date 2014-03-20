@@ -17,6 +17,8 @@ import time
 sys.path.append('proxyHelpers.py')
 from proxyHelpers import *
 from DLP import DownloadPool
+from PyBAP import *
+
 
 
 class ProxyClient(HTTPClient):
@@ -162,3 +164,4 @@ class ProxyRequest(Request):
 
 class Proxy(HTTPChannel):
 	requestFactory = ProxyRequest
+	router_key = None

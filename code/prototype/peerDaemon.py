@@ -4,20 +4,14 @@ bandwidth aggregation.
 """
 
 from twisted.internet import reactor
-from twisted.internet.defer import Deferred, DeferredList
-from twisted.internet.protocol import Protocol, Factory
-from twisted.web.client import Agent, HTTPConnectionPool
+from twisted.internet.defer import Deferred
 from twisted.web.http_headers import Headers
-from twisted.web import proxy, http
 from twisted.web.client import Agent, HTTPConnectionPool
-from twisted.internet.protocol import Protocol, Factory, ClientFactory, ClientCreator
+from twisted.internet.protocol import Protocol, Factory
 from twisted.python import log
 from twisted.web.resource import Resource
-from twisted.web.server import NOT_DONE_YET
-from twisted.web.http import HTTPClient, Request, HTTPChannel
-from twisted.internet import reactor
+from twisted.web.http import Request
 from twisted.web.server import Site
-from twisted.web.resource import Resource
 from twisted.web.server import NOT_DONE_YET
 from twisted.web.resource import NoResource
 
@@ -35,20 +29,21 @@ import urllib2
 
 sys.path.append('proxyHelpers.py')
 from proxyHelpers import *
-
-MYPORT = 8080
+from PyBAP import *
+from Logger import Logger
 
 class PeerHelper():
 
 	def __init__(self):
 		self.isBuisy = False
-		self.neighbors = {
-			'127.0.0.1' : Neighbor('127.0.0.1',1)
-		}
+		self.neighbors = dict()
 		self.connections = []
 		self.open_connections = 0
 		self.worker = PeerWorker()
 		self.log = Logger()
+
+		for ip in PEERS:
+			self.neighbors[ip] = Neighbor(ip)
 
 	def addConnection(self,request):
 		"""add a client to the connection"""
@@ -91,8 +86,10 @@ def _headers(request):
 
 		
 class PeerWorker():
-	"""a modified variant of the persistent HTTP client class, optimized to work with the download pool 
-	by using PPM headers"""
+	"""
+	a modified variant of the persistent HTTP client class, optimized to work with the download pool 
+	by using PPM headers.
+	"""
 
 	def __init__(self):
 		self.pool = HTTPConnectionPool(reactor) #the connection to be persisted
@@ -165,25 +162,29 @@ class ChunkRequest(Resource):
 		return NOT_DONE_YET
 
 class Dispatcher(Resource):
-	"""the actual twisted resource that catches all requests to the router. dispatches them 
-	to the appropriate handler, and maintains session information"""
-	def __init__(self,peerHelper):
+	"""
+	the actual twisted resource that catches all requests to the router. dispatches them 
+	to the appropriate handler, and maintains session information
+	"""
+	def __init__(self,peerHelper,own_key,neighbor_keys):
 		Resource.__init__(self)
 		self.ph = peerHelper
-		self.key = MINE
-		self.keys = KEYS
+		self.key = own_key
+		self.keys = neighbor_keys
+		self.log = Logger()
 
 	def verify_signature(self,request):
-		"""verify the signature of the request, to make sure it came form someone in our network
-		Log the information"""
+		"""
+		verify the signature of the request, to make sure it came form someone in our network
+		"""
 		headers = _headers(request)
 		try:
 			to_hash = "{}-{}".format(request.getClientIP(),headers['target'])
 			signature = headers['signature']
 
-			client_key = keys[request.getClientIP()]
+			client_key = self.keys[request.getClientIP()]
 		except:
-			client_sig = keys[request.getClient]
+			client_sig = self.keys[request.getClient]
 			self.log.warn("couldn't create hash for request from {}")
 			return False
 
@@ -204,14 +205,3 @@ class Dispatcher(Resource):
 			return ChunkRequest(self.ph)
 		else:
 			return NoResource()
-
-if __name__ == '__main__':
-
-	KEYS = read_keys()
-	MINE = KEYS['127.0.0.1:{}'.format(MYPORT)]
-
-	ph = PeerHelper()
-	root = Dispatcher(ph)
-	factory = Site(root)
-	reactor.listenTCP(MYPORT, factory)
-	reactor.run()
