@@ -1954,6 +1954,27 @@
     <bcf:datasource type="file" datatype="bibtex">mqp_bib.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">GLL:2005</bcf:citekey>
+    <bcf:citekey order="1">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="2">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="3">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="4">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="5">1541208</bcf:citekey>
+    <bcf:citekey order="6">4539690</bcf:citekey>
+    <bcf:citekey order="7">mohamed2002user</bcf:citekey>
+    <bcf:citekey order="8">5763587</bcf:citekey>
+    <bcf:citekey order="9">barre2011multipath</bcf:citekey>
+    <bcf:citekey order="10">5763587</bcf:citekey>
+    <bcf:citekey order="11">kim2008packet</bcf:citekey>
+    <bcf:citekey order="12">5355198</bcf:citekey>
+    <bcf:citekey order="13">GLL:2005</bcf:citekey>
+    <bcf:citekey order="14">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="15">1204756</bcf:citekey>
+    <bcf:citekey order="16">1363842</bcf:citekey>
+    <bcf:citekey order="17">5421846</bcf:citekey>
+    <bcf:citekey order="18">AbdElAl20041012</bcf:citekey>
+    <bcf:citekey order="19">1363842</bcf:citekey>
+    <bcf:citekey order="20">1363842</bcf:citekey>
+    <bcf:citekey order="21">1363842</bcf:citekey>
+    <bcf:citekey order="22">Kremer20021606</bcf:citekey>
   </bcf:section>
 </bcf:controlfile>

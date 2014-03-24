@@ -16,5 +16,371 @@
   {}
 \endgroup
 
+
+\refsection{0}
+  \sortlist{entry}{nty}
+    \entry{5763587}{inproceedings}{}
+      \name{labelname}{5}{}{%
+        {{hash=4aa3093323e7b96ba3cb5066680bae1c}{Adhari}{A\bibinitperiod}{H.}{H\bibinitperiod}{}{}{}{}}%
+        {{hash=cd2d5b1b9a36aaac144b9ee43c08476d}{Dreibholz}{D\bibinitperiod}{T.}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=bb3900b525d394e5b48900c707d564d6}{Becke}{B\bibinitperiod}{M.}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=b74b2e387e71e0658e9ce96184b3d1f7}{Rathgeb}{R\bibinitperiod}{E.P.}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=faadd812ecac98a5f5e61bd3999227ff}{Tu\x{fffd}\x{fffd}xen}{T\bibinitperiod}{M.}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{5}{}{%
+        {{hash=4aa3093323e7b96ba3cb5066680bae1c}{Adhari}{A\bibinitperiod}{H.}{H\bibinitperiod}{}{}{}{}}%
+        {{hash=cd2d5b1b9a36aaac144b9ee43c08476d}{Dreibholz}{D\bibinitperiod}{T.}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=bb3900b525d394e5b48900c707d564d6}{Becke}{B\bibinitperiod}{M.}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=b74b2e387e71e0658e9ce96184b3d1f7}{Rathgeb}{R\bibinitperiod}{E.P.}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=faadd812ecac98a5f5e61bd3999227ff}{Tu\x{fffd}\x{fffd}xen}{T\bibinitperiod}{M.}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{318789f595f88dfa66d2f98429b4955f}
+      \strng{fullhash}{0e39c40819b8d0c3d9fb395498ce20a2}
+      \field{sortinit}{A}
+      \field{labeltitle}{Evaluation of Concurrent Multipath Transfer over Dissimilar Paths}
+      \field{booktitle}{Advanced Information Networking and Applications (WAINA), 2011 IEEE Workshops of International Conference on}
+      \field{month}{03}
+      \field{title}{Evaluation of Concurrent Multipath Transfer over Dissimilar Paths}
+      \field{year}{2011}
+      \field{pages}{708\bibrangedash 714}
+      \verb{doi}
+      \verb 10.1109/WAINA.2011.92
+      \endverb
+      \keyw{Internet;digital subscriber lines;optical fibres;optimisation;transport protocols;asymmetric digital subscriber lines;bandwidths;concurrent multipath transfer;delays;dissimilar paths;fibre optic links;multihomed network sites;multipath transport layer protocols;queuing behaviours;resilience-critical Internet services;secondary Internet access connection;stream control transmission protocol;Bandwidth;Delay;Image color analysis;Internet;Protocols;Receivers;Throughput;Buffer Handling;Concurrent Multipath Transfer;Dissimilar Paths;Experimental Validation;Performance Analysis}
+    \endentry
+    \entry{AbdElAl20041012}{article}{}
+      \name{labelname}{3}{}{%
+        {{hash=586659e16fe85920f06d2165940d52f7}{Al}{A\bibinitperiod}{Ahmed\bibnamedelimb Abd\bibnamedelima El}{A\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim E\bibinitperiod}{}{}{}{}}%
+        {{hash=67734be74c6639fcf21710dbaf0b36f9}{Saadawi}{S\bibinitperiod}{Tarek}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=f384fbf8ddb11dbc0c1ba9913bcea353}{Lee}{L\bibinitperiod}{Myung}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=586659e16fe85920f06d2165940d52f7}{Al}{A\bibinitperiod}{Ahmed\bibnamedelimb Abd\bibnamedelima El}{A\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim E\bibinitperiod}{}{}{}{}}%
+        {{hash=67734be74c6639fcf21710dbaf0b36f9}{Saadawi}{S\bibinitperiod}{Tarek}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=f384fbf8ddb11dbc0c1ba9913bcea353}{Lee}{L\bibinitperiod}{Myung}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{4a2e66b606cd8e2115b92ee7576f81ab}
+      \strng{fullhash}{4a2e66b606cd8e2115b92ee7576f81ab}
+      \field{sortinit}{A}
+      \field{labeltitle}{LS-SCTP: a bandwidth aggregation technique for stream control transmission protocol}
+      \field{issn}{0140-3664}
+      \field{journaltitle}{Computer Communications}
+      \field{note}{Protocol Engineering for Wired and Wireless Networks}
+      \field{number}{10}
+      \field{title}{LS-SCTP: a bandwidth aggregation technique for stream control transmission protocol}
+      \field{volume}{27}
+      \field{year}{2004}
+      \field{pages}{1012\bibrangedash 1024}
+      \verb{doi}
+      \verb http://dx.doi.org/10.1016/j.comcom.2004.01.021
+      \endverb
+      \verb{url}
+      \verb http://www.sciencedirect.com/science/article/pii/S0140366404000209
+      \endverb
+      \keyw{Multi-homing}
+    \endentry
+    \entry{barre2011multipath}{incollection}{}
+      \name{labelname}{3}{}{%
+        {{hash=290f7165f1a0013c93b89ce8946c570b}{Barr{\'e}}{B\bibinitperiod}{S{\'e}bastien}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=2650a168fad4355e9ff970778ea81e0b}{Paasch}{P\bibinitperiod}{Christoph}{C\bibinitperiod}{}{}{}{}}%
+        {{hash=500195eaab29dc05f97c2298de61e35f}{Bonaventure}{B\bibinitperiod}{Olivier}{O\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=290f7165f1a0013c93b89ce8946c570b}{Barr{\'e}}{B\bibinitperiod}{S{\'e}bastien}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=2650a168fad4355e9ff970778ea81e0b}{Paasch}{P\bibinitperiod}{Christoph}{C\bibinitperiod}{}{}{}{}}%
+        {{hash=500195eaab29dc05f97c2298de61e35f}{Bonaventure}{B\bibinitperiod}{Olivier}{O\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{df6989643d50b0003fb3edd2b9ce8b40}
+      \strng{fullhash}{df6989643d50b0003fb3edd2b9ce8b40}
+      \field{sortinit}{B}
+      \field{labeltitle}{Multipath TCP: from theory to practice}
+      \field{booktitle}{NETWORKING 2011}
+      \field{title}{Multipath TCP: from theory to practice}
+      \field{year}{2011}
+      \field{pages}{444\bibrangedash 457}
+    \endentry
+    \entry{5355198}{inproceedings}{}
+      \name{labelname}{6}{}{%
+        {{hash=e2b93469efa2648349fab9329c60d626}{Evensen}{E\bibinitperiod}{K.}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=8d7da9789badcb72c64e14fd9078d387}{Kaspar}{K\bibinitperiod}{D.}{D\bibinitperiod}{}{}{}{}}%
+        {{hash=6f05b4a156e5cb2c4bc108abf140ef0e}{Engelstad}{E\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=3d961fccd7ebcbcc2d510e7ca35b3180}{Hansen}{H\bibinitperiod}{A.F.}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=51e0f4e5089f86d7518d880409a724ae}{Griwodz}{G\bibinitperiod}{C.}{C\bibinitperiod}{}{}{}{}}%
+        {{hash=76f3bce52e1611c212ea23f3f105744a}{Halvorsen}{H\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{6}{}{%
+        {{hash=e2b93469efa2648349fab9329c60d626}{Evensen}{E\bibinitperiod}{K.}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=8d7da9789badcb72c64e14fd9078d387}{Kaspar}{K\bibinitperiod}{D.}{D\bibinitperiod}{}{}{}{}}%
+        {{hash=6f05b4a156e5cb2c4bc108abf140ef0e}{Engelstad}{E\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=3d961fccd7ebcbcc2d510e7ca35b3180}{Hansen}{H\bibinitperiod}{A.F.}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=51e0f4e5089f86d7518d880409a724ae}{Griwodz}{G\bibinitperiod}{C.}{C\bibinitperiod}{}{}{}{}}%
+        {{hash=76f3bce52e1611c212ea23f3f105744a}{Halvorsen}{H\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{f68c5b28d8a0d5fe2b1b5f42bcdfaaff}
+      \strng{fullhash}{d1552150ff3953f3e2e325dec6d492f6}
+      \field{sortinit}{E}
+      \field{labeltitle}{A network-layer proxy for bandwidth aggregation and reduction of IP packet reordering}
+      \field{booktitle}{Local Computer Networks, 2009. LCN 2009. IEEE 34th Conference on}
+      \field{month}{10}
+      \field{title}{A network-layer proxy for bandwidth aggregation and reduction of IP packet reordering}
+      \field{year}{2009}
+      \field{pages}{585\bibrangedash 592}
+      \verb{doi}
+      \verb 10.1109/LCN.2009.5355198
+      \endverb
+      \keyw{IP networks;Internet;bandwidth allocation;fault tolerance;multi-access systems;telecommunication network reliability;transport protocols;IP packet reordering;bandwidth aggregation;bandwidth reduction;fault tolerance;multihomed clients;multilink proxy;multiple Internet connections;multiple network interfaces;network-layer proxy;Bandwidth;Bluetooth;Cellular phones;Delay;Fault tolerance;IP networks;Multiaccess communication;Network interfaces;Throughput;Wireless LAN;Wireless networks;heterogeneous systems;measurements;network protocols;scheduling;traffic analysis}
+    \endentry
+    \entry{1541208}{inproceedings}{}
+      \name{labelname}{2}{}{%
+        {{hash=13fbf70c16fb5dc46bed15eb29b05079}{Karrer}{K\bibinitperiod}{R.P.}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=ea4f7a95f82cb6c21514470f2cfa2b44}{Knightly}{K\bibinitperiod}{E.W.}{E\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=13fbf70c16fb5dc46bed15eb29b05079}{Karrer}{K\bibinitperiod}{R.P.}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=ea4f7a95f82cb6c21514470f2cfa2b44}{Knightly}{K\bibinitperiod}{E.W.}{E\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{0b6f694c50a13a630f9ed38c51daba06}
+      \strng{fullhash}{0b6f694c50a13a630f9ed38c51daba06}
+      \field{sortinit}{K}
+      \field{labeltitle}{TCP-PARIS: a parallel download protocol for replicas}
+      \field{booktitle}{Web Content Caching and Distribution, 2005. WCW 2005. 10th International Workshop on}
+      \field{month}{09}
+      \field{title}{TCP-PARIS: a parallel download protocol for replicas}
+      \field{year}{2005}
+      \field{pages}{15\bibrangedash 25}
+      \verb{doi}
+      \verb 10.1109/WCW.2005.20
+      \endverb
+      \keyw{computer networks;resource allocation;transport protocols;TCP stream segmentation;TCP-PARIS;congestion window information;file download time;multiple replicas;parallel download protocol;replica systems;server-side load balancing;transport-layer implementation;Analytical models;File servers;Internet;Laboratories;Load management;Network servers;Peer to peer computing;Performance analysis;Protocols;Web server}
+    \endentry
+    \entry{5421846}{inproceedings}{}
+      \name{labelname}{6}{}{%
+        {{hash=8d7da9789badcb72c64e14fd9078d387}{Kaspar}{K\bibinitperiod}{D.}{D\bibinitperiod}{}{}{}{}}%
+        {{hash=e2b93469efa2648349fab9329c60d626}{Evensen}{E\bibinitperiod}{K.}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=6f05b4a156e5cb2c4bc108abf140ef0e}{Engelstad}{E\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=3d961fccd7ebcbcc2d510e7ca35b3180}{Hansen}{H\bibinitperiod}{A.F.}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=76f3bce52e1611c212ea23f3f105744a}{Halvorsen}{H\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=51e0f4e5089f86d7518d880409a724ae}{Griwodz}{G\bibinitperiod}{C.}{C\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{6}{}{%
+        {{hash=8d7da9789badcb72c64e14fd9078d387}{Kaspar}{K\bibinitperiod}{D.}{D\bibinitperiod}{}{}{}{}}%
+        {{hash=e2b93469efa2648349fab9329c60d626}{Evensen}{E\bibinitperiod}{K.}{K\bibinitperiod}{}{}{}{}}%
+        {{hash=6f05b4a156e5cb2c4bc108abf140ef0e}{Engelstad}{E\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=3d961fccd7ebcbcc2d510e7ca35b3180}{Hansen}{H\bibinitperiod}{A.F.}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=76f3bce52e1611c212ea23f3f105744a}{Halvorsen}{H\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=51e0f4e5089f86d7518d880409a724ae}{Griwodz}{G\bibinitperiod}{C.}{C\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{2ce1d9b7e34dfba0548209ee5768860e}
+      \strng{fullhash}{58f16e43d9400084a2b5dd81dbe7ed03}
+      \field{sortinit}{K}
+      \field{labeltitle}{Enhancing Video-on-Demand Playout over Multiple Heterogeneous Access Networks}
+      \field{booktitle}{Consumer Communications and Networking Conference (CCNC), 2010 7th IEEE}
+      \field{month}{01}
+      \field{title}{Enhancing Video-on-Demand Playout over Multiple Heterogeneous Access Networks}
+      \field{year}{2010}
+      \field{pages}{1\bibrangedash 5}
+      \verb{doi}
+      \verb 10.1109/CCNC.2010.5421846
+      \endverb
+      \keyw{Internet;hypermedia;multimedia communication;transport protocols;video on demand;HTTP;Internet;multimedia streaming;multiple access networks;multiple heterogeneous access networks;multiple network interfaces;video-on-demand playout;Bandwidth;Delay;File servers;IP networks;Network interfaces;Network servers;Performance gain;Streaming media;Web and internet services;Web server}
+    \endentry
+    \entry{kim2008packet}{article}{}
+      \name{labelname}{3}{}{%
+        {{hash=498a0e7d07c36742eec7ad67cf4ec308}{Kim}{K\bibinitperiod}{Pyung-Soo}{P\bibinithyphendelim S\bibinitperiod}{}{}{}{}}%
+        {{hash=3f11627e4604fe235612077935c9d430}{Yoon}{Y\bibinitperiod}{Y}{Y\bibinitperiod}{}{}{}{}}%
+        {{hash=ee3021a12634c99a9de56dda1e61a49d}{Kim}{K\bibinitperiod}{Hanlim}{H\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=498a0e7d07c36742eec7ad67cf4ec308}{Kim}{K\bibinitperiod}{Pyung-Soo}{P\bibinithyphendelim S\bibinitperiod}{}{}{}{}}%
+        {{hash=3f11627e4604fe235612077935c9d430}{Yoon}{Y\bibinitperiod}{Y}{Y\bibinitperiod}{}{}{}{}}%
+        {{hash=ee3021a12634c99a9de56dda1e61a49d}{Kim}{K\bibinitperiod}{Hanlim}{H\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Citeseer}%
+      }
+      \strng{namehash}{c32d469d6761f02f707a7ff47ecf7873}
+      \strng{fullhash}{c32d469d6761f02f707a7ff47ecf7873}
+      \field{sortinit}{K}
+      \field{labeltitle}{A packet partition scheduling mechanism for bandwidth aggregation over multiple paths}
+      \field{journaltitle}{Journal of Convergence Information Technology}
+      \field{number}{4}
+      \field{title}{A packet partition scheduling mechanism for bandwidth aggregation over multiple paths}
+      \field{volume}{3}
+      \field{year}{2008}
+      \field{pages}{325\bibrangedash 41}
+    \endentry
+    \entry{Kremer20021606}{article}{}
+      \name{labelname}{3}{}{%
+        {{hash=ad1639fb6caa9a3c52a6f85ff4955c51}{Kremer}{K\bibinitperiod}{Steve}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=eee949cbec5b40330b8ed33a6a170dfd}{Markowitch}{M\bibinitperiod}{Olivier}{O\bibinitperiod}{}{}{}{}}%
+        {{hash=269ca2371293161be4bc944482b509d7}{Zhou}{Z\bibinitperiod}{Jianying}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=ad1639fb6caa9a3c52a6f85ff4955c51}{Kremer}{K\bibinitperiod}{Steve}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=eee949cbec5b40330b8ed33a6a170dfd}{Markowitch}{M\bibinitperiod}{Olivier}{O\bibinitperiod}{}{}{}{}}%
+        {{hash=269ca2371293161be4bc944482b509d7}{Zhou}{Z\bibinitperiod}{Jianying}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{64e4208589f3c931f5e41577237975b3}
+      \strng{fullhash}{64e4208589f3c931f5e41577237975b3}
+      \field{sortinit}{K}
+      \field{labeltitle}{An intensive survey of fair non-repudiation protocols}
+      \field{issn}{0140-3664}
+      \field{journaltitle}{Computer Communications}
+      \field{number}{17}
+      \field{title}{An intensive survey of fair non-repudiation protocols}
+      \field{volume}{25}
+      \field{year}{2002}
+      \field{pages}{1606\bibrangedash 1621}
+      \verb{doi}
+      \verb http://dx.doi.org/10.1016/S0140-3664(02)00049-X
+      \endverb
+      \verb{url}
+      \verb http://www.sciencedirect.com/science/article/pii/S014036640200049X
+      \endverb
+      \keyw{Non-repudiation}
+    \endentry
+    \entry{1204756}{article}{}
+      \name{labelname}{5}{}{%
+        {{hash=7fc944a1d396c5621be3c1974d1ad571}{Luo}{L\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=02b0c94264c5a7f325f53560ecbead52}{Mukerjee}{M\bibinitperiod}{R.}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=fcaf87dadcd12c8ce8cc8d7fb68cb5a8}{Dillinger}{D\bibinitperiod}{M.}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=fa2dadba44e9cc3e1f7bf70fd34a6867}{Mohyeldin}{M\bibinitperiod}{E.}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=ad7b445087ce24f7600a080872275e55}{Schulz}{S\bibinitperiod}{E.}{E\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{5}{}{%
+        {{hash=7fc944a1d396c5621be3c1974d1ad571}{Luo}{L\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=02b0c94264c5a7f325f53560ecbead52}{Mukerjee}{M\bibinitperiod}{R.}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=fcaf87dadcd12c8ce8cc8d7fb68cb5a8}{Dillinger}{D\bibinitperiod}{M.}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=fa2dadba44e9cc3e1f7bf70fd34a6867}{Mohyeldin}{M\bibinitperiod}{E.}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=ad7b445087ce24f7600a080872275e55}{Schulz}{S\bibinitperiod}{E.}{E\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{13836e57d96e2aecabda299fd6ddf1f1}
+      \strng{fullhash}{8554690738c03c681100f9a2ca926589}
+      \field{sortinit}{L}
+      \field{labeltitle}{Investigation of radio resource scheduling in WLANs coupled with 3G cellular network}
+      \field{issn}{0163-6804}
+      \field{journaltitle}{Communications Magazine, IEEE}
+      \field{month}{06}
+      \field{number}{6}
+      \field{title}{Investigation of radio resource scheduling in WLANs coupled with 3G cellular network}
+      \field{volume}{41}
+      \field{year}{2003}
+      \field{pages}{108\bibrangedash 115}
+      \verb{doi}
+      \verb 10.1109/MCOM.2003.1204756
+      \endverb
+      \keyw{adaptive systems;cellular radio;radio access networks;synchronisation;telecommunication traffic;time division multiple access;wireless LAN;3G cellular network;HIPERLAN/2;WLAN;adaptive radio multihoming approach;joint radio resource management;joint scheduling mechanism;network coupling structure;radio access technologies;radio access technology;radio resource scheduling;reference structure;synchronization;tightly coupled radio network;time-division access;traffic scheduling;traffic splitting;3G mobile communication;Centralized control;Control systems;Intelligent networks;Land mobile radio cellular systems;Quality of service;Radio control;Rats;Resource management;Wireless LAN}
+    \endentry
+    \entry{mohamed2002user}{inproceedings}{}
+      \name{labelname}{4}{}{%
+        {{hash=6a30156d64b96e9acf157d2e4143b7d5}{Mohamed}{M\bibinitperiod}{Nader}{N\bibinitperiod}{}{}{}{}}%
+        {{hash=2f429309ca47da01d25958a063ac136c}{Al-Jaroodi}{A\bibinithyphendelim J\bibinitperiod}{Jameela}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=e0879b52aa4eccf0ea6c596bbbcefd95}{Jiang}{J\bibinitperiod}{Hong}{H\bibinitperiod}{}{}{}{}}%
+        {{hash=1248b9958b81f06be7e66817b1c3b945}{Swanson}{S\bibinitperiod}{David\bibnamedelima R}{D\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{hash=6a30156d64b96e9acf157d2e4143b7d5}{Mohamed}{M\bibinitperiod}{Nader}{N\bibinitperiod}{}{}{}{}}%
+        {{hash=2f429309ca47da01d25958a063ac136c}{Al-Jaroodi}{A\bibinithyphendelim J\bibinitperiod}{Jameela}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=e0879b52aa4eccf0ea6c596bbbcefd95}{Jiang}{J\bibinitperiod}{Hong}{H\bibinitperiod}{}{}{}{}}%
+        {{hash=1248b9958b81f06be7e66817b1c3b945}{Swanson}{S\bibinitperiod}{David\bibnamedelima R}{D\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{a9364016abf11e4b3c2918d45124b814}
+      \strng{fullhash}{f16bf016746761330f0b81573947141b}
+      \field{sortinit}{M}
+      \field{labeltitle}{A User-level Socket Layer over Multiple Physical Network Interfaces.}
+      \field{booktitle}{IASTED PDCS}
+      \field{title}{A User-level Socket Layer over Multiple Physical Network Interfaces.}
+      \field{year}{2002}
+      \field{pages}{804\bibrangedash 810}
+    \endentry
+    \entry{4539690}{inproceedings}{}
+      \name{labelname}{3}{}{%
+        {{hash=4fbf1355805821fcb0a9af507532b0c7}{Park}{P\bibinitperiod}{Ju-Won}{J\bibinithyphendelim W\bibinitperiod}{}{}{}{}}%
+        {{hash=e08d91258fd8bb29e02368652643c8b0}{Kim}{K\bibinitperiod}{JongWon}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=13fbf70c16fb5dc46bed15eb29b05079}{Karrer}{K\bibinitperiod}{R.P.}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=4fbf1355805821fcb0a9af507532b0c7}{Park}{P\bibinitperiod}{Ju-Won}{J\bibinithyphendelim W\bibinitperiod}{}{}{}{}}%
+        {{hash=e08d91258fd8bb29e02368652643c8b0}{Kim}{K\bibinitperiod}{JongWon}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=13fbf70c16fb5dc46bed15eb29b05079}{Karrer}{K\bibinitperiod}{R.P.}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{5ccacab6208d619871476b51ac3971ef}
+      \strng{fullhash}{5ccacab6208d619871476b51ac3971ef}
+      \field{sortinit}{P}
+      \field{labeltitle}{TCP-ROME: A Transport-Layer Approach to Enhance Quality of Experience for Online Media Streaming}
+      \field{booktitle}{Quality of Service, 2008. IWQoS 2008. 16th International Workshop on}
+      \field{issn}{1548-615X}
+      \field{month}{06}
+      \field{title}{TCP-ROME: A Transport-Layer Approach to Enhance Quality of Experience for Online Media Streaming}
+      \field{year}{2008}
+      \field{pages}{249\bibrangedash 258}
+      \verb{doi}
+      \verb 10.1109/IWQOS.2008.34
+      \endverb
+      \keyw{Internet;media streaming;transport protocols;Internet;TCP-ROME protocol;live media streaming;online multimedia media streaming;quality of experience;transport-layer approach;video resolution;Bandwidth;DSL;Fluctuations;Internet;Multimedia systems;Network servers;Peer to peer computing;Streaming media;Throughput;Transport protocols}
+    \endentry
+    \entry{Ramaboli20121674}{article}{}
+      \name{labelname}{3}{}{%
+        {{hash=9aeffdec1164fe7a805b7dbab8cbd568}{Ramaboli}{R\bibinitperiod}{Allen\bibnamedelima L.}{A\bibinitperiod\bibinitdelim L\bibinitperiod}{}{}{}{}}%
+        {{hash=d1133510d513b1ac3fb989cef90d1c40}{Falowo}{F\bibinitperiod}{Olabisi\bibnamedelima E.}{O\bibinitperiod\bibinitdelim E\bibinitperiod}{}{}{}{}}%
+        {{hash=7a2684f491e997144b2b0b995c15ce79}{Chan}{C\bibinitperiod}{Anthony\bibnamedelima H.}{A\bibinitperiod\bibinitdelim H\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=9aeffdec1164fe7a805b7dbab8cbd568}{Ramaboli}{R\bibinitperiod}{Allen\bibnamedelima L.}{A\bibinitperiod\bibinitdelim L\bibinitperiod}{}{}{}{}}%
+        {{hash=d1133510d513b1ac3fb989cef90d1c40}{Falowo}{F\bibinitperiod}{Olabisi\bibnamedelima E.}{O\bibinitperiod\bibinitdelim E\bibinitperiod}{}{}{}{}}%
+        {{hash=7a2684f491e997144b2b0b995c15ce79}{Chan}{C\bibinitperiod}{Anthony\bibnamedelima H.}{A\bibinitperiod\bibinitdelim H\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{bc021f1d3cc046cd9f4491c4dab98b5e}
+      \strng{fullhash}{bc021f1d3cc046cd9f4491c4dab98b5e}
+      \field{sortinit}{R}
+      \field{labeltitle}{Bandwidth aggregation in heterogeneous wireless networks: A survey of current approaches and issues}
+      \field{issn}{1084-8045}
+      \field{journaltitle}{Journal of Network and Computer Applications}
+      \field{number}{6}
+      \field{title}{Bandwidth aggregation in heterogeneous wireless networks: A survey of current approaches and issues}
+      \field{volume}{35}
+      \field{year}{2012}
+      \field{pages}{1674\bibrangedash 1690}
+      \verb{doi}
+      \verb http://dx.doi.org/10.1016/j.jnca.2012.05.015
+      \endverb
+      \verb{url}
+      \verb http://www.sciencedirect.com/science/article/pii/S1084804512001452
+      \endverb
+      \keyw{Heterogeneous wireless networks}
+    \endentry
+    \entry{1363842}{inproceedings}{}
+      \name{labelname}{4}{}{%
+        {{hash=bbfe84d8aa15dc84a266691b6b8c61ad}{Sharma}{S\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=274a7b6de5063aeb736c789326e11ac3}{Lee}{L\bibinitperiod}{Sung-Ju}{S\bibinithyphendelim J\bibinitperiod}{}{}{}{}}%
+        {{hash=4e095d2326288e708d5af7976985b5bb}{Brassil}{B\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=8461ec526b8e33eb45394e513af0f748}{Shin}{S\bibinitperiod}{K.G.}{K\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{hash=bbfe84d8aa15dc84a266691b6b8c61ad}{Sharma}{S\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=274a7b6de5063aeb736c789326e11ac3}{Lee}{L\bibinitperiod}{Sung-Ju}{S\bibinithyphendelim J\bibinitperiod}{}{}{}{}}%
+        {{hash=4e095d2326288e708d5af7976985b5bb}{Brassil}{B\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=8461ec526b8e33eb45394e513af0f748}{Shin}{S\bibinitperiod}{K.G.}{K\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{5600d9066cb71c44b8807c9a6771f27b}
+      \strng{fullhash}{5ef4fbfa92ef611c9f3c992bef06fc29}
+      \field{sortinit}{S}
+      \field{labeltitle}{Handheld routers: intelligent bandwidth aggregation for mobile collaborative communities}
+      \field{booktitle}{Broadband Networks, 2004. BroadNets 2004. Proceedings. First International Conference on}
+      \field{month}{10}
+      \field{title}{Handheld routers: intelligent bandwidth aggregation for mobile collaborative communities}
+      \field{year}{2004}
+      \field{pages}{537\bibrangedash 547}
+      \verb{doi}
+      \verb 10.1109/BROADNETS.2004.43
+      \endverb
+      \keyw{Internet;channel allocation;groupware;mobile computing;mobile radio;multiplexing;radio links;telecommunication network routing;telecommunication traffic;visual communication;wide area networks;Internet;WAN;decentralized inverse multiplexing system;handheld router;intelligent bandwidth aggregation;mobile collaborative community;mobile wireless computing;video traffic;Bandwidth;Collaboration;Computational modeling;Mobile communication;Mobile computing;Performance gain;Traffic control;Video sharing;Wide area networks;Wireless communication}
+    \endentry
+  \endsortlist
+  \missing{GLL:2005}
+\endrefsection
 \endinput
 
