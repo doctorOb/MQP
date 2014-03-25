@@ -54,7 +54,6 @@ if __name__ == '__main__':
 	proxyFactory = http.HTTPFactory()
 	proxyFactory.protocol = Proxy
 	reactor.listenTCP(PROXY_PORT, proxyFactory)
-	reactor.run()
 
 	myIP = get_ip()
 	if '127.0.0.1' in myIP:
