@@ -10,6 +10,7 @@ from proxyHelpers import Neighbor
 from KeyPair import PKeyPair
 
 import string
+import os
 import socket, struct, fcntl
 
 
