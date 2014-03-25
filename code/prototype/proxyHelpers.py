@@ -23,7 +23,6 @@ import re
 import os
 import time
 
-from PyBAP import * #for common globals
 
 GIGABYTE = 1073741824
 MEGABYTE = 1048576
