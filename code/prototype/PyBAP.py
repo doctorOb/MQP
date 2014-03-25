@@ -11,6 +11,7 @@ from KeyPair import PKeyPair
 
 import string
 import os
+import sys
 import socket, struct, fcntl
 
 
