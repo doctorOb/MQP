@@ -10,17 +10,44 @@ from proxyHelpers import Neighbor
 from KeyPair import PKeyPair
 
 import string
+import socket, struct, fcntl
+
+
+if os.name != "nt":
+	def get_interface_ip(ifname):
+		"""get ip for specific interface"""
+		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		return socket.inet_ntoa(fcntl.ioctl(
+				s.fileno(),
+				0x8915,  # SIOCGIFADDR
+				struct.pack('256s', ifname[:15])
+			)[20:24])
 
 
 
-MY_IP = get_ip()
+def get_ip():
+	"""get ip address on both window and linux. 
+	Taken from Stack Overflow: http://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib
+	"""
+	ip = socket.gethostbyname(socket.gethostname())
+	if ip.startswith("127.") and os.name != "nt":
+		interfaces = ["eth0","eth1","eth2","wlan0","wlan1","wifi0","ath0","ath1","ppp0"]
+		for ifname in interfaces:
+			try:
+				ip = get_interface_ip(ifname)
+				break
+			except IOError:
+				pass
+	return ip
 
-def init_peers(peer_ips):
+
+
+def init_peers(peer_ips,my_ip):
 	"""create a dict of ip -> neighbor classes, where the neighbors key is assumed
 	to exist within a [neighbor_ip].key file in the running directory."""
 	ret = dict()
 	for ip in peer_ips:
-		if ip in MY_IP:
+		if ip in my_ip:
 			continue
 
 		print "Configuring Neighbor object for IP: {}".format(ip)
@@ -29,14 +56,17 @@ def init_peers(peer_ips):
 		ret[ip] = nbr
 	return ret
 
+
+
 try:
 	print "initializing global variables"
 	configs = RecordKeeper('config.defaults')
 	#initialize globals
+	MY_IP = get_ip()
 	PEER_PORT = int(configs['PEER_PORT'])
 	PROXY_PORT = int(configs['PROXY_PORT'])
 	MINIMUM_FILE_SIZE = int(configs['MINIMUM_FILE_SIZE'])
-	PEERS = init_peers(configs['PEERS'])
+	PEERS = init_peers(configs['PEERS'],MY_IP)
 	CHUNK_SIZE = int(configs['CHUNK_SIZE'])
 except:
 	print("Error initializing proxy from config file. Make sure config.defaults.json supplies the necessary information!\n")
