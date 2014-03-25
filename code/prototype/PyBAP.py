@@ -57,18 +57,28 @@ def init_peers(peer_ips,my_ip):
 		ret[ip] = nbr
 	return ret
 
+global GLOBS_SET
+global __opts
+class Glob():
+	pass
 
 
 try:
-	print "initializing global variables"
-	configs = RecordKeeper('config.defaults')
-	#initialize globals
-	MY_IP = get_ip()
-	PEER_PORT = int(configs['PEER_PORT'])
-	PROXY_PORT = int(configs['PROXY_PORT'])
-	MINIMUM_FILE_SIZE = int(configs['MINIMUM_FILE_SIZE'])
-	PEERS = init_peers(configs['PEERS'],MY_IP)
-	CHUNK_SIZE = int(configs['CHUNK_SIZE'])
+	if GLOBS_SET is None:
+		__opts = GLob()
+		print "initializing global variables"
+		configs = RecordKeeper('config.defaults')
+		#initialize globals
+		__opts.my_ip = get_ip()
+		__opts.peer_port = int(configs['PEER_PORT'])
+		__opts.proxy_port = int(configs['PROXY_PORT'])
+		__opts.minimum_file_size = int(configs['MINIMUM_FILE_SIZE'])
+		__opts.peers = init_peers(configs['PEERS'],MY_IP)
+		__opts.chunk_size = int(configs['CHUNK_SIZE'])
+		__opts.own_key = PKeyPair(ip=__opts.my_ip)
+		GLOBS_SET = True
+	else:
+		pass
 except:
 	print("Error initializing proxy from config file. Make sure config.defaults.json supplies the necessary information!\n")
 	exit(0)
@@ -85,7 +95,6 @@ if __name__ == '__main__':
 	from DLP import DownloadPool
 	from BaseProxy import Proxy
 	from peerDaemon import PeerHelper, Dispatcher
-	from proxyHelpers import get_ip
 
 	#Auto configure neighbor IP -> pub_key mapping from a supplied file.
 
@@ -93,12 +102,10 @@ if __name__ == '__main__':
 	print "Starting HTTP Proxy"
 	proxyFactory = http.HTTPFactory()
 	proxyFactory.protocol = Proxy
-	reactor.listenTCP(PROXY_PORT, proxyFactory)
-
-	own_key = PKeyPair(ip=MY_IP)
+	reactor.listenTCP(__opts.proxy_port, proxyFactory)
 
 	ph = PeerHelper()
-	root = Dispatcher(ph,own_key,PEERS)
+	root = Dispatcher(ph,__opts.own_key,__oopts.peers)
 	peerFactory = Site(root)
-	reactor.listenTCP(PEER_PORT, peerFactory)
+	reactor.listenTCP(__opts.peer_port, peerFactory)
 	reactor.run()

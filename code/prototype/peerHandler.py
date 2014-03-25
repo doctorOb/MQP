@@ -25,7 +25,7 @@ sys.path.append('proxyHelpers.py')
 sys.path.append('RecordKeeper.py')
 from proxyHelpers import *
 from RecordKeeper import *
-from PyBAP import *
+from PyBAP import __opts
 
 
 
@@ -88,7 +88,7 @@ class PeerHandler():
 		self.records.new(target=target,req_size=downloadPool.requestSize)`
 
 	def _url(self,path):
-		return 'http://{}:{}/{}'.format(self.peer_ip,PEERPORT,path)
+		return 'http://{}:{}/{}'.format(self.peer_ip,__opts.peer_port,path)
 
 	def _sign(self,target):
 		hash = MD5.new('{}-{}'.format(IP,target)).digest()

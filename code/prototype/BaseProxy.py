@@ -17,7 +17,7 @@ import time
 sys.path.append('proxyHelpers.py')
 from proxyHelpers import *
 from DLP import DownloadPool
-from PyBAP import *
+from PyBAP import __opts
 
 
 
@@ -58,7 +58,7 @@ class ProxyClient(HTTPClient):
 		If the content-length is larger then the minimum file size, stop the request
 		and start over with a download pool
 		"""
-		if key == 'Content-Length' and int(value) > MINIMUM_FILE_SIZE:
+		if key == 'Content-Length' and int(value) > __opts.minimum_file_size:
 			self.log.logic('using two streams')
 			pool = DownloadPool(int(value),self.father)
 			pool.queryPeers()

@@ -34,12 +34,10 @@ from itertools import chain
 
 from proxyHelpers import *
 from RecordKeeper import *
-from Logger import *
-from PyBAP import *
+from Logger import Logger
+from PyBAP import __opts
 
-MINIMUM_FILE_SIZE = KILOBYTE
 
-CHUNK_SIZE = KILOBYTE
 VERIFY_SIZE = 5 #number of bytes to check in zero knowledge proof
 
 #log.startLogging(sys.stdout)
@@ -77,7 +75,7 @@ class DownloadPool():
 	"""
 
 	def __init__(self,requestSize,proxyRequest):
-		self.peerIPs = PEERS
+		self.peerIPs = __opts.peers
 		self.peers = {}
 		self.requestSize = requestSize 
 		self.bytes_sent = 0
@@ -91,13 +89,13 @@ class DownloadPool():
 		#sending buffers. It will only be moved once the sendBuf it maps to has finished
 		#receiving its expected data
 		self.rangeIndex = 0 
-		self.chunkSize = CHUNK_SIZE
+		self.chunkSize = __opts.chunk_size
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
 		self.zeroKnowledgeProver = ZeroKnowledgeConnection(self)
 		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,0,repeatCallback)
 		self.peers[0] = self.client
 		self.finished = False
-		self.key = MINE
+		self.key = __opts.own_key
 		self.log = Logger()
 
 		#begin downloading immediately

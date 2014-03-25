@@ -29,21 +29,18 @@ import urllib2
 
 sys.path.append('proxyHelpers.py')
 from proxyHelpers import *
-from PyBAP import *
+from PyBAP import __opts
 from Logger import Logger
 
 class PeerHelper():
 
 	def __init__(self):
 		self.isBuisy = False
-		self.neighbors = dict()
+		self.neighbors = __opts.peers
 		self.connections = []
 		self.open_connections = 0
 		self.worker = PeerWorker()
 		self.log = Logger()
-
-		for ip in PEERS:
-			self.neighbors[ip] = Neighbor(ip)
 
 	def addConnection(self,request):
 		"""add a client to the connection"""
