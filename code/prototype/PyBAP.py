@@ -9,20 +9,28 @@ from sys import exit
 from proxyHelpers import Neighbor
 from KeyPair import PKeyPair
 
+import string
 
 
+
+MY_IP = get_ip()
 
 def init_peers(peer_ips):
 	"""create a dict of ip -> neighbor classes, where the neighbors key is assumed
 	to exist within a [neighbor_ip].key file in the running directory."""
 	ret = dict()
 	for ip in peer_ips:
+		if ip in MY_IP:
+			continue
+
+		print "Configuring Neighbor object for IP: {}".format(ip)
 		nbr = Neighbor(ip)
 		nbr.key = PKeyPair(ip)
 		ret[ip] = nbr
 	return ret
 
 try:
+	print "initializing global variables"
 	configs = RecordKeeper('config.defaults')
 	#initialize globals
 	PEER_PORT = int(configs['PEER_PORT'])
@@ -51,17 +59,13 @@ if __name__ == '__main__':
 	#Auto configure neighbor IP -> pub_key mapping from a supplied file.
 
 
+	print "Starting HTTP Proxy"
 	proxyFactory = http.HTTPFactory()
 	proxyFactory.protocol = Proxy
 	reactor.listenTCP(PROXY_PORT, proxyFactory)
 
-	myIP = get_ip()
-	if '127.0.0.1' in myIP:
-		#local testing
-		pass
+	own_key = PKeyPair(ip=MY_IP)
 
-	
-	own_key = PKeyPair(ip=myIP)
 	ph = PeerHelper()
 	root = Dispatcher(ph,own_key,PEERS)
 	peerFactory = Site(root)

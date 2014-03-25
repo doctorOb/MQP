@@ -1,5 +1,6 @@
 from Crypto.PublicKey import RSA
 from Crypto import Random
+from Logger import Logger
 
 import os
 
@@ -15,6 +16,7 @@ class PKeyPair():
 		self.ip = ip
 		self.alias = alias
 		self.fname = '{}.key'.format(alias if alias else ip)
+		self.log = Logger()
 		if os.path.exists(self.fname):
 			self._import()
 		else:
@@ -26,10 +28,12 @@ class PKeyPair():
 			f.write(self.key.exportKey())
 
 	def _import(self):
+		self.log.info("Importing Public/Private key pair from {}".format(self.fname))
 		with open(self.fname,'r') as f:
 			self.key = RSA.importKey(f.read())
 
 	def _generate(self,size=1024):
+		self.log.info("Generating new Public/Private key pair")
 		random_generator = Random.new().read
 		return RSA.generate(size,random_generator)
 
