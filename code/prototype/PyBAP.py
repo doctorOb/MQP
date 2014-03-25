@@ -80,6 +80,8 @@ try:
 	else:
 		pass
 except:
+	print "Unexpected error:", sys.exc_info()[0]
+    raise
 	print("Error initializing proxy from config file. Make sure config.defaults.json supplies the necessary information!\n")
 	exit(0)
 
