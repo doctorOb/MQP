@@ -52,12 +52,22 @@ class Logger(object):
 	def _format(self,log_type,msg):
 		date = ""
 		caller= ""
+		caller_class = ""
+		caller_method = ""
+
+
 		if self.options['display_caller']:
 			caller = "[{}]".format(inspect.stack()[2][3])
+			try:
+				the_class = stack[1][0].f_locals["self"].__class__
+				the_method = stack[1][0].f_code.co_name
+			except:
+				pass
+
 		if self.options['display_time']:
 			date = time.strftime("%X")
 
-		self._log("{}_{}@|{}|# {}".format(log_type,caller,date,msg))
+		self._log("{} > {}_{}@|{}|# {}".format(caller_class,log_type,caller,date,msg))
 
 	def info(self,msg):
 		self._format("info",msg)
