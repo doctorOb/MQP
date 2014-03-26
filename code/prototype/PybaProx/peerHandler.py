@@ -23,8 +23,7 @@ from itertools import chain
 
 from proxyHelpers import *
 from RecordKeeper import *
-import PybaProx
-
+from Logger import Logger
 
 
 def repeatCallback(client):

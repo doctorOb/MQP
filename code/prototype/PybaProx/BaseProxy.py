@@ -17,8 +17,7 @@ import time
 sys.path.append('proxyHelpers.py')
 from proxyHelpers import *
 from DLP import DownloadPool
-
-import PybaProx
+from Logger import Logger
 
 
 

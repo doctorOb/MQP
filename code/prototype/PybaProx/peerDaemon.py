@@ -29,7 +29,6 @@ import urllib2
 
 from proxyHelpers import *
 from Logger import Logger
-import PybaProx
 
 class PeerHelper():
 

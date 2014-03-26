@@ -35,7 +35,6 @@ from itertools import chain
 from proxyHelpers import *
 from RecordKeeper import *
 from Logger import Logger
-import PybaProx
 
 VERIFY_SIZE = 5 #number of bytes to check in zero knowledge proof
 
