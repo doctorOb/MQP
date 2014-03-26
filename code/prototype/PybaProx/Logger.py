@@ -78,7 +78,7 @@ class Logger(object):
 		if self.options['display_time']:
 			date = time.strftime("%X")
 
-		self._log("<{}>[{}.{}]{}@|{}|# {}".format(log_type,caller_class,caller_method,date,msg))
+		self._log("<{}>[{}.{}]@|{}|# {}".format(log_type,caller_class,caller_method,date,msg))
 
 	def info(self,msg):
 		self._format("info",msg)
