@@ -35,7 +35,8 @@ class PeerHelper():
 
 	def __init__(self):
 		self.isBuisy = False
-		self.neighbors = PybaProx.__opts.peers
+		self.configs = reactor.configs
+		self.neighbors = self.configs.neighbors
 		self.connections = []
 		self.open_connections = 0
 		self.worker = PeerWorker()
@@ -162,11 +163,12 @@ class Dispatcher(Resource):
 	the actual twisted resource that catches all requests to the router. dispatches them 
 	to the appropriate handler, and maintains session information
 	"""
-	def __init__(self,peerHelper,own_key,neighbor_keys):
+	def __init__(self,peerHelper):
 		Resource.__init__(self)
 		self.ph = peerHelper
-		self.key = own_key
-		self.keys = neighbor_keys
+		self.configs = reactor.configs
+		self.key = self.configs.own_key
+		self.neighbors = self.configs.neighbors
 		self.log = Logger()
 
 	def verify_signature(self,request):
@@ -174,14 +176,14 @@ class Dispatcher(Resource):
 		verify the signature of the request, to make sure it came form someone in our network
 		"""
 		headers = _headers(request)
+		ip = request.getClientIP()
 		try:
-			to_hash = "{}-{}".format(request.getClientIP(),headers['target'])
+			to_hash = "{}-{}".format(ip,headers['target'])
 			signature = headers['signature']
 
-			client_key = self.keys[request.getClientIP()]
+			client_key = self.neighbors[ip].key
 		except:
-			client_sig = self.keys[request.getClient]
-			self.log.warn("couldn't create hash for request from {}")
+			self.log.warn("couldn't create hash for request from {}".format(ip))
 			return False
 
 		hash = MD5.new(to_hash,'').digest()

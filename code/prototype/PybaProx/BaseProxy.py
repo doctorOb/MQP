@@ -39,6 +39,7 @@ class ProxyClient(HTTPClient):
 		self.data = data
 		self.stop = False
 		self.log = Logger()
+		self.configs = reactor.configs
 
 	def connectionMade(self):
 		self.log.info('successful TCP connection established with target server')
@@ -59,7 +60,7 @@ class ProxyClient(HTTPClient):
 		If the content-length is larger then the minimum file size, stop the request
 		and start over with a download pool
 		"""
-		if key == 'Content-Length' and int(value) > PybaProx.__opts.minimum_file_size:
+		if key == 'Content-Length' and int(value) > self.configs.minimum_file_size:
 			self.log.logic('using two streams')
 			pool = DownloadPool(int(value),self.father)
 			pool.queryPeers()
@@ -116,6 +117,7 @@ class ProxyRequest(Request):
 		self.host = None
 		self.port = None
 		self.rest = None
+		self.configs = reactor.configs
 		self.log = Logger()
 
 	def parseHostInfo(self):

@@ -11,10 +11,9 @@ class PKeyPair():
 	Subsequent invocations with similar parameters will import the key from the file.
 	Provides necessary encrypt / decrypt functionality.
 	"""
-	def __init__(self,ip,alias=None):
+	def __init__(self,ip,fname=None,alias=None):
 		self.ip = ip
-		self.alias = alias
-		self.fname = '{}.key'.format(alias if alias else ip)
+		self.fname = fname if fname else '{}.key'.format(ip)
 		self.log = Logger()
 		if os.path.exists(self.fname):
 			self._import()

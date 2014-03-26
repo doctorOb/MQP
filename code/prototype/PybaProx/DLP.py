@@ -74,7 +74,8 @@ class DownloadPool():
 	"""
 
 	def __init__(self,requestSize,proxyRequest):
-		self.peerIPs = PybaProx.__opts.peers
+		self.configs = reactor.configs
+		self.peerIPs = self.configs.neighbors
 		self.peers = {}
 		self.requestSize = requestSize 
 		self.bytes_sent = 0
@@ -88,18 +89,19 @@ class DownloadPool():
 		#sending buffers. It will only be moved once the sendBuf it maps to has finished
 		#receiving its expected data
 		self.rangeIndex = 0 
-		self.chunkSize = PybaProx.__opts.chunk_size
+		self.chunkSize = self.configs.chunk_size
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
 		self.zeroKnowledgeProver = ZeroKnowledgeConnection(self)
 		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,0,repeatCallback)
 		self.peers[0] = self.client
 		self.finished = False
-		self.key = PybaProx.__opts.own_key
+		self.key = self.configs.own_key
 		self.log = Logger()
 
 		#begin downloading immediately
 		if 'http://' not in self.uri:
 			self.uri = 'http://' + self.uri
+
 		self.client.getChunk(self.getNextChunk(self.client.id))
 
 	def handleHeader(self, key, value):

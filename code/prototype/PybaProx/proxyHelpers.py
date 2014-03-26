@@ -29,6 +29,32 @@ MEGABYTE = 1048576
 KILOBYTE = 1024
 TEST_FILE = 'http://a1408.g.akamai.net/5/1408/1388/2005110403/1a1a1ad948be278cff2d96046ad90768d848b41947aa1986/sample_iPod.m4v.zip'
 
+
+if os.name != "nt":
+	def get_interface_ip(ifname):
+		"""get ip for specific interface"""
+		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		return socket.inet_ntoa(fcntl.ioctl(
+				s.fileno(),
+				0x8915,  # SIOCGIFADDR
+				struct.pack('256s', ifname[:15])
+			)[20:24])
+
+def get_ip():
+	"""get ip address on both window and linux. 
+	Taken from Stack Overflow: http://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib
+	"""
+	ip = socket.gethostbyname(socket.gethostname())
+	if ip.startswith("127.") and os.name != "nt":
+		interfaces = ["eth0","eth1","eth2","wlan0","wlan1","wifi0","ath0","ath1","ppp0"]
+		for ifname in interfaces:
+			try:
+				ip = get_interface_ip(ifname)
+				break
+			except IOError:
+				pass
+	return ip
+
 class SlidingWindow():
 	"""a Sliding Window class used for monitoring timeouts."""
 	def __init__(self,window_size):

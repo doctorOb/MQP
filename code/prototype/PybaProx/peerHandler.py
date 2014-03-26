@@ -66,6 +66,7 @@ class PeerHandler():
 	ppm API via HTTP deferreds. This class is meant to be instantiated for each session."""
 
 	def __init__(self,neighbor,id,target,downloadPool):
+		self.configs = reactor.configs
 		self.pool = HTTPConnectionPool(reactor) #the connection to be persisted
 		self.agent = Agent(reactor, pool=self.pool)
 		self.responseWriter = RequestBodyReciever
@@ -86,7 +87,7 @@ class PeerHandler():
 		self.records.new(target=target,req_size=downloadPool.requestSize)
 
 	def _url(self,path):
-		return 'http://{}:{}/{}'.format(self.peer_ip,PybaProx.__opts.peer_port,path)
+		return 'http://{}:{}/{}'.format(self.peer_ip,self.configs.peer_port,path)
 
 	def _sign(self,target):
 		hash = MD5.new('{}-{}'.format(IP,target)).digest()
