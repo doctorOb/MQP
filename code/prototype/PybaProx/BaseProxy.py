@@ -77,6 +77,7 @@ class ProxyClient(HTTPClient):
 		self.father.write(buffer)
 
 	def handleResponseEnd(self):
+		self.log.info("Response Delivered to Proxy Client")
 		if self.stop:
 			self.transport.loseConnection()
 		elif not self._finished:
