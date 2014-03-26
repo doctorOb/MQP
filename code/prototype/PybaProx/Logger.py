@@ -35,19 +35,6 @@ class Logger(object):
 
 		self._parse_options(options)
 
-	def get_class_from_frame(self,fr):
-		args, _, _, value_dict = inspect.getargvalues(fr)
-		# we check the first parameter for the frame function is
-		# named 'self'
-		if len(args) and args[0] == 'self':
-			# in that case, 'self' will be referenced in value_dict
-			instance = value_dict.get('self', None)
-		if instance:
-			# return its class
-			return getattr(instance, '__class__', None)
-		# return None otherwise
-		return ""
-
 	def _parse_options(self,options):
 		for key,val in options:
 			if key in self.options:
@@ -72,7 +59,7 @@ class Logger(object):
 		if self.options['display_caller']:
 			try:
 				caller_method = "{}".format(stack[1][0].f_code.co_name)
-				caller_class = str(self.get_class_from_frame(stack[0][0]))
+				caller_class = stack[1][0].f_locals["self"].__class__
 			except:
 				pass
 		if self.options['display_time']:
