@@ -41,7 +41,7 @@ class ProxyClient(HTTPClient):
 		self.configs = reactor.configs
 
 	def connectionMade(self):
-		self.log.info('successful TCP connection established with target server')
+		self.log.info('successful TCP connection established with {}'.format(father.uri))
 		self.sendCommand(self.command, self.rest)
 		for header, value in self.headers.items():
 			self.sendHeader(header,value)
