@@ -68,6 +68,7 @@ class ProjConfigs():
 		own_ip = get_ip()
 		for ip in self.cfg.peers:
 			if ip in own_ip:
+				self.own_key = PKeyPair(ip,fname="keys/{}.key".format(ip))
 				continue
 			print "Configuring Neighbor object for IP: {}".format(ip)
 			nbr = Neighbor(ip)
