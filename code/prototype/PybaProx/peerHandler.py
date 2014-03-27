@@ -61,7 +61,7 @@ class PH_RequestBodyReciever(Protocol):
 
 	def connectionLost(self,reason):
 		if self.doCallback:
-			repeatCallback(self.handler)
+			self.repeatCallback(self.handler)
 		else:
 			print "connection terminated ({})".format(reason)
 
@@ -164,7 +164,7 @@ class PeerHandler():
 		if not self.active:
 			self.active = True
 
-		if response.code == 400: #peer wises to terminate it's involvement
+		if response.code > 206: #peer wises to terminate it's involvement
 			#add makeup chunk to downloadPool's buffers
 			self.terminateConnection()
 			return 
