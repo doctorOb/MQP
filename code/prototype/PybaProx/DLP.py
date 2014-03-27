@@ -72,6 +72,7 @@ class RequestBodyReciever(Protocol):
 			else:
 				log.info("no new data to retrieve")
 		except:
+			raise
 			log.warning('error in repeat callback on dlp')
 
 	def dataReceived(self,bytes):
@@ -175,7 +176,7 @@ class DownloadPool():
 		for ip in self.neighbors:
 			self.participants[id] = PeerHandler(self.neighbors[ip],id,self.uri,self)
 			self.participants[id].getInit()
-			log.info("Querying Neighbor {} with id {}".format(ip,id))
+			self.log.info("Querying Neighbor {} with id {}".format(ip,id))
 			id+=1
 
 	def releaseChunk(self,chunk):
