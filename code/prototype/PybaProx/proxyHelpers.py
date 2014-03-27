@@ -15,6 +15,7 @@ from twisted.web.client import Agent, HTTPConnectionPool
 from twisted.internet.protocol import Protocol
 
 from Crypto.PublicKey import RSA
+from Crypto.Hash import MD5
 from Crypto import Random
 
 import socket, struct, fcntl

@@ -21,7 +21,6 @@ import urllib2
 import time
 from itertools import chain
 
-from Crypto.Hash import MD5
 from Crypto.PublicKey import RSA
 
 from proxyHelpers import *
