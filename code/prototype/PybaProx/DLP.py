@@ -57,8 +57,8 @@ class RequestBodyReciever(Protocol):
 	Passes any data it recieves to the Peer writer. This is an unfortunate side effect of the twisted 
 	architecture. A response object cannot pass it's body onwards without the use of this mitigating class"""
 
-	def __init__(self,downloadPool,defered):
-		self.downloadPool = downloadPool #reference to downloadpool class that holds an 
+	def __init__(self,pClient,defered):
+		self.pClient = pClient #reference to persistent client class that holds an 
 									 #open TCP connection with the peer
 		self.recvd = 0
 		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
@@ -66,9 +66,9 @@ class RequestBodyReciever(Protocol):
 	def repeatCallback(self):
 		log = Logger()
 		try:
-			range = self.downloadPool.getNextChunk(0)
+			range = self.pClient.downloadPool.getNextChunk(self.pClient.cid)
 			if range != None:
-				self.downloadPool.getChunk(range)
+				self.pClient.downloadPool.getChunk(range)
 			else:
 				log.info("no new data to retrieve")
 		except:
@@ -76,7 +76,7 @@ class RequestBodyReciever(Protocol):
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
-		self.downloadPool.father.transport.write(bytes)
+		self.pClient.downloadPool.father.transport.write(bytes)
 
 
 	def connectionLost(self,reason):
@@ -124,7 +124,7 @@ class DownloadPool():
 		self.chunkSize = self.configs.chunk_size
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
 		self.zeroKnowledgeProver = ZeroKnowledgeConnection(self)
-		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,0,repeatCallback)
+		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,0)
 		self.participants[0] = self.client
 		self.finished = False
 		self.log = Logger()
