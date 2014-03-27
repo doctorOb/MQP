@@ -66,7 +66,7 @@ class RequestBodyReciever(Protocol):
 	def repeatCallback(self):
 		log = Logger()
 		try:
-			range = self.pClient.downloadPool.getNextChunk(self.pClient.cid)
+			range = self.pClient.downloadPool.getNextChunk(self.pClient.id)
 			if range != None:
 				self.pClient.downloadPool.getChunk(range)
 			else:
@@ -77,8 +77,7 @@ class RequestBodyReciever(Protocol):
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
-		self.pClient.downloadPool.father.transport.write(bytes)
-
+		self.pClient.father.appendData(self.pClient,bytes)
 
 	def connectionLost(self,reason):
 		self.repeatCallback()
