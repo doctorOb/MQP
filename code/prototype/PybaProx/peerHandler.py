@@ -62,7 +62,7 @@ class PeerHandler():
 		self.agent = Agent(reactor, pool=self.pool)
 		self.responseWriter = PH_RequestBodyReciever
 		self.peer_ip = neighbor.ip
-		self.target = target
+		self.target = target #uri of the target resource (requested on behalf of the client)
 		self.downloadPool = downloadPool #the calling download pool that spawned the handler
 		self.id = id
 		self.neighbor = neighbor
@@ -89,7 +89,7 @@ class PeerHandler():
 		"""return a dictionary of the base headers needed in a peer request"""
 		headers = Headers()
 		headers.addRawHeader('target',self.target)
-		headers.addRawHeader('signature',self._sign(target))
+		headers.addRawHeader('signature',self._sign(self.target))
 
 		return headers
 
