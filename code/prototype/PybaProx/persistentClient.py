@@ -20,6 +20,7 @@ import random
 from copy import deepcopy
 import urllib2
 
+from Logger import Logger
 from proxyHelpers import *
 
 
