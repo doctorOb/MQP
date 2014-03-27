@@ -113,7 +113,7 @@ class PeerHandler():
 		self.checkTimeout()
 		return defered
 
-	def checkTimeout():
+	def checkTimeout(self):
 		"""check if a timeout has occured"""
 		if self.timer.timedout():
 			self.downloadPool.terminatePeer(self)
