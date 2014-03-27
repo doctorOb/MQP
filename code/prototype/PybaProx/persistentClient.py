@@ -40,6 +40,7 @@ class PersistentProxyClient():
 		self.callback = callback 
 		self.responseWriter = responseWriter
 		self.headersWritten = False
+		self.log = Logger()
 		
 		if 'http://' not in self.uri:
 			self.uri = 'http://' + self.uri
@@ -51,10 +52,10 @@ class PersistentProxyClient():
 	def getChunk(self,range):
 		"""issue the HTTP GET request for the range of the file specified"""
 		if not range:
-			print("no range given for getChunk, exiting")
+			self.log.warning("no range given for getChunk, exiting")
 			return None
 
-		print("getting chunk: {}".format(range))
+		self.log("getting chunk: {}".format(range))
 		self.index = range[0]
 		defered = self.agent.request(
 			'GET',
@@ -68,9 +69,8 @@ class PersistentProxyClient():
 		return defered
 
 	def responseRecieved(self,response):
-		log = Logger()
 		if response.code > 206: #206 is the code returned for http range responses
-	 		log.warning("error with response from server({})".format(response.code))
+	 		self.log.warning("error with response from server({})".format(response.code))
 	 		self.father.endSession()
 	 		return None
 

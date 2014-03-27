@@ -271,20 +271,22 @@ class DownloadPool():
 			data = buf.getData()
 		except:
 			self.log.warn("meant to write data, but no buffers were available")
+			return
 
 		try:
 			self.proxyRequest.write(data)
+			self.log.info("wrote {}/{} bytes to the client".format(buf.received,self.requestSize))
 		except:
 			self.log.warn('error writing to client')
 			raise
 			sys.exit(0)
+
 		buf.data = '' #clear it out incase their is more data to fill
 
 		if buf.done:
 			del self.sendBuffers[0] #remove the buffer, and update the index
 			self.bytes_sent+=buf.size
 
-		self.log.info("wrote {}/{} bytes to the client".format(self.bytes_sent,self.requestSize))
 		if self.bytes_sent >= (self.requestSize - 10): #wiggle room
 			self.endSession()
 
