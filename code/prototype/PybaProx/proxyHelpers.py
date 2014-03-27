@@ -24,6 +24,7 @@ import re
 import os
 from time import time as current_time
 
+from Logger import Logger
 
 GIGABYTE = 1073741824
 MEGABYTE = 1048576
@@ -62,13 +63,13 @@ class SlidingWindow():
 		self.time = current_time()
 		self.window_size = window_size if window_size else 0
 
-	def reset():
+	def reset(self):
 		self.time = current_time()
 
-	def elapsed():
+	def elapsed(self):
 		return current_time() - self.time
 
-	def timedout():
+	def timedout(self):
 		if self.elapsed() > self.window_size:
 			return True
 		else:
