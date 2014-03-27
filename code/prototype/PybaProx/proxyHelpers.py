@@ -21,7 +21,7 @@ import socket, struct, fcntl
 import urllib2
 import re
 import os
-import time
+from time import time as current_time
 
 
 GIGABYTE = 1073741824
@@ -58,14 +58,14 @@ def get_ip():
 class SlidingWindow():
 	"""a Sliding Window class used for monitoring timeouts."""
 	def __init__(self,window_size):
-		self.time = time.now()
+		self.time = current_time()
 		self.window_size = window_size if window_size else 0
 
 	def reset():
-		self.time = time.now()
+		self.time = current_time()
 
 	def elapsed():
-		return time.now() - self.time
+		return current_time() - self.time
 
 	def timedout():
 		if self.elapsed() > self.window_size:
