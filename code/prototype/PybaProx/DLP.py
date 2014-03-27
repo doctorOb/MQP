@@ -80,6 +80,7 @@ class RequestBodyReciever(Protocol):
 		self.pClient.father.appendData(self.pClient,bytes)
 
 	def connectionLost(self,reason):
+		print "finished with range chunk, got {} bytes".format(self.recvd)
 		self.repeatCallback()
 
 
