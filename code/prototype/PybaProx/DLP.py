@@ -36,6 +36,7 @@ from proxyHelpers import *
 from RecordKeeper import *
 from Logger import Logger
 from ZeroKnowledge import ZeroKnowledgeConnection
+from persistentClient import *
 
 VERIFY_SIZE = 5 #number of bytes to check in zero knowledge proof
 
