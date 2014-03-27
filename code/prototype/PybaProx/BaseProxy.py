@@ -59,6 +59,8 @@ class ProxyClient(HTTPClient):
 		If the content-length is larger then the minimum file size, stop the request
 		and start over with a download pool
 		"""
+		if key == 'Content-Length':
+			print "passing on request of size {}".format(value)
 		if key == 'Content-Length' and int(value) > self.configs.minimum_file_size:
 			self.log.logic('using two streams')
 			pool = DownloadPool(int(value),self.father)
