@@ -46,7 +46,8 @@ class ProjConfigs():
 		if not self._load():
 			return False #don't instantiate
 		self.neighbors = dict()
-		self.own_key = None
+		self.ip = get_ip()
+		self.own_key = PKeyPair(self.ip,fname="keys/{}.key".format(self.ip))
 		self.peer_port = self.cfg.peer_port
 		self.proxy_port = self.cfg.proxy_port
 		self.minimum_file_size = self.cfg.minimum_file_size
@@ -65,10 +66,8 @@ class ProjConfigs():
 			return False
 
 	def _init_peers(self):
-		own_ip = get_ip()
 		for ip in self.cfg.peers:
-			if ip in own_ip:
-				self.own_key = PKeyPair(ip,fname="keys/{}.key".format(ip))
+			if ip in self.ip:
 				continue
 			print "Configuring Neighbor object for IP: {}".format(ip)
 			nbr = Neighbor(ip)

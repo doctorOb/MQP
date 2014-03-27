@@ -86,8 +86,8 @@ class PeerHandler():
 		return 'http://{}:{}/{}'.format(self.peer_ip,self.configs.peer_port,path)
 
 	def _sign(self,target):
-		hash = md5hash('{}-{}'.format(IP,target))
-		return self.downloadPool.key.sign(hash)
+		hash = md5hash('{}-{}'.format(self.configs.ip,target))
+		return self.configs.key.sign(hash)
 
 
 	def _baseHeaders(self):
