@@ -68,7 +68,7 @@ class RequestBodyReciever(Protocol):
 		try:
 			range = self.pClient.father.getNextChunk(self.pClient.id)
 			if range != None:
-				self.pClient.father.getChunk(range)
+				self.pClient.getChunk(range)
 			else:
 				log.info("no new data to retrieve")
 		except:
