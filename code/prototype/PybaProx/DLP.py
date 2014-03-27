@@ -143,8 +143,8 @@ class DownloadPool():
 		"""give shared request info to each peer"""
 		#TODO: add confirmation process here
 		id = 1
-		for neighbor in self.neighbors:
-			self.participants[id] = PeerHandler(neighbor,id,self.uri,self)
+		for ip in self.neighbors:
+			self.participants[id] = PeerHandler(self.participants[neighbor],id,self.uri,self)
 			self.participants[id].getInit()
 			id+=1
 
