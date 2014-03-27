@@ -57,6 +57,10 @@ def get_ip():
 				pass
 	return ip
 
+def deferedError(failure):
+	log = Logger()
+	log.warning("Defered error: {}".format(failure))
+
 class SlidingWindow():
 	"""a Sliding Window class used for monitoring timeouts."""
 	def __init__(self,window_size):

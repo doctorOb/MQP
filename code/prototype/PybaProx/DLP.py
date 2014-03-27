@@ -225,6 +225,7 @@ class DownloadPool():
 		#create a deferred object to handle the response
 		defered = self.waitForData()
 		defered.addCallback(self.writeData)
+		defered.addErrback(deferedError)
 
 		return range
 

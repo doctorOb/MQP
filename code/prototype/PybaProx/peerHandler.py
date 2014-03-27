@@ -60,7 +60,7 @@ class PH_RequestBodyReciever(Protocol):
 		self.handler.downloadPool.appendData(self.handler,bytes)
 
 	def connectionLost(self,reason):
-		print(reason.check(ConnectionRefusedError))
+		print(reason.exc_type)
 		if self.doCallback:
 			self.repeatCallback(self.handler)
 		else:
@@ -122,6 +122,7 @@ class PeerHandler():
 			headers,
 			None)
 		defered.addCallback(self.responseRecieved)
+		defered.addErrback(deferedError)
 		self.checkTimeout()
 		return defered
 

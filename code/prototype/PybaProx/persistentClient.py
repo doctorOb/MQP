@@ -64,6 +64,7 @@ class PersistentProxyClient():
 				}),
 			None)
 		defered.addCallback(self.responseRecieved)
+		defered.addErrback(deferedError)
 		return defered
 
 	def responseRecieved(self,response):
