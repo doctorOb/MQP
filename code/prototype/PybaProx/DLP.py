@@ -66,9 +66,9 @@ class RequestBodyReciever(Protocol):
 	def repeatCallback(self):
 		log = Logger()
 		try:
-			range = self.pClient.downloadPool.getNextChunk(self.pClient.id)
+			range = self.pClient.father.getNextChunk(self.pClient.id)
 			if range != None:
-				self.pClient.downloadPool.getChunk(range)
+				self.pClient.father.getChunk(range)
 			else:
 				log.info("no new data to retrieve")
 		except:
