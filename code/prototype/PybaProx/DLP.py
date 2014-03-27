@@ -80,7 +80,6 @@ class RequestBodyReciever(Protocol):
 		self.pClient.father.appendData(self.pClient,bytes)
 
 	def connectionLost(self,reason):
-		print "connection lost cuz {}".format(reason)
 		self.repeatCallback()
 
 
@@ -276,7 +275,8 @@ class DownloadPool():
 
 		try:
 			self.proxyRequest.write(data)
-			self.log.info("wrote {}/{} bytes to the client".format(buf.received,self.requestSize))
+			self.bytes_sent += len(data)
+			self.log.info("wrote {}/{} bytes to the client".format(,self.requestSize))
 		except:
 			self.log.warn('error writing to client')
 			raise
