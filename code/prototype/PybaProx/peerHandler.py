@@ -52,7 +52,7 @@ class PH_RequestBodyReciever(Protocol):
 			else:
 				log.info("no new data to retrieve")
 		except:
-			log.warning('error in repeat callback')
+			log.warning('error in repeat callbac')
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
