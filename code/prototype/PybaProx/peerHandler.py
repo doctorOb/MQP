@@ -37,9 +37,8 @@ class PH_RequestBodyReciever(Protocol):
 	architecture. A response object cannot pass it's body onwards without the use of this mitigating class
 	"""
 
-	def __init__(self,client,defered,doCallback=True):
-		self.client = client #reference to client class that holds an 
-									 #open TCP connection with the peer
+	def __init__(self,handler,defered,doCallback=True):
+		self.handler = handler #reference to handler class that holds an open TCP connection with the peer
 		self.recvd = 0
 		self.defered = defered #placeholder for a deferred callback (in-case one is eventually needed)
 		self.doCallback = doCallback
@@ -47,12 +46,12 @@ class PH_RequestBodyReciever(Protocol):
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
-		self.client.timer.reset()
-		self.client.downloadPool.appendData(self.client,bytes)
+		self.handler.timer.reset()
+		self.handler.downloadPool.appendData(self.handler,bytes)
 
 	def connectionLost(self,reason):
 		if self.doCallback:
-			repeatCallback(self.client)
+			repeatCallback(self.handler)
 		else:
 			print "connection terminated ({})".format(reason)
 

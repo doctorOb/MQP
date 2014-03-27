@@ -181,8 +181,11 @@ class Neighbor():
 
 
 def repeatCallback(client):
-	range = client.downloadPool.getNextChunk(client.id)
 	log = Logger()
+	try:
+		range = client.downloadPool.getNextChunk(client.id)
+	except:
+		log.warn('client has no dp attached')
 	if range != None:
 		client.getChunk(range)
 	else:
