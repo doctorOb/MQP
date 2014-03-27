@@ -70,7 +70,7 @@ class RequestBodyReciever(Protocol):
 			if range != None:
 				self.pClient.getChunk(range)
 			else:
-				log.info("no new data to retrieve")
+				self.pClient.father.endSession()
 		except:
 			raise
 			log.warning('error in repeat callback on dlp')
