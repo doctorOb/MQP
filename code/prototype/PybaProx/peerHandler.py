@@ -26,7 +26,7 @@ from RecordKeeper import *
 from Logger import Logger
 
 
-class RequestBodyReciever(Protocol):
+class PH_RequestBodyReciever(Protocol):
 	"""
 	needed to actually send the response from a server (because of the way the response object works).
 	Passes any data it recieves to the Peer writer. This is an unfortunate side effect of the twisted 
@@ -60,7 +60,7 @@ class PeerHandler():
 		self.configs = reactor.configs
 		self.pool = HTTPConnectionPool(reactor) #the connection to be persisted
 		self.agent = Agent(reactor, pool=self.pool)
-		self.responseWriter = RequestBodyReciever
+		self.responseWriter = PH_RequestBodyReciever
 		self.peer_ip = neighbor.ip
 		self.target = target
 		self.downloadPool = downloadPool #the calling download pool that spawned the handler

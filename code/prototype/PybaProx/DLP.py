@@ -37,6 +37,7 @@ from RecordKeeper import *
 from Logger import Logger
 from ZeroKnowledge import ZeroKnowledgeConnection
 from persistentClient import *
+from peerHandler import *
 
 VERIFY_SIZE = 5 #number of bytes to check in zero knowledge proof
 
