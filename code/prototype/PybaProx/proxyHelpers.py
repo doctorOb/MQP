@@ -86,7 +86,7 @@ def read_key(fname):
 
 
 def md5hash(msg):
-	return MD5.new(msg,'').digest()
+	return MD5.new(msg).digest()
 
 class BitVector():
 	"""a bit vector for storing chunk verification data"""
