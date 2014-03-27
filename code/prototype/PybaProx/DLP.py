@@ -77,8 +77,8 @@ class DownloadPool():
 
 	def __init__(self,requestSize,proxyRequest):
 		self.configs = reactor.configs
-		self.peerIPs = self.configs.neighbors
-		self.peers = {}
+		self.neighbors = self.configs.neighbors
+		self.participants = {}
 		self.requestSize = requestSize 
 		self.bytes_sent = 0
 		self.uri = proxyRequest.uri
@@ -95,7 +95,7 @@ class DownloadPool():
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
 		self.zeroKnowledgeProver = ZeroKnowledgeConnection(self)
 		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,0,repeatCallback)
-		self.peers[0] = self.client
+		self.participants[0] = self.client
 		self.finished = False
 		self.log = Logger()
 
@@ -141,45 +141,44 @@ class DownloadPool():
 
 	def queryPeers(self):
 		"""give shared request info to each peer"""
+		#TODO: add confirmation process here
 		id = 1
-		for peer_ip in self.peerIPs:
-			peer = Neighbor(peer_ip,id)
-			self.peers[id] = PeerHandler(peer,id,self.uri,self)
-			self.peers[id].getInit()
+		for neighbor in self.neighbors:
+			self.participants[id] = PeerHandler(neighbor,id,self.uri,self)
+			self.participants[id].getInit()
 			id+=1
 
 	def releaseChunk(self,chunk):
 		"""called by a peer who wants to give up on its assigned chunk"""
 		self.chunks = chain([(0,chunk)],self.chunks)
 
-	def terminatePeer(self,peer):
+	def terminatePeer(self,handler):
 		"""break it off with a peer. If they had work, push it onto the makeup queue.
 		Close the connection with the peer for the rest of the session."""
-		working = peer.assigned_chunk
+		working = handler.assigned_chunk
 		if working: #assign this request to another peer (or self)
 			self.chunks = chain([(0,working)],self.chunks) #add its chunk to the start of the chunks generator
 			del working
-		if peer.id > 0:
-			self.peers[peer.id].terminateConnection()
-		del self.peers[peer.id]
+		if handler.id > 0:
+			del self.participants[handler.id]
 
 	def endSession(self):
 		"""break off with every peer and do some cleanup"""
-		del self.peers[0] #remove the proxyclient on this router
-		for pid in self.peers:
-			self.peers[pid].terminateConnection()
-		del self.peers
+		del self.participants[0] #remove the proxyclient on this router
+		for pid in self.participants:
+			self.participants[pid].terminateConnection()
+		del self.participants
 		self.finished = True
 		self.proxyRequest.finish()
 
 
-	def getNextChunk(self,sender):
+	def getNextChunk(self,senderID):
 		"""
 		this function is called by a peerHandler class when it is ready to 
 		dispatch more work to a sender.
 		"""
 		try:
-			peer = self.peers[sender]
+			peer = self.participants[senderID]
 		except KeyError:
 			self.log.warn("Peer ({}) for chunk request does not exist in this download pool".format(sender))
 			return None

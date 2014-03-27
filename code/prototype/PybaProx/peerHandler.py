@@ -73,6 +73,7 @@ class PeerHandler():
 		self.recvd = 0
 		self.data_stop = 0
 		self.verified = False
+		self.active = False #set to true when we receive a response
 		self.trust_level = 0
 		self.timer = SlidingWindow(10)
 		self.assigned_chunk = None
@@ -116,7 +117,7 @@ class PeerHandler():
 	def checkTimeout(self):
 		"""check if a timeout has occured"""
 		if self.timer.timedout():
-			self.downloadPool.terminatePeer(self)
+			self.terminateConnection()
 
 		reactor.callLater(1,self.checkTimeout)
 
@@ -142,6 +143,7 @@ class PeerHandler():
 		"""
 		self.records.timeout()
 		self.records.save()
+		self.downloadPool.terminatePeer(self)
 
 	def responseRecieved(self,response):
 		"""
@@ -149,6 +151,9 @@ class PeerHandler():
 			Look at headers to determine if the signature is valid,
 			what the peer is sending back, ect.
 		"""
+		if not self.active:
+			self.active = True
+
 		if response.code == 400: #peer wises to terminate it's involvement
 			#add makeup chunk to downloadPool's buffers
 			self.terminateConnection()
