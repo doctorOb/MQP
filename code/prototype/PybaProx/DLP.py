@@ -124,7 +124,7 @@ class DownloadPool():
 		self.chunkSize = self.configs.chunk_size
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
 		self.zeroKnowledgeProver = ZeroKnowledgeConnection(self)
-		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,0)
+		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,cid=0)
 		self.participants[0] = self.client
 		self.finished = False
 		self.log = Logger()
@@ -210,7 +210,7 @@ class DownloadPool():
 		try:
 			peer = self.participants[senderID]
 		except KeyError:
-			self.log.warn("Peer ({}) for chunk request does not exist in this download pool".format(sender))
+			self.log.warning("Peer ({}) for chunk request does not exist in this download pool".format(senderID))
 			return None
 
 		try:
