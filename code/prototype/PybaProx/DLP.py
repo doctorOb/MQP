@@ -155,7 +155,7 @@ class DownloadPool():
 	def terminatePeer(self,peer):
 		"""break it off with a peer. If they had work, push it onto the makeup queue.
 		Close the connection with the peer for the rest of the session."""
-		working = self.peer.assigned_chunk
+		working = peer.assigned_chunk
 		if working: #assign this request to another peer (or self)
 			self.chunks = chain([(0,working)],self.chunks) #add its chunk to the start of the chunks generator
 			del working

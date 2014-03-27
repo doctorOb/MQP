@@ -186,7 +186,7 @@ def repeatCallback(client):
 	try:
 		range = client.downloadPool.getNextChunk(client.id)
 	except:
-		log.warn('client has no dp attached')
+		log.warning('client has no dp attached')
 	if range != None:
 		client.getChunk(range)
 	else:
