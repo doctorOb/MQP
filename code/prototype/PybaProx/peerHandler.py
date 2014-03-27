@@ -60,6 +60,7 @@ class PH_RequestBodyReciever(Protocol):
 		self.handler.downloadPool.appendData(self.handler,bytes)
 
 	def connectionLost(self,reason):
+		print(reason.check(twisted.internet.error.ConnectionRefusedError))
 		if self.doCallback:
 			self.repeatCallback(self.handler)
 		else:
