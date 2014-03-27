@@ -1,4 +1,4 @@
-from twisted.internet import defer
+from twisted.internet import defer, reactor
 from twisted.internet.protocol import Protocol
 from twisted.web.http import HTTPClient, Request, HTTPChannel
 from twisted.internet.defer import inlineCallbacks, returnValue
