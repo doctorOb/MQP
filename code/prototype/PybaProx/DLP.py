@@ -97,7 +97,6 @@ class DownloadPool():
 		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,0,repeatCallback)
 		self.peers[0] = self.client
 		self.finished = False
-		self.key = self.configs.own_key
 		self.log = Logger()
 
 		#begin downloading immediately

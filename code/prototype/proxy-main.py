@@ -47,7 +47,7 @@ class ProjConfigs():
 			return False #don't instantiate
 		self.neighbors = dict()
 		self.ip = get_ip()
-		self.own_key = PKeyPair(self.ip,fname="keys/{}.key".format(self.ip))
+		self.key = PKeyPair(self.ip,fname="keys/{}.key".format(self.ip))
 		self.peer_port = self.cfg.peer_port
 		self.proxy_port = self.cfg.proxy_port
 		self.minimum_file_size = self.cfg.minimum_file_size

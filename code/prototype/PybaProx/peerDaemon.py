@@ -166,7 +166,6 @@ class Dispatcher(Resource):
 		Resource.__init__(self)
 		self.ph = peerHelper
 		self.configs = reactor.configs
-		self.key = self.configs.own_key
 		self.neighbors = self.configs.neighbors
 		self.log = Logger()
 
