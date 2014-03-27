@@ -46,7 +46,7 @@ class PKeyPair():
 	def verify(self,hash,signature):
 		"""verify the computed hash against a signature, supposedly generated 
 		by this instance's key"""
-		return self.key.publickey().verify(hash,signature):
+		return self.key.publickey().verify(hash,signature)
 
 
 
