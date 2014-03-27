@@ -179,7 +179,13 @@ class Neighbor():
 		self.offeredBandwidth = 0
 
 
-
+def repeatCallback(client):
+	range = client.downloadPool.getNextChunk(client.id)
+	log = Logger()
+	if range != None:
+		client.getChunk(range)
+	else:
+		log.info("no new data to retrieve")
 
 class HeadRequest(urllib2.Request):
 	def get_method(self):

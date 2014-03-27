@@ -26,14 +26,6 @@ from RecordKeeper import *
 from Logger import Logger
 
 
-def repeatCallback(client):
-	range = client.downloadPool.getNextChunk(client.id)
-	log = Logger()
-	if range != None:
-		client.getChunk(range)
-	else:
-		log.info("no new data to retrieve")
-
 class RequestBodyReciever(Protocol):
 	"""
 	needed to actually send the response from a server (because of the way the response object works).
