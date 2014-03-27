@@ -197,7 +197,7 @@ class DownloadPool():
 		ids = self.participants.keys()
 		for pid in ids:
 			self.participants[pid].terminateConnection()
-		del self.participants
+
 		self.finished = True
 		self.proxyRequest.finish()
 
