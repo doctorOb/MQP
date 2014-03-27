@@ -144,7 +144,7 @@ class DownloadPool():
 		#TODO: add confirmation process here
 		id = 1
 		for ip in self.neighbors:
-			self.participants[id] = PeerHandler(self.participants[neighbor],id,self.uri,self)
+			self.participants[id] = PeerHandler(self.participants[ip],id,self.uri,self)
 			self.participants[id].getInit()
 			id+=1
 
