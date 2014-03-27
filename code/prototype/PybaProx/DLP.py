@@ -194,7 +194,8 @@ class DownloadPool():
 	def endSession(self):
 		"""break off with every peer and do some cleanup"""
 		del self.participants[0] #remove the proxyclient on this router
-		for pid in self.participants:
+		ids = self.participants.keys()
+		for pid in ids:
 			self.participants[pid].terminateConnection()
 		del self.participants
 		self.finished = True
