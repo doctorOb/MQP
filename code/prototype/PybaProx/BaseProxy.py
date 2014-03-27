@@ -60,7 +60,7 @@ class ProxyClient(HTTPClient):
 		and start over with a download pool
 		"""
 		if key == 'Content-Length' and int(value) > self.configs.minimum_file_size:
-			self.log.logic('using two streams')
+			self.log.logic('using two streams, for target of size {}'.format(int(value)))
 			pool = DownloadPool(int(value),self.father)
 			pool.queryPeers()
 			self.stop = True
