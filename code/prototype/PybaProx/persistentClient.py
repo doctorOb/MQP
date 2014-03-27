@@ -56,7 +56,7 @@ class PersistentProxyClient():
 			self.log.warning("no range given for getChunk, exiting")
 			return None
 
-		self.log("getting chunk: {}".format(range))
+		self.log.info("getting chunk: {}".format(range))
 		self.index = range[0]
 		defered = self.agent.request(
 			'GET',
