@@ -188,7 +188,7 @@ class DownloadPool():
 		working = handler.assigned_chunk
 		if working: #assign this request to another peer (or self)
 			self.releaseChunk(working) #add its chunk to the start of the chunks generator
-		if handler.id > 0:
+		if handler.id > 0 and handler.id in self.participants:
 			del self.participants[handler.id]
 
 	def endSession(self):
