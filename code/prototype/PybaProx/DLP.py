@@ -141,11 +141,11 @@ class DownloadPool():
 
 	def queryPeers(self):
 		"""give shared request info to each peer"""
-		#TODO: add confirmation process here
 		id = 1
 		for ip in self.neighbors:
 			self.participants[id] = PeerHandler(self.neighbors[ip],id,self.uri,self)
 			self.participants[id].getInit()
+			log.info("Querying Neighbor {} with id {}".format(ip,id))
 			id+=1
 
 	def releaseChunk(self,chunk):
@@ -157,8 +157,7 @@ class DownloadPool():
 		Close the connection with the peer for the rest of the session."""
 		working = handler.assigned_chunk
 		if working: #assign this request to another peer (or self)
-			self.chunks = chain([(0,working)],self.chunks) #add its chunk to the start of the chunks generator
-			del working
+			self.releaseChunk(working) #add its chunk to the start of the chunks generator
 		if handler.id > 0:
 			del self.participants[handler.id]
 
