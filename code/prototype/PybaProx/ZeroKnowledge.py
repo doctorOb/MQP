@@ -7,6 +7,8 @@ from twisted.web import proxy, http
 from twisted.web.client import Agent, HTTPConnectionPool
 from twisted.web.http_headers import Headers
 
+from Logger import Logger
+
 
 
 
