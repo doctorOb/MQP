@@ -43,6 +43,16 @@ class PH_RequestBodyReciever(Protocol):
 		self.defered = defered #placeholder for a deferred callback (in-case one is eventually needed)
 		self.doCallback = doCallback
 
+	def repeatCallback(self):
+		log = Logger()
+		try:
+			range = self.handler.downloadPool.getNextChunk(self.handler.id)
+			if range != None:
+				self.handler.getChunk(range)
+			else:
+				log.info("no new data to retrieve")
+		except:
+			log.warning('error in repeat callback')
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)

@@ -52,6 +52,36 @@ def requestChunks(request_size,chunk_size):
 		last = i + 1
 	yield last,request_size
 
+class RequestBodyReciever(Protocol):
+	"""needed to actually send the response from a server (because of the way the response object works).
+	Passes any data it recieves to the Peer writer. This is an unfortunate side effect of the twisted 
+	architecture. A response object cannot pass it's body onwards without the use of this mitigating class"""
+
+	def __init__(self,downloadPool,defered):
+		self.downloadPool = downloadPool #reference to downloadpool class that holds an 
+									 #open TCP connection with the peer
+		self.recvd = 0
+		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
+
+	def repeatCallback(self):
+		log = Logger()
+		try:
+			range = self.downloadPool.getNextChunk(0)
+			if range != None:
+				self.downloadPool.getChunk(range)
+			else:
+				log.info("no new data to retrieve")
+		except:
+			log.warning('error in repeat callback on dlp')
+
+	def dataReceived(self,bytes):
+		self.recvd += len(bytes)
+		self.downloadPool.father.transport.write(bytes)
+
+
+	def connectionLost(self,reason):
+		self.repeatCallback()
+
 
 
 class DownloadPool():

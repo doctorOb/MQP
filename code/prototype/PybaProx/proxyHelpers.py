@@ -181,17 +181,6 @@ class Neighbor():
 		self.offeredBandwidth = 0
 
 
-def repeatCallback(client):
-	log = Logger()
-	try:
-		range = client.downloadPool.getNextChunk(client.id)
-	except:
-		log.warning('client has no dp attached')
-	if range != None:
-		client.getChunk(range)
-	else:
-		log.info("no new data to retrieve")
-
 class HeadRequest(urllib2.Request):
 	def get_method(self):
 		return "HEAD"

@@ -23,25 +23,6 @@ import urllib2
 from proxyHelpers import *
 
 
-class RequestBodyReciever(Protocol):
-	"""needed to actually send the response from a server (because of the way the response object works).
-	Passes any data it recieves to the Peer writer. This is an unfortunate side effect of the twisted 
-	architecture. A response object cannot pass it's body onwards without the use of this mitigating class"""
-
-	def __init__(self,peerHelper,defered):
-		self.peerHelper = peerHelper #reference to peerHelper class that holds an 
-									 #open TCP connection with the peer
-		self.recvd = 0
-		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
-
-	def dataReceived(self,bytes):
-		self.recvd += len(bytes)
-		self.peerHelper.father.transport.write(bytes)
-
-
-	def connectionLost(self,reason):
-		self.defered.callback(None)
-
 class PersistentProxyClient():
 	"""
 	since twisted's HTTPClient class does not support persistent HTTP connections, a custom class had 
