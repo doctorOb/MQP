@@ -185,8 +185,8 @@ class Dispatcher(Resource):
 			self.log.warn("couldn't create hash for request from {}".format(ip))
 			return False
 
-		hash = MD5.new(to_hash,'').digest()
-		if client_key.publickey().verify(hash,signature):
+		hash = md5hash(to_hash)
+		if client_key.verify(hash,signature):
 			self.log.logic("verified signature")
 			return True
 		else:

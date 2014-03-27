@@ -21,9 +21,14 @@ import urllib2
 import time
 from itertools import chain
 
+from Crypto.Hash import MD5
+from Crypto.PublicKey import RSA
+
 from proxyHelpers import *
 from RecordKeeper import *
 from Logger import Logger
+
+
 
 
 class PH_RequestBodyReciever(Protocol):
@@ -81,8 +86,8 @@ class PeerHandler():
 		return 'http://{}:{}/{}'.format(self.peer_ip,self.configs.peer_port,path)
 
 	def _sign(self,target):
-		hash = MD5.new('{}-{}'.format(IP,target)).digest()
-		return self.downloadPool.key.sign(hash,'')
+		hash = md5hash('{}-{}'.format(IP,target))
+		return self.downloadPool.key.sign(hash)
 
 
 	def _baseHeaders(self):

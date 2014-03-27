@@ -1,7 +1,11 @@
 from Crypto.PublicKey import RSA
+from Crypto.Hash import MD5
 from Crypto import Random
-from Logger import Logger
+
 import os
+
+from Logger import Logger
+from proxyHelpers import md5hash
 
 
 class PKeyPair():
@@ -35,11 +39,14 @@ class PKeyPair():
 		random_generator = Random.new().read
 		return RSA.generate(size,random_generator)
 
-	def encrypt(self,msg):
-		pass
+	def sign(self,msg):
+		hash = md5hash(msg)
+		return self.key.sign(hash,'')
 
-	def decrypt(self,msg):
-		pass
+	def verify(self,hash,signature):
+		"""verify the computed hash against a signature, supposedly generated 
+		by this instance's key"""
+		return self.key.publickey().verify(hash,signature):
 
 
 
