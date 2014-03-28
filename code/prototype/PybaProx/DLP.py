@@ -69,8 +69,6 @@ class RequestBodyReciever(Protocol):
 			range = self.pClient.father.getNextChunk(self.pClient.id)
 			if range != None:
 				self.pClient.getChunk(range)
-			else:
-				pass
 		except:
 			self.log.warning('error in repeat callback on dlp')
 

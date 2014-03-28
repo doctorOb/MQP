@@ -61,7 +61,7 @@ class PH_RequestBodyReciever(Protocol):
 
 	def connectionLost(self,reason):
 		if self.doCallback:
-			self.repeatCallback(self.handler)
+			self.repeatCallback()
 		else:
 			print "connection terminated ({})".format(reason)
 
