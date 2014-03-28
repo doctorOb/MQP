@@ -167,6 +167,7 @@ class PeerHandler():
 
 		if response.code > 206: #peer wises to terminate it's involvement
 			#add makeup chunk to downloadPool's buffers
+			self.log.logic("Terminating connection with peer")
 			self.terminateConnection()
 			return 
 
