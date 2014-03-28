@@ -76,12 +76,12 @@ class RequestBodyReciever(Protocol):
 			self.log.warning('error in repeat callback on dlp')
 
 	def dataReceived(self,bytes):
-		if self.recvd < self.pClient.chunk_size:
-			#server sent back a splash page or something other then the desired content
-			self.pClient.father.endSession()
 		self.pClient.father.appendData(self.pClient,bytes)
 
 	def connectionLost(self,reason):
+		if self.recvd < self.pClient.chunk_size:
+			#server sent back a splash page or something other then the desired content
+			self.pClient.father.endSession("Mismatched response length from server")
 		self.log.info("Response from target finished for chunk handler with reason: {}".format(reason))
 		self.repeatCallback()
 
