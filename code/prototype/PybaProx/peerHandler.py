@@ -37,7 +37,7 @@ class PH_RequestBodyReciever(Protocol):
 	architecture. A response object cannot pass it's body onwards without the use of this mitigating class
 	"""
 
-	def __init__(self,handler,defered,doCallback=True):
+	def __init__(self,handler):
 		self.handler = handler #reference to handler class that holds an open TCP connection with the peer
 		self.recvd = 0
 		self.defered = defered #placeholder for a deferred callback (in-case one is eventually needed)
@@ -52,6 +52,7 @@ class PH_RequestBodyReciever(Protocol):
 			else:
 				log.info("no new data to retrieve")
 		except:
+			raise
 			log.warning('error in repeat callbac')
 
 	def dataReceived(self,bytes):
@@ -60,10 +61,7 @@ class PH_RequestBodyReciever(Protocol):
 		self.handler.downloadPool.appendData(self.handler,bytes)
 
 	def connectionLost(self,reason):
-		if self.doCallback:
-			self.repeatCallback()
-		else:
-			print "connection terminated ({})".format(reason)
+		self.repeatCallback()
 
 class PeerHandler():
 	"""maintains a Persistent TCP connection with the supplied neighbor. Talks to the neighbor over the new
@@ -174,8 +172,7 @@ class PeerHandler():
 		self.timer.reset()
 	 	headers = self._responseHeaders(response)
 
-	 	finished = Deferred()
-	 	recvr = self.responseWriter(self,finished,doCallback=True) 
+	 	recvr = self.responseWriter(self,doCallback=True) 
 		response.deliverBody(recvr)
 
 		return finished
