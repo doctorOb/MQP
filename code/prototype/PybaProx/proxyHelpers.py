@@ -126,7 +126,6 @@ class BitVector():
 
 	def complement(self):
 		"""return the value of the complement of the bit vector"""
-		print self._inverse(self.vector)
 		return self._btod(self._inverse(self.vector))
 
 

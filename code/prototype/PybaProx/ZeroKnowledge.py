@@ -54,7 +54,6 @@ class ZeroKnowledgeConnection():
 
 	def responseRecieved(self,response,recvBuf):
 		if response.code > 206: #206 is the code returned for http range responses
-			print("error with veri from server")
 			return None #TODO: exit gracefully
 
 		finished = Deferred()

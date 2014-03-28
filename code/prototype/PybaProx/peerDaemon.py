@@ -98,7 +98,7 @@ class PeerWorker():
 		try:
 			headers = _headers(request)
 			range = headers['Range']
-			uri = headers['Target'][0]# + ':80'
+			uri = headers['Target'][0]
 		except:
 			request.setResponseCode(400) #bad request
 			request.setHeader('Reason','INVALID')
@@ -183,7 +183,7 @@ class Dispatcher(Resource):
 
 			client_key = self.neighbors[ip].key
 		except:
-			self.log.warn("couldn't create hash for request from {}".format(ip))
+			self.log.warning("couldn't create hash for request from {}".format(ip))
 			return False
 
 		hash = md5hash(to_hash)
@@ -196,7 +196,12 @@ class Dispatcher(Resource):
 
 
 	def getChild(self,name,request):
-		self.log.info('dispatching request to {} from {}'.format(name,request.getClientIP()))
+		
+		if not self.verify_signature(request):
+			self.log.warning("Signature verification failed for peer request")
+			return NoResource()
+
+		self.log.info('Signature verified, dispatching request to {} from {}'.format(name,request.getClientIP()))
 		if name == 'init':
 			return InitRequest(self.ph)
 		elif name == 'chunk':
