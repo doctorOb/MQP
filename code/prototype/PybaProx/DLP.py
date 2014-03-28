@@ -198,6 +198,7 @@ class DownloadPool():
 		"""break off with every peer and do some cleanup"""
 		self.log.logic(msg)
 		if self.finished:
+			print "already cleaned up"
 			return
 		ids = self.participants.keys()
 		for pid in ids:
