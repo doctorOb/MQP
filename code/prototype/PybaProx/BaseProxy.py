@@ -72,7 +72,7 @@ class ProxyClient(HTTPClient):
 			self.father.responseHeaders.addRawHeader(key, value)
 
 		if self.should_pool and self.can_pool:
-			self.log.logic('using two streams, for target of size {}'.format(int(value)))
+			self.log.logic('using two streams, for target of size {}'.format(value))
 			pool = DownloadPool(int(value),self.father)
 			pool.queryPeers()
 			self.stop = True
@@ -160,10 +160,9 @@ class ProxyRequest(Request):
 		
 		#A client factory for the ProxyCLient needs to be created. The factory is then passed to 
 		#the reactor which will call it when a TCP connection is established with the host
-		self.uri = self.host
-		print self.host,self.rest
+		self.uri = self.host + self.rest
 		clientFacotry = class_(self.method, self.rest, self.clientproto, headers, s, self)
-		self.reactor.connectTCP(self.host,self.port,clientFacotry)
+		self.reactor.connectTCP(self.uri,self.port,clientFacotry)
 
 
 class Proxy(HTTPChannel):
