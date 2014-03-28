@@ -42,6 +42,7 @@ class PersistentProxyClient():
 		self.responseWriter = responseWriter
 		self.headersWritten = False
 		self.log = Logger()
+		self.chunk_size = 0
 		
 		if 'http://' not in self.uri:
 			self.uri = 'http://' + self.uri
@@ -57,7 +58,7 @@ class PersistentProxyClient():
 			return None
 
 		self.log.info("getting chunk: {}".format(range))
-		self.index = range[0]
+		self.chunk_size = range[1] - range[0]
 		defered = self.agent.request(
 			'GET',
 			self.uri,

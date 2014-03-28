@@ -76,7 +76,9 @@ class RequestBodyReciever(Protocol):
 			log.warning('error in repeat callback on dlp')
 
 	def dataReceived(self,bytes):
-		self.recvd += len(bytes)
+		if self.recvd < self.pClient.chunk_size:
+			#server sent back a splash page or something other then the desired content
+			self.pClient.father.endSession()
 		print len(bytes)
 		self.pClient.father.appendData(self.pClient,bytes)
 
