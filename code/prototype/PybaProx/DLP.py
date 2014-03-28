@@ -70,7 +70,7 @@ class RequestBodyReciever(Protocol):
 			if range != None:
 				self.pClient.getChunk(range)
 			else:
-				self.pClient.father.endSession()
+				self.pClient.father.endSession(msg="No more range chunks")
 		except:
 			raise
 			self.log.warning('error in repeat callback on dlp')
@@ -194,8 +194,9 @@ class DownloadPool():
 		if handler.id > 0 and handler.id in self.participants:
 			del self.participants[handler.id]
 
-	def endSession(self):
+	def endSession(self,msg=""):
 		"""break off with every peer and do some cleanup"""
+		self.log.logic(msg)
 		if self.finished:
 			return
 		ids = self.participants.keys()
@@ -204,7 +205,6 @@ class DownloadPool():
 				self.participants[pid].terminateConnection()
 			except:
 				pass #already removed somehow
-		self.log.logic("Ending connection with client")
 
 		self.finished = True
 		self.proxyRequest.finish()
@@ -265,10 +265,10 @@ class DownloadPool():
 				postpone = False
 				d.callback(buf)
 		except KeyError:
-			self.log.warn('keyerror',self.rangeIndex)
+			self.log.warn('keyerror: {}'.format(self.rangeIndex))
 			
 		if postpone:
-			reactor.callLater(.01,self.waitForData,d)
+			reactor.callLater(.05,self.waitForData,d)
 
 		return d
 
