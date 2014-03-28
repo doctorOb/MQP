@@ -199,7 +199,10 @@ class DownloadPool():
 		del self.participants[0] #remove the proxyclient on this router
 		ids = self.participants.keys()
 		for pid in ids:
-			self.participants[pid].terminateConnection()
+			try:
+				self.participants[pid].terminateConnection()
+			except:
+				pass #already removed somehow
 
 		self.finished = True
 		self.proxyRequest.finish()
