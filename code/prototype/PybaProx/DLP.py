@@ -114,7 +114,8 @@ class DownloadPool():
 		self.requestSize = requestSize 
 		self.bytes_sent = 0
 		self.uri = proxyRequest.uri
-
+		self.host = proxyRequest.host
+		self.rest = proxyRequest.rest
 		#the proxy request (which maintains a TCP connection to the end client).
 		self.proxyRequest = proxyRequest 
 		self.sendBuffers = [] #an array of buffers currently being filled by peer clients. 
@@ -126,7 +127,7 @@ class DownloadPool():
 		self.chunkSize = self.configs.chunk_size
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
 		self.zeroKnowledgeProver = ZeroKnowledgeConnection(self)
-		self.client = PersistentProxyClient(self.uri,self,RequestBodyReciever,cid=0)
+		self.client = PersistentProxyClient(self.host,self.rest,self,RequestBodyReciever,cid=0)
 		self.participants[0] = self.client
 		self.finished = False
 		self.log = Logger()

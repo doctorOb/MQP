@@ -31,9 +31,10 @@ class PersistentProxyClient():
 	the target server
 	"""
 
-	def __init__(self,uri,father,responseWriter,cid=None,callback=None):
+	def __init__(self,host,rest,father,responseWriter,cid=None,callback=None):
 		self.father = father
-		self.uri = uri
+		self.host = host
+		self.rest = rest
 		self.pool = HTTPConnectionPool(reactor) #the connection to be persisted
 		self.agent = Agent(reactor, pool=self.pool)
 		self.id = cid
@@ -44,10 +45,8 @@ class PersistentProxyClient():
 		self.log = Logger()
 		self.chunk_size = 0
 		
-		if 'http://' not in self.uri:
-			self.uri = 'http://' + self.uri
 
-		self.log.logic("Dispatched for uri: {}".format(self.uri))
+		self.log.logic("Dispatched for uri: {}".format(self.host + self.rest))
 
 
 
@@ -61,8 +60,9 @@ class PersistentProxyClient():
 		self.chunk_size = range[1] - range[0]
 		defered = self.agent.request(
 			'GET',
-			self.uri,
+			self.rest,
 			Headers({
+				'Host' : [self.host],
 				'Range' : [httpRange(range)]
 				}),
 			None)
