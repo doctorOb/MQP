@@ -139,7 +139,6 @@ class sendBuf():
 		self.peer = peer
 		self.data = ''
 		self.range = range
-		print range
 		self.size = range[1] - range[0]
 		self.done = False
 		self.verified = False if peer.id > 0 else True #trust yourself
@@ -198,7 +197,6 @@ def getFileSize(url):
 	except:
 		size = 0
 
-	print("content size:{}".format(size))
 	return int(size)
 
 def httpRange(range):

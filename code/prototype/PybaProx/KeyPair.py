@@ -48,6 +48,19 @@ class PKeyPair():
 		by this instance's key"""
 		return self.key.publickey().verify(hash,signature)
 
+if __name__ == '__main__':
+	a = PKeyPair('10.18.175.229',fname="../keys/10.18.175.229.key")
+	b = PKeyPair('10.18.229.213',fname="../keys/10.18.229.213.key")
+
+	msg = "Hello, alice"
+
+	a_sig = a.sign(msg)
+	hash=md5hash(msg)
+	if a.verify(hash,a_sig) is not True:
+		print "Verification error"
+	else:
+		print "verification succeeded"
+
 
 
 

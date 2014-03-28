@@ -90,7 +90,6 @@ class ProxyClient(HTTPClient):
 
 	def finish(self):
 		self._finished = True
-		print "passing finish call to father"
 		self.father.finish()
 		try:
 			self.transport.loseConnection()
