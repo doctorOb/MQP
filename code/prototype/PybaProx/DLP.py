@@ -137,7 +137,6 @@ class DownloadPool():
 			self.uri = 'http://' + self.uri
 
 		self.client.getChunk(self.getNextChunk(self.client.id))
-		self.log.warning(self.uri)
 
 	def handleHeader(self, key, value):
 		"""

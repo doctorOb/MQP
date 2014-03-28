@@ -141,15 +141,6 @@ class ProxyRequest(Request):
 			self.log.logic("no protocol provided, assuming http")
 			self.protocol = 'http'
 
-		if self.uri == '/':
-			#from my python script, so use the host header
-			headers = self.getAllHeaders().copy()
-			self.host = headers['target']
-			self.port = 80
-			self.rest = '/'
-			self.log.logic('connecting to host: {}'.format(self.host))
-			return
-
 		if ':' in self.host:
 			self.host, self.port = self.host.split(':')
 			self.port = int(self.port)
@@ -170,6 +161,7 @@ class ProxyRequest(Request):
 		#A client factory for the ProxyCLient needs to be created. The factory is then passed to 
 		#the reactor which will call it when a TCP connection is established with the host
 		self.uri = self.host
+		print self.host,self.rest
 		clientFacotry = class_(self.method, self.rest, self.clientproto, headers, s, self)
 		self.reactor.connectTCP(self.host,self.port,clientFacotry)
 
