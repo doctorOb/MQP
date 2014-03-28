@@ -70,7 +70,7 @@ class RequestBodyReciever(Protocol):
 			if range != None:
 				self.pClient.getChunk(range)
 			else:
-				self.pClient.father.endSession(msg="No more range chunks")
+				pass
 		except:
 			self.log.warning('error in repeat callback on dlp')
 
