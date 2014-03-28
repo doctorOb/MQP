@@ -98,7 +98,7 @@ class PeerWorker():
 		try:
 			headers = _headers(request)
 			range = headers['Range']
-			uri = headers['Target'][0] + ':80'
+			uri = headers['Target'][0]# + ':80'
 		except:
 			request.setResponseCode(400) #bad request
 			request.setHeader('Reason','INVALID')
@@ -121,6 +121,7 @@ class PeerWorker():
 
 	def responseRecieved(self,response,request):
 
+		self.log.info("response from resource with code {}".format(response.code))
 		if response.code > 206: #206 is the code returned for http range responses
 	 		self.log.warn("error with response from server")
 
