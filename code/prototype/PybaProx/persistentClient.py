@@ -45,6 +45,8 @@ class PersistentProxyClient():
 		self.log = Logger()
 		self.chunk_size = 0
 		
+		if 'http://' not in self.host:
+			self.host = 'http://{}'.format(self.host)
 
 		self.log.logic("Dispatched for uri: {}".format(self.host + self.rest))
 
