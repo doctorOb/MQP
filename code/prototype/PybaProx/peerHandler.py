@@ -40,7 +40,6 @@ class PH_RequestBodyReciever(Protocol):
 	def __init__(self,handler):
 		self.handler = handler #reference to handler class that holds an open TCP connection with the peer
 		self.recvd = 0
-		self.defered = defered #placeholder for a deferred callback (in-case one is eventually needed)
 
 	def repeatCallback(self):
 		log = Logger()
