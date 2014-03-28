@@ -21,6 +21,7 @@ from Crypto import Random
 import socket, struct, fcntl
 import urllib2
 import re
+import random
 import os
 from time import time as current_time
 
@@ -30,7 +31,7 @@ GIGABYTE = 1073741824
 MEGABYTE = 1048576
 KILOBYTE = 1024
 TEST_FILE = 'http://a1408.g.akamai.net/5/1408/1388/2005110403/1a1a1ad948be278cff2d96046ad90768d848b41947aa1986/sample_iPod.m4v.zip'
-
+VERIFY_SIZE = 12
 
 if os.name != "nt":
 	def get_interface_ip(ifname):
