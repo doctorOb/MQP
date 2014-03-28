@@ -77,7 +77,7 @@ class RequestBodyReciever(Protocol):
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
-		print bytes
+		print len(bytes)
 		self.pClient.father.appendData(self.pClient,bytes)
 
 	def connectionLost(self,reason):
