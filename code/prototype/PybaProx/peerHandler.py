@@ -171,7 +171,7 @@ class PeerHandler():
 		self.timer.reset()
 	 	headers = self._responseHeaders(response)
 
-	 	recvr = self.responseWriter(self,doCallback=True) 
+	 	recvr = self.responseWriter(self) 
 		response.deliverBody(recvr)
 
 		return finished
