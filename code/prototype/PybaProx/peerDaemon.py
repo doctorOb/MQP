@@ -176,6 +176,7 @@ class Dispatcher(Resource):
 		verify the signature of the request, to make sure it came form someone in our network
 		"""
 		headers = _headers(request)
+		print headers
 		ip = request.getClientIP()
 		try:
 			to_hash = "{}-{}".format(ip,headers['Target'][0])
