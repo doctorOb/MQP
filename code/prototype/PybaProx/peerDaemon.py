@@ -143,6 +143,7 @@ class InitRequest(Resource):
 		else:
 			self.ph.addConnection(request)
 			headers = request.getAllHeaders()
+			self.ph.log.logic("added peer client to active connections")
 			return 'ip:{}'.format(request.getClientIP())
 
 
