@@ -76,7 +76,6 @@ class PersistentProxyClient():
 	 		self.father.endSession()
 	 		return None
 
-	 	print list(response.headers.getAllRawHeaders())
 	 	finished = Deferred()
 	 	if not self.headersWritten:
 	 		for key,val in list(response.headers.getAllRawHeaders()):
