@@ -160,7 +160,7 @@ class DownloadPool():
 		partial content responses) the code must be changed to 200, so the client sees it
 		as it would be for a real request
 		"""
-		print("recieved response code:{}".format(code,""))
+		print("received response code:{}".format(code,""))
 		if int(code) == 206: #206 is returned for partial content files.
 			code = 200
 		self.proxyRequest.setResponseCode(int(code),"")
