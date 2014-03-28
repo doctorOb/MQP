@@ -172,5 +172,3 @@ class PeerHandler():
 
 	 	recvr = self.responseWriter(self) 
 		response.deliverBody(recvr)
-
-		return finished
