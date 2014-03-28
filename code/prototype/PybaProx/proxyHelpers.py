@@ -140,6 +140,7 @@ class sendBuf():
 		self.peer = peer
 		self.data = ''
 		self.range = range
+		print range
 		self.size = range[1] - range[0]
 		self.done = False
 		self.verified = False if peer.id > 0 else True #trust yourself
