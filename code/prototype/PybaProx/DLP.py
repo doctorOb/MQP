@@ -212,6 +212,8 @@ class DownloadPool():
 		this function is called by a peerHandler class when it is ready to 
 		dispatch more work to a sender.
 		"""
+		if self.finished:
+			return None
 		try:
 			peer = self.participants[senderID]
 		except KeyError:
@@ -249,7 +251,7 @@ class DownloadPool():
 		(writeData), or schedule its self to be called later (to prevent blocking)
 		"""
 		if self.finished:
-			return #no need to keep waiting
+			return None#no need to keep waiting
 		postpone = True
 		if not d:
 			d = defer.Deferred()
