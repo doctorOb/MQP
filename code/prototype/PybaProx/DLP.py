@@ -113,12 +113,12 @@ class DownloadPool():
 		self.participants = {}
 		self.requestSize = requestSize 
 		self.bytes_sent = 0
-		self.uri = proxyRequest.uri
-		self.host = proxyRequest.host
-		self.rest = proxyRequest.rest
 		#the proxy request (which maintains a TCP connection to the end client).
-		self.proxyRequest = proxyRequest.father() 
+		self.proxyRequest = proxyRequest.father
 		self.proxyClient = proxyRequest
+		self.uri = self.proxyRequest.uri
+		self.host = self.proxyRequest.host
+		self.rest = self.proxyRequest.rest
 		self.sendBuffers = [] #an array of buffers currently being filled by peer clients. 
 		
 		#the start index of the next chunk to send. This is used as a key into the pool's
