@@ -39,6 +39,8 @@ class ProxyClient(HTTPClient):
 		self.stop = False
 		self.log = Logger()
 		self.configs = reactor.configs
+		self.can_pool = False #does the server support http range?
+		self.should_pool = False #is the response size large enough to merit aggregation?
 
 	def connectionMade(self):
 		self.log.info('successful TCP connection established with {}'.format(self.father.uri))
@@ -46,7 +48,7 @@ class ProxyClient(HTTPClient):
 		for header, value in self.headers.items():
 			self.sendHeader(header,value)
 			if header == 'Range':
-				self.log.parseHostInfo("range request:{}".format(value))
+				self.log.info("range request:{}".format(value))
 		self.endHeaders()
 		self.transport.write(self.data)
 
@@ -60,14 +62,20 @@ class ProxyClient(HTTPClient):
 		and start over with a download pool
 		"""
 		if key == 'Content-Length' and int(value) > self.configs.minimum_file_size:
-			self.log.logic('using two streams, for target of size {}'.format(int(value)))
-			pool = DownloadPool(int(value),self.father)
-			pool.queryPeers()
-			self.stop = True
+			self.should_pool = True
+
+		if key == 'Accept-Ranges' and 'bytes' in value:
+			self.can_pool = True #the server accepts range requests
 		if key.lower() in ['server', 'date', 'content-type']:
 			self.father.responseHeaders.setRawHeaders(key, [value])
 		else:
 			self.father.responseHeaders.addRawHeader(key, value)
+
+		if self.should_pool and self.can_pool:
+			self.log.logic('using two streams, for target of size {}'.format(int(value)))
+			pool = DownloadPool(int(value),self.father)
+			pool.queryPeers()
+			self.stop = True
 
 	def handleResponsePart(self, buffer):
 		if self.stop:
@@ -80,6 +88,7 @@ class ProxyClient(HTTPClient):
 		self.log.info("Response Delivered to Proxy Client")
 		if self.stop:
 			self.transport.loseConnection()
+			#don't 'finish' the proxy session with the client, we'll be aggregating a response for them
 		elif not self._finished:
 			self._finished = True
 			self.transport.loseConnection()
