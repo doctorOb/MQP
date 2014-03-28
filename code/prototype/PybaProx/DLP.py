@@ -76,7 +76,7 @@ class RequestBodyReciever(Protocol):
 			self.log.warning('error in repeat callback on dlp')
 
 	def dataReceived(self,bytes):
-		print bytes
+		self.recvd += len(bytes)
 		self.pClient.father.appendData(self.pClient,bytes)
 
 	def connectionLost(self,reason):
