@@ -161,9 +161,8 @@ class ProxyRequest(Request):
 		#A client factory for the ProxyCLient needs to be created. The factory is then passed to 
 		#the reactor which will call it when a TCP connection is established with the host
 		self.uri = self.host + self.rest
-		print self.uri
 		clientFacotry = class_(self.method, self.rest, self.clientproto, headers, s, self)
-		self.reactor.connectTCP(self.uri,self.port,clientFacotry)
+		self.reactor.connectTCP(self.host,self.port,clientFacotry)
 
 
 class Proxy(HTTPChannel):
