@@ -62,7 +62,7 @@ class PersistentProxyClient():
 		self.chunk_size = range[1] - range[0]
 		defered = self.agent.request(
 			'GET',
-			self.rest,
+			self.host + self.rest,
 			Headers({
 				'Host' : [self.host],
 				'Range' : [httpRange(range)]
