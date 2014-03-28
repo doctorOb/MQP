@@ -72,7 +72,6 @@ class RequestBodyReciever(Protocol):
 			else:
 				self.pClient.father.endSession(msg="No more range chunks")
 		except:
-			raise
 			self.log.warning('error in repeat callback on dlp')
 
 	def dataReceived(self,bytes):
