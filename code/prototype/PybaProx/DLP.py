@@ -82,7 +82,6 @@ class RequestBodyReciever(Protocol):
 		if self.recvd < self.pClient.chunk_size:
 			#server sent back a splash page or something other then the desired content
 			self.pClient.father.endSession("Mismatched response length from server")
-		self.log.info("Response from target finished for chunk handler with reason: {}".format(reason))
 		self.repeatCallback()
 
 
@@ -153,7 +152,7 @@ class DownloadPool():
 		else:
 			self.proxyRequest.responseHeaders.addRawHeader(key, value)
 
-	def handleResponseCode(self, version, code, message):
+	def handleResponseCode(self, code):
 		"""
 		handle the response code (the one the client sees). If it is 206 (returned for 
 		partial content responses) the code must be changed to 200, so the client sees it

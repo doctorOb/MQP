@@ -47,7 +47,7 @@ class PersistentProxyClient():
 		if 'http://' not in self.uri:
 			self.uri = 'http://' + self.uri
 
-		print self.uri
+		self.log.logic("Dispatched for uri: {}".format(self.uri))
 
 
 
@@ -75,6 +75,8 @@ class PersistentProxyClient():
 	 		self.log.warning("error with response from server({})".format(response.code))
 	 		self.father.endSession()
 	 		return None
+	 	else:
+	 		self.father.handleResponseCode(response.code)
 
 	 	finished = Deferred()
 	 	if not self.headersWritten:
