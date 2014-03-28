@@ -106,7 +106,7 @@ class PeerWorker():
 			request.finish()
 			return
 
-		self.log.logic(uri,range)
+		self.log.logic("{}:{}".format(uri,range))
 
 		request.setResponseCode(202) #Accepted
 		defered = self.agent.request(
