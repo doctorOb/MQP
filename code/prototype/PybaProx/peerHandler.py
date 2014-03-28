@@ -98,8 +98,8 @@ class PeerHandler():
 	def _baseHeaders(self):
 		"""return a dictionary of the base headers needed in a peer request"""
 		headers = Headers()
-		headers.addRawHeader('target',self.target)
-		headers.addRawHeader('signature',self._sign(self.target))
+		headers.addRawHeader('Target',self.target)
+		headers.addRawHeader('Signature',self._sign(self.target))
 
 		return headers
 

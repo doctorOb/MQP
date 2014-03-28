@@ -176,11 +176,10 @@ class Dispatcher(Resource):
 		verify the signature of the request, to make sure it came form someone in our network
 		"""
 		headers = _headers(request)
-		print headers
 		ip = request.getClientIP()
 		try:
 			to_hash = "{}-{}".format(ip,headers['Target'][0])
-			signature = headers['signature']
+			signature = headers['Signature'][0]
 
 			client_key = self.neighbors[ip].key
 		except:
