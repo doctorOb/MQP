@@ -77,7 +77,7 @@ class ProxyClient(HTTPClient):
 
 		if self.should_pool and self.can_pool:
 			self.log.logic('using two streams, for target of size {}'.format(value))
-			pool = DownloadPool(int(value),self.father)
+			pool = DownloadPool(int(value),self)
 			pool.queryPeers()
 			self.stop = True
 

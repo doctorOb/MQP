@@ -117,7 +117,8 @@ class DownloadPool():
 		self.host = proxyRequest.host
 		self.rest = proxyRequest.rest
 		#the proxy request (which maintains a TCP connection to the end client).
-		self.proxyRequest = proxyRequest 
+		self.proxyRequest = proxyRequest.father() 
+		self.proxyClient = proxyRequest
 		self.sendBuffers = [] #an array of buffers currently being filled by peer clients. 
 		
 		#the start index of the next chunk to send. This is used as a key into the pool's
@@ -208,7 +209,7 @@ class DownloadPool():
 				pass #already removed somehow
 
 		self.finished = True
-		self.proxyRequest.finish()
+		self.proxyClient.finish()
 
 
 	def getNextChunk(self,senderID):
