@@ -88,15 +88,19 @@ class ProxyClient(HTTPClient):
 		self.bytes_recvd += len(buffer)
 		self.father.write(buffer)
 
+	def finish(self):
+		self._finished = True
+		self.transport.loseConnection()
+		self.father.finish()
+
 	def handleResponseEnd(self):
 		self.log.info("Response Delivered to Proxy Client")
 		if self.stop:
 			self.transport.loseConnection()
 			#don't 'finish' the proxy session with the client, we'll be aggregating a response for them
 		elif not self._finished:
-			self._finished = True
-			self.transport.loseConnection()
-			self.father.finish() #close normally (for a regular proxy request)
+			self.finish()  #close normally (for a regular proxy request)
+
 
 
 class ProxyClientFactory(ClientFactory):
