@@ -70,6 +70,7 @@ class RequestBodyReciever(Protocol):
 			if range != None:
 				self.pClient.getChunk(range)
 		except:
+			raise
 			self.log.warning('error in repeat callback on dlp')
 
 	def dataReceived(self,bytes):
