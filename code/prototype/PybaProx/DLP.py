@@ -196,12 +196,15 @@ class DownloadPool():
 
 	def endSession(self):
 		"""break off with every peer and do some cleanup"""
+		if self.finished:
+			return
 		ids = self.participants.keys()
 		for pid in ids:
 			try:
 				self.participants[pid].terminateConnection()
 			except:
 				pass #already removed somehow
+		self.log.logic("Ending connection with client")
 
 		self.finished = True
 		self.proxyRequest.finish()
