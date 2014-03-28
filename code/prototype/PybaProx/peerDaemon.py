@@ -178,11 +178,12 @@ class Dispatcher(Resource):
 		headers = _headers(request)
 		ip = request.getClientIP()
 		try:
-			to_hash = "{}-{}".format(ip,headers['target'])
+			to_hash = "{}-{}".format(ip,headers['Target'][0])
 			signature = headers['signature']
 
 			client_key = self.neighbors[ip].key
 		except:
+			raise
 			self.log.warning("couldn't create hash for request from {}".format(ip))
 			return False
 
@@ -196,7 +197,7 @@ class Dispatcher(Resource):
 
 
 	def getChild(self,name,request):
-		
+
 		if not self.verify_signature(request):
 			self.log.warning("Signature verification failed for peer request")
 			return NoResource()
