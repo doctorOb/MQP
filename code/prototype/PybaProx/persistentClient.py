@@ -64,7 +64,6 @@ class PersistentProxyClient():
 			'GET',
 			self.host + self.rest,
 			Headers({
-				'Host' : [self.host],
 				'Range' : [httpRange(range)]
 				}),
 			None)
