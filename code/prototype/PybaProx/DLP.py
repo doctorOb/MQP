@@ -230,12 +230,11 @@ class DownloadPool():
 
 		try:
 			range = self.chunks.next()
+			buf = sendBuf(peer,range)
+			self.sendBuffers.append(buf)
 		except StopIteration:
 			#no more chunks to download, so terminate
 			range = None
-
-		buf = sendBuf(peer,range)
-		self.sendBuffers.append(buf)
 
 		#create a deferred object to handle the response
 		defered = self.waitForData()
