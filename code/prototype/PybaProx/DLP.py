@@ -123,8 +123,11 @@ class DownloadPool():
 		#the start index of the next chunk to send. This is used as a key into the pool's
 		#sending buffers. It will only be moved once the sendBuf it maps to has finished
 		#receiving its expected data
-		self.rangeIndex = 0 
-		self.chunkSize = self.configs.chunk_size
+		self.rangeIndex = 0
+
+		optimal_chunk_size = self.requestSize / 10
+		self.chunkSize = optimal_chunk_size if optimal_chunk_size < self.configs.max_chunk_size else self.configs.max_chunk_size
+		
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
 		self.zeroKnowledgeProver = ZeroKnowledgeConnection(self)
 		self.client = PersistentProxyClient(self.host,self.rest,self,RequestBodyReciever,cid=0)
