@@ -92,6 +92,7 @@ class PeerHandler():
 
 	def _sign(self,target):
 		hash = md5hash('{}-{}'.format(self.configs.ip,target))
+		print hash
 		return self.configs.key.sign(hash)[0]
 
 
@@ -100,7 +101,6 @@ class PeerHandler():
 		headers = Headers()
 		headers.addRawHeader('Target',self.target)
 		headers.addRawHeader('Signature',self._sign(self.target))
-		print self._sign(self.target)
 
 		return headers
 
