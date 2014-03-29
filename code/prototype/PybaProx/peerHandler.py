@@ -49,6 +49,7 @@ class PH_RequestBodyReciever(Protocol):
 				self.handler.getChunk(range)
 			else:
 				self.log.info("no new data to retrieve")
+				self.handler.terminateConnection()
 		except:
 			raise
 			self.log.warning('error in repeat callbac')
