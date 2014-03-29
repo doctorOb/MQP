@@ -235,6 +235,7 @@ class DownloadPool():
 			range = None
 
 		if range:
+			print range
 			buf = sendBuf(peer,range)
 			self.sendBuffers.append(buf)
 
