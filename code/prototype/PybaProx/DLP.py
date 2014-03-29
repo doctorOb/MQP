@@ -290,7 +290,7 @@ class DownloadPool():
 		try:
 			self.proxyRequest.write(data)
 			self.bytes_sent+=len(data)
-			self.log.info("{}\%% sent back to client".format(self.bytes_sent / self.requestSize))
+			self.log.info("{} %% sent back to client".format(float(self.bytes_sent) / float(self.requestSize)))
 			buf.data = ''
 		except:
 			self.log.warning('error writing to client')

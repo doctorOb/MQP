@@ -70,6 +70,7 @@ class RequestBodyReciever(Protocol):
 		self.request.write(bytes) #consider passing self.recvd to save on len calculation in PPM_DATA
 
 	def connectionLost(self,reason):
+		self.log.info("Finished dispatch request, wrote {} bytes to peer client".format(self.recvd))
 		self.request.finish()
 
 def _headers(request):
