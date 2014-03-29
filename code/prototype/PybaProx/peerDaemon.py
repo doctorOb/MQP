@@ -178,8 +178,8 @@ class Dispatcher(Resource):
 		headers = _headers(request)
 		ip = request.getClientIP()
 		try:
-			to_hash = "{}-{}".format(ip,headers['Target'][0])
-			unpacked = long(headers['Signature'][0])
+			to_hash = "{}-{}".format(ip,str(headers['Target'][0]))
+			unpacked = long(str(headers['Signature'][0]))
 			signature = (unpacked,) #has to be a tuple, with an empty second element (a crypto module restriction)
 
 			client_key = self.neighbors[ip].key
@@ -189,7 +189,6 @@ class Dispatcher(Resource):
 			return False
 
 		hash = md5hash(to_hash)
-		print hash
 		if client_key.verify(hash,signature):
 			self.log.logic("verified signature")
 			return True
