@@ -59,6 +59,7 @@ class PH_RequestBodyReciever(Protocol):
 		self.handler.downloadPool.appendData(self.handler,bytes)
 
 	def connectionLost(self,reason):
+		self.log.info("lost connection with peer (request finished)")
 		self.repeatCallback()
 
 class PeerHandler():
