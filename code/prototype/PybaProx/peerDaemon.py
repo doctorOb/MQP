@@ -67,7 +67,6 @@ class RequestBodyReciever(Protocol):
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
-		self.log.info("writing {} bytes to peer".format(len(bytes)))
 		self.request.write(bytes) #consider passing self.recvd to save on len calculation in PPM_DATA
 
 	def connectionLost(self,reason):

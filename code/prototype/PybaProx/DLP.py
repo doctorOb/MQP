@@ -289,7 +289,8 @@ class DownloadPool():
 
 		try:
 			self.proxyRequest.write(data)
-			self.log.info("wrote {} bytes to client".format(len(data)))
+			self.bytes_sent+=len(data)
+			self.log.info("{}\%% sent back to client".format(self.bytes_sent / self.requestSize))
 			buf.data = ''
 		except:
 			self.log.warning('error writing to client')
@@ -299,10 +300,10 @@ class DownloadPool():
 
 		if buf.done:
 			del self.sendBuffers[0] #remove the buffer, and update the index
-			self.bytes_sent+=buf.size
+			#self.bytes_sent+=buf.size
 
 		if self.bytes_sent >= (self.requestSize - 10): #wiggle room
-			self.endSession()
+			self.endSession(msg="All data for request has been written to client")
 
 
 
