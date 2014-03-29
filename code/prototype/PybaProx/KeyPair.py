@@ -54,11 +54,12 @@ if __name__ == '__main__':
 
 	msg = "Hello, alice"
 
-	a_sig = a.sign(msg)
-	print a_sig[0]
-	print type(a_sig[0])
+	a_sig = a.sign(msg)[0]
+	t_sig = str(a_sig)
+
+	unpacked = long(t_sig)
 	hash=md5hash(msg)
-	if a.verify(hash,(a_sig[0],)) is not True:
+	if a.verify(hash,(unpacked,)) is not True:
 		print "Verification error"
 	else:
 		print "verification succeeded"
