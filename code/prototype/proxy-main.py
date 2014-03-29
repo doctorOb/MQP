@@ -51,7 +51,7 @@ class ProjConfigs():
 		self.peer_port = self.cfg.peer_port
 		self.proxy_port = self.cfg.proxy_port
 		self.minimum_file_size = self.cfg.minimum_file_size
-		self.chunk_size = self.cfg.chunk_size
+		self.max_chunk_size = self.cfg.max_chunk_size
 
 		self._init_peers()
 
