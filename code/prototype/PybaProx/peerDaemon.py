@@ -179,7 +179,7 @@ class Dispatcher(Resource):
 		ip = request.getClientIP()
 		try:
 			to_hash = "{}-{}".format(ip,headers['Target'][0])
-			signature = headers['Signature'][0][0]
+			signature = (long(headers['Signature'][0][0]),) #has to be a tuple, with an empty second element (a crypto module restriction)
 
 			client_key = self.neighbors[ip].key
 		except:
