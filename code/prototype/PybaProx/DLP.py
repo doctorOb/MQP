@@ -81,6 +81,7 @@ class RequestBodyReciever(Protocol):
 		if self.recvd < self.pClient.chunk_size:
 			#server sent back a splash page or something other then the desired content
 			self.pClient.father.endSession("Mismatched response length from server")
+		self.log.info("Server ended transmission successfully")
 		self.repeatCallback()
 
 
