@@ -40,18 +40,18 @@ class PH_RequestBodyReciever(Protocol):
 	def __init__(self,handler):
 		self.handler = handler #reference to handler class that holds an open TCP connection with the peer
 		self.recvd = 0
+		self.log = Logger()
 
 	def repeatCallback(self):
-		log = Logger()
 		try:
 			range = self.handler.downloadPool.getNextChunk(self.handler.id)
 			if range != None:
 				self.handler.getChunk(range)
 			else:
-				log.info("no new data to retrieve")
+				self.log.info("no new data to retrieve")
 		except:
 			raise
-			log.warning('error in repeat callbac')
+			self.log.warning('error in repeat callbac')
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
