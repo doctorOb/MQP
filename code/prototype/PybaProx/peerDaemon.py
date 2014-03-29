@@ -180,6 +180,7 @@ class Dispatcher(Resource):
 		try:
 			to_hash = "{}-{}".format(ip,str(headers['Target'][0]))
 			unpacked = long(str(headers['Signature'][0]))
+			print to_hash, unpacked
 			signature = (unpacked,) #has to be a tuple, with an empty second element (a crypto module restriction)
 
 			client_key = self.neighbors[ip].key
