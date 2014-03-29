@@ -129,7 +129,7 @@ class BitVector():
 		return self._btod(self._inverse(self.vector))
 
 
-class sendBuf():
+class sendBufOld():
 	"""
 	a smarter buffer used to hold data (and meta-data describing the data), 
 	that comes through from a peer helper
@@ -164,6 +164,33 @@ class sendBuf():
 
 	def verify(self,verifyData):
 		self.verified = True if self.verified else self.data[self.verifyRange[0]:self.verifyRange[1]] == verifyData
+
+
+class sendBuf():
+	"""
+	a smarter buffer used to hold data (and meta-data describing the data), 
+	that comes through from a peer helper
+	"""
+
+	def __init__(self,peer,range):
+		self.peer = peer
+		self.data = ''
+		self.range = range
+		self.size = range[1] - range[0]
+		self.done = False
+		self.received = 0
+
+	def writeData(self,data):
+		self.data += data
+		self.received += len(data)
+		if self.received >= self.size:
+			self.done = True
+
+	def getData(self):
+		return self.data
+
+	def getPeer(self):
+		return self.peer
 
 
 class Neighbor():
