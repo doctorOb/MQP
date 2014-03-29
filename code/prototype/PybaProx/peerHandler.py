@@ -100,6 +100,7 @@ class PeerHandler():
 		headers = Headers()
 		headers.addRawHeader('Target',self.target)
 		headers.addRawHeader('Signature',self._sign(self.target))
+		print self._sign(self.target)
 
 		return headers
 

@@ -179,6 +179,7 @@ class Dispatcher(Resource):
 		ip = request.getClientIP()
 		try:
 			to_hash = "{}-{}".format(ip,headers['Target'][0])
+			print headers['Signature']
 			unpacked = long(headers['Signature'][0])
 			signature = (unpacked,) #has to be a tuple, with an empty second element (a crypto module restriction)
 			print signature

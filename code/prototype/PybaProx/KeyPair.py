@@ -59,6 +59,7 @@ if __name__ == '__main__':
 
 	unpacked = long(t_sig)
 	hash=md5hash(msg)
+	print unpacked
 	if a.verify(hash,(unpacked,)) is not True:
 		print "Verification error"
 	else:
