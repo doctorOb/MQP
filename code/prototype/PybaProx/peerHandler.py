@@ -92,7 +92,7 @@ class PeerHandler():
 
 	def _sign(self,target):
 		hash = md5hash('{}-{}'.format(self.configs.ip,target))
-		return self.configs.key.sign(hash)
+		return self.configs.key.sign(hash)[0]
 
 
 	def _baseHeaders(self):
