@@ -50,16 +50,16 @@ class PKeyPair():
 
 if __name__ == '__main__':
 	a = PKeyPair('10.18.175.229',fname="../keys/10.18.175.229.key")
-	b = PKeyPair('10.18.229.213',fname="../keys/10.18.229.213.key")
+	b = PKeyPair('10.18.175.229',fname="../keys/10.18.175.229.key")
 
 	msg = "Hello, alice"
+	hash=md5hash(msg)
+
 
 	a_sig = a.sign(msg)[0]
 	t_sig = str(a_sig)
 
 	unpacked = long(t_sig)
-	hash=md5hash(msg)
-	print unpacked
 	if a.verify(hash,(unpacked,)) is not True:
 		print "Verification error"
 	else:

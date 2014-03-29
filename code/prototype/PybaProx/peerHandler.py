@@ -91,11 +91,8 @@ class PeerHandler():
 		return 'http://{}:{}/{}'.format(self.peer_ip,self.configs.peer_port,path)
 
 	def _sign(self,target):
-		hash = md5hash('{}-{}'.format(self.configs.ip,target))
-		print '{}-{}'.format(self.configs.ip,target)
-		sig = self.configs.key.sign(hash)[0]
-		print sig
-		return sig
+		msg = '{}-{}'.format(self.configs.ip,target))
+		return self.configs.key.sign(msg)[0]
 
 
 	def _baseHeaders(self):
