@@ -232,7 +232,7 @@ class DownloadPool():
 			range = self.chunks.next()
 		except StopIteration:
 			#no more chunks to download, so terminate
-			return None
+			range = None
 
 		buf = sendBuf(peer,range)
 		self.sendBuffers.append(buf)
@@ -270,7 +270,7 @@ class DownloadPool():
 				postpone = False
 				d.callback(buf)
 		except KeyError:
-			self.log.warn('keyerror: {}'.format(self.rangeIndex))
+			self.log.warning('key error: {}'.format(self.rangeIndex))
 			
 		if postpone:
 			reactor.callLater(.05,self.waitForData,d)
@@ -293,7 +293,7 @@ class DownloadPool():
 			self.log.info("wrote {} bytes to client".format(len(data)))
 			buf.data = ''
 		except:
-			self.log.warn('error writing to client')
+			self.log.warning('error writing to client')
 			raise
 			sys.exit(0)
 
