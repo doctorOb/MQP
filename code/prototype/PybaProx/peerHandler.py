@@ -91,7 +91,7 @@ class PeerHandler():
 		return 'http://{}:{}/{}'.format(self.peer_ip,self.configs.peer_port,path)
 
 	def _sign(self,target):
-		msg = '{}-{}'.format(self.configs.ip,target))
+		msg = '{}-{}'.format(self.configs.ip,target)
 		return self.configs.key.sign(msg)[0]
 
 
