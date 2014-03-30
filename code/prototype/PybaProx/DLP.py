@@ -49,7 +49,6 @@ def requestChunks(request_size,chunk_size):
 	for i in range(chunk_size,request_size,chunk_size):
 		yield last,i
 		last = i + 1
-	print "last one: {},{}".format(last,request_size)
 	yield last,request_size
 
 class RequestBodyReciever(Protocol):
@@ -229,14 +228,16 @@ class DownloadPool():
 			return None
 
 		try:
-			range = self.chunks.next()
+			chunk_range = self.chunks.next()
+			self.log.info("next range: {}".format(chunk_range))
 		except StopIteration:
 			#no more chunks to download, so terminate
-			range = None
+			self.log.info("No more chunks to allocate")
+			chunk_range = None
 
-		if range:
-			print range
-			buf = sendBuf(peer,range)
+		if chunk_range:
+			print chunk_range
+			buf = sendBuf(peer,chunk_range)
 			self.sendBuffers.append(buf)
 
 		#create a deferred object to handle the response
@@ -244,7 +245,7 @@ class DownloadPool():
 		defered.addCallback(self.writeData)
 		defered.addErrback(deferedError)
 
-		return range
+		return chunk_range
 
 	def appendData(self,peer,data):
 		"""
