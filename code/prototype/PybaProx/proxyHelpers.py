@@ -179,12 +179,21 @@ class sendBuf():
 		self.size = range[1] - range[0]
 		self.done = False
 		self.received = 0
+		self.lngth = 0
+
+	def __len__(self):
+		return self.lngth
 
 	def writeData(self,data):
 		self.data += data
-		self.received += len(data)
+		l = len(data)
+		self.received += l
+		self.lngth += l
 		if self.received >= self.size:
 			self.done = True
+	def clear(self):
+		self.data = ''
+		self.lngth = 0
 
 	def getData(self):
 		return self.data

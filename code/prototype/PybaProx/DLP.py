@@ -271,13 +271,14 @@ class DownloadPool():
 
 		try:
 			buf = self.sendBuffers[0]
-			if len(buf.data) > 0:
+			if len(buf) > 0:
+				self.log.info("ready to write {} bytes to client".format(len(buf)))
 				postpone = False
 				d.callback(buf)
 		except KeyError:
 			self.log.warning('key error: {}'.format(self.rangeIndex))
 			
-		if True:
+		if postpone:
 			reactor.callLater(.1,self.waitForData,d)
 
 		return d
@@ -295,9 +296,9 @@ class DownloadPool():
 
 		try:
 			self.proxyRequest.write(data)
-			self.bytes_sent+=len(data)
+			self.bytes_sent+=len(buf)
 			self.log.info("{} / {} ({}%) sent back to client".format(self.bytes_sent, self.requestSize, float(self.bytes_sent) / float(self.requestSize)))
-			buf.data = ''
+			buf.clear()
 		except:
 			self.log.warning('error writing to client')
 			raise
