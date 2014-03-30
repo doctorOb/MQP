@@ -69,7 +69,6 @@ class RequestBodyReciever(Protocol):
 			if range != None:
 				self.pClient.getChunk(range)
 		except:
-			raise
 			self.log.warning('error in repeat callback on dlp')
 
 	def dataReceived(self,bytes):
@@ -302,7 +301,7 @@ class DownloadPool():
 		try:
 			self.proxyRequest.write(data)
 			self.bytes_sent+=size
-			self.log.info("{} / {} ({}%) sent back to client".format(self.bytes_sent, self.requestSize, float(self.bytes_sent) / float(self.requestSize)))
+			self.log.info("{} / {} ({}%) sent back to client from peer {}".format(self.bytes_sent, self.requestSize, float(self.bytes_sent) / float(self.requestSize), buf.peer.id))
 			buf.clear()
 		except:
 			self.log.warning('error writing to client')
