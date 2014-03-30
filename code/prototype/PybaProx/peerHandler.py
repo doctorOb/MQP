@@ -141,6 +141,7 @@ class PeerHandler():
 		headers = self._baseHeaders()
 		self.assigned_chunk = range
 		headers.addRawHeader('Range',httpRange(range))
+		self.log.info("Handler dispatching {} to peer".format(range))
 
 		return self._doRequest(self._url('chunk'),headers)
 

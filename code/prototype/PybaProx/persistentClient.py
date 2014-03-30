@@ -63,7 +63,7 @@ class PersistentProxyClient():
 		except:
 			return None
 
-		self.log.info("getting chunk: {}".format(range))
+		self.log.info("Local pClient getting chunk: {}".format(range))
 		defered = self.agent.request(
 			'GET',
 			self.host + self.rest,

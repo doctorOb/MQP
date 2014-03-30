@@ -242,8 +242,7 @@ class DownloadPool():
 				self.sendBuffers.append(buf)
 			except:
 				#invalid range tuple (weird bug)
-				print "that weird generator bug"
-				pass
+				chunk_range = None
 
 		#create a deferred object to handle the response
 		defered = self.waitForData()
