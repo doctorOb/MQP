@@ -42,6 +42,7 @@ class ProxyClient(HTTPClient):
 		self.can_pool = False #does the server support http range?
 		self.should_pool = False #is the response size large enough to merit aggregation?
 		self.req_size = 0 #how big is the response?
+		self.closed = False #have we closed the connection to the server?
 
 	def connectionMade(self):
 		self.log.info('successful TCP connection established with {}'.format(self.father.uri))
@@ -98,16 +99,15 @@ class ProxyClient(HTTPClient):
 
 	def finish(self):
 		self._finished = True
-		self.father.finish()
-		self.father._cleanup()
-		try:
+		if not self.closed:
 			self.transport.loseConnection()
-		except:
-			pass #already broke it off
+
+		self.father.transport.loseConnection()
 
 	def handleResponseEnd(self):
 		if self.stop:
 			self.transport.loseConnection()
+			self.closed = True
 			#don't 'finish' the proxy session with the client, we'll be aggregating a response for them
 		elif not self._finished:
 			self.log.info("Response Delivered to Proxy Client")
