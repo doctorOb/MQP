@@ -254,9 +254,8 @@ class DownloadPool():
 		"""
 		buf = self._peerBuffer(peer)
 		buf.writeData(data)
-		self.log.info("buffered {} bytes of data from {}.".format(len(data),peer.id))
+		self.writeData()
 
-	
 	def waitForData(self,d=None):
 		"""
 		the heart of the callback chain. This will either trigger it's callback
@@ -284,7 +283,7 @@ class DownloadPool():
 
 		return d
 
-	def writeData(self,data):
+	def writeData(self):
 		"""
 		write the data at the head of the buffer to the transport
 		"""
