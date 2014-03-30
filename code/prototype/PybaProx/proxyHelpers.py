@@ -245,11 +245,8 @@ def parseContentRange(raw):
 	"""given a Content-Range: bytes x-y/z header, return a tuple of the range"""
 	try:
 		halve = raw.split("-")
-		print halve
-		start = int(halve[0].split(" "))
-		print start
+		start = int(halve[0].split(" ")[1])
 		end = int(halve[1].split('/')[0])
-		print end
 		return (start,end)
 	except:
 		return None
