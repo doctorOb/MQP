@@ -198,10 +198,10 @@ class DownloadPool():
 
 	def endSession(self,msg=""):
 		"""break off with every peer and do some cleanup"""
-		self.log.logic(msg)
 		if self.finished:
-			print "already cleaned up"
 			return
+
+		self.log.logic(msg)
 		ids = self.participants.keys()
 		for pid in ids:
 			try:
