@@ -253,6 +253,7 @@ class DownloadPool():
 		called by a peerHandler when it has data to write, passes in a
 		buffer index (the start of the chunk) to write at
 		"""
+		print "keying into buffers {},{}".format(peer.id,startidx)
 		buf = self._peerBuffer(peer,startidx)
 		buf.writeData(data)
 

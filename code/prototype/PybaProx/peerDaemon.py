@@ -189,10 +189,8 @@ class Dispatcher(Resource):
 
 		hash = md5hash(to_hash)
 		if client_key.verify(hash,signature):
-			self.log.logic("verified signature")
 			return True
 		else:
-			self.log.logic("invalid signature")
 			return False
 
 
