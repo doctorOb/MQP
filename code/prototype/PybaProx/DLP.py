@@ -125,7 +125,7 @@ class DownloadPool():
 		#receiving its expected data
 		self.rangeIndex = 0
 
-		optimal_chunk_size = self.requestSize / 10
+		optimal_chunk_size = self.configs.max_chunk_size
 		self.chunkSize = optimal_chunk_size if optimal_chunk_size < self.configs.max_chunk_size else self.configs.max_chunk_size
 		
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
