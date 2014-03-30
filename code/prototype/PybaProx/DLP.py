@@ -244,8 +244,6 @@ class DownloadPool():
 
 		#create a deferred object to handle the response
 		defered = self.waitForData()
-		defered.addCallback(self.writeData)
-		defered.addErrback(deferedError)
 
 		return chunk_range
 
@@ -268,6 +266,8 @@ class DownloadPool():
 		postpone = True
 		if not d:
 			d = defer.Deferred()
+			d.addCallback(self.writeData)
+			d.addErrback(deferedError)
 
 		try:
 			buf = self.sendBuffers[0]
@@ -277,8 +277,8 @@ class DownloadPool():
 		except KeyError:
 			self.log.warning('key error: {}'.format(self.rangeIndex))
 			
-		if postpone:
-			reactor.callLater(.05,self.waitForData,d)
+		if True:
+			reactor.callLater(.1,self.waitForData,d)
 
 		return d
 
