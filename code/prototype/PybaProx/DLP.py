@@ -229,7 +229,6 @@ class DownloadPool():
 
 		try:
 			chunk_range = self.chunks.next()
-			self.log.info("next range: {}".format(chunk_range))
 		except StopIteration:
 			#no more chunks to download, so terminate
 			self.log.info("No more chunks to allocate")
