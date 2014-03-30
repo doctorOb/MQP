@@ -39,7 +39,6 @@ from ZeroKnowledge import ZeroKnowledgeConnection
 from persistentClient import *
 from peerHandler import *
 
-VERIFY_SIZE = 5 #number of bytes to check in zero knowledge proof
 
 #log.startLogging(sys.stdout)
 
@@ -163,7 +162,7 @@ class DownloadPool():
 		partial content responses) the code must be changed to 200, so the client sees it
 		as it would be for a real request
 		"""
-		print("received response code:{}".format(code,""))
+		self.log.info("received response code:{}".format(code,""))
 		if int(code) == 206: #206 is returned for partial content files.
 			code = 200
 		self.proxyRequest.setResponseCode(int(code),"")
@@ -173,7 +172,7 @@ class DownloadPool():
 		for buf in self.sendBuffers:
 			if buf.peer is peer:
 				return buf
-		self.log.warn("no peer found in send buffers")
+		self.log.warning("no peer found in send buffers")
 		return None
 
 	def queryPeers(self):
@@ -287,7 +286,7 @@ class DownloadPool():
 			buf = self.sendBuffers[0]
 			data = buf.getData()
 		except:
-			self.log.warn("meant to write data, but no buffers were available")
+			self.log.warning("meant to write data, but no buffers were available")
 			return
 
 		try:
