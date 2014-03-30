@@ -157,9 +157,10 @@ class PeerHandler():
 	def begin(self):
 		"""called when a peer aggrees to participate in an aggregation session"""
 		self.active = True
+		print "beggingin \n"
 		chunk = self.downloadPool.getNextChunk(self.id)
 		if chunk:
-			self.getChunk(chunk)
+			return self.getChunk(chunk)
 
 	def end(self,code):
 		"""called when a peer sends an errorful response code"""
@@ -176,12 +177,10 @@ class PeerHandler():
 
 		if response.code > 206: #peer wises to terminate it's involvement
 			#add makeup chunk to downloadPool's buffers
-			self.end(response.code)
-			return None
+			return self.end(response.code)
 
 		if not self.active:
-			self.begin()
-			return None
+			return self.begin()
 
 		self.timer.reset()
 	 	headers = headersFromResponse(response)
