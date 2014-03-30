@@ -28,6 +28,11 @@ from RecordKeeper import *
 from Logger import Logger
 
 
+class Dummy_RequestBodyReciever(Protocol):
+
+	def dataReceived(self,bytes):
+		pass
+	def connectionLost(self,reason):
 
 
 class PH_RequestBodyReciever(Protocol):
@@ -93,7 +98,7 @@ class PeerHandler():
 		self.log = Logger()
 		self.records = SessionRecord(neighbor.ip)
 		self.records.new(target=target,req_size=downloadPool.requestSize)
-		self._headers = None
+		self._signature = self._sign(self.target)
 
 	def _url(self,path):
 		return 'http://{}:{}/{}'.format(self.peer_ip,self.configs.peer_port,path)
@@ -105,12 +110,11 @@ class PeerHandler():
 
 	def _baseHeaders(self):
 		"""return a dictionary of the base headers needed in a peer request"""
-		if not self._headers:
-			self._headers = Headers()
-			self._headers.addRawHeader('Target',self.target)
-			self._headers.addRawHeader('Signature',self._sign(self.target))
+		headers = Headers()
+		headers.addRawHeader('Target',self.target)
+		headers.addRawHeader('Signature',self._signature)
 
-		return self._headers
+		return headers
 
 	def _doRequest(self,url,headers,doCallback=True):
 		defered = self.agent.request(
