@@ -253,7 +253,6 @@ class DownloadPool():
 		called by a peerHandler when it has data to write, passes in a
 		buffer index (the start of the chunk) to write at
 		"""
-		print "keying into buffers {},{}".format(peer.id,startidx)
 		buf = self._peerBuffer(peer,startidx)
 		buf.writeData(data)
 
@@ -311,7 +310,6 @@ class DownloadPool():
 
 		if buf.done:
 			self.rangeIndex = buf.stop_idx + 1
-			print "range idx:{}\n".format(self.rangeIndex)
 			del self.sendBuffers[0] #remove the buffer, and update the index
 
 		if self.bytes_sent >= self.requestSize - 1: #wiggle room

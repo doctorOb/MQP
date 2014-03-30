@@ -30,12 +30,16 @@ from Logger import Logger
 
 
 class Dummy(Protocol):
+	"""
+	An empty responseReciever class that does nothing. If a response object is not 'delivered' to
+	this class, then subsequent responses are messed up (blame twisted).
+	"""
 	def __init__(self):
 		pass
 	def dataReceived(self,bytes):
-		print bytes
+		pass
 	def connectionLost(self,reason):
-		print reason
+		pass
 
 class PH_RequestBodyReciever(Protocol):
 	"""
