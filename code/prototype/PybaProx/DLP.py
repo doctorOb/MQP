@@ -129,6 +129,7 @@ class DownloadPool():
 		self.chunkSize = optimal_chunk_size if optimal_chunk_size < self.configs.max_chunk_size else self.configs.max_chunk_size
 		
 		self.chunks = requestChunks(self.requestSize,self.chunkSize)
+		print self.chunks
 		self.zeroKnowledgeProver = ZeroKnowledgeConnection(self)
 		self.client = PersistentProxyClient(self.host,self.rest,self,RequestBodyReciever,cid=0)
 		self.participants[0] = self.client
