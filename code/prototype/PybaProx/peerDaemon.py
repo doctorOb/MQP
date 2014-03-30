@@ -80,7 +80,7 @@ def _headers(request):
 		headers[key] = val
 	return headers
 
-		
+
 class PeerWorker():
 	"""
 	a modified variant of the persistent HTTP client class, optimized to work with the download pool 
@@ -121,7 +121,6 @@ class PeerWorker():
 
 	def responseRecieved(self,response,request):
 
-		self.log.info("response from resource with code {}".format(response.code))
 		if response.code > 206: #206 is the code returned for http range responses
 	 		self.log.warn("error with response from server")
 

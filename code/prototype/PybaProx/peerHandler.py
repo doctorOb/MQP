@@ -85,6 +85,7 @@ class PeerHandler():
 		self.log = Logger()
 		self.records = SessionRecord(neighbor.ip)
 		self.records.new(target=target,req_size=downloadPool.requestSize)
+		self._headers = None
 
 	def _url(self,path):
 		return 'http://{}:{}/{}'.format(self.peer_ip,self.configs.peer_port,path)
@@ -96,11 +97,12 @@ class PeerHandler():
 
 	def _baseHeaders(self):
 		"""return a dictionary of the base headers needed in a peer request"""
-		headers = Headers()
-		headers.addRawHeader('Target',self.target)
-		headers.addRawHeader('Signature',self._sign(self.target))
+		if not self._headers:
+			self._headers = Headers()
+			self._headers.addRawHeader('Target',self.target)
+			self._headers.addRawHeader('Signature',self._sign(self.target))
 
-		return headers
+		return self._headers
 
 	def _responseHeaders(self,response):
 		"""process the headers from a response and return them as a dict"""
@@ -166,6 +168,8 @@ class PeerHandler():
 			self.log.logic("Terminating connection with peer")
 			self.terminateConnection()
 			return 
+
+		self.log.info("Received reply from peer")
 
 		self.timer.reset()
 	 	headers = self._responseHeaders(response)
