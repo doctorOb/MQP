@@ -28,11 +28,6 @@ from RecordKeeper import *
 from Logger import Logger
 
 
-class Dummy_RequestBodyReciever(Protocol):
-
-	def dataReceived(self,bytes):
-		pass
-	def connectionLost(self,reason):
 
 
 class PH_RequestBodyReciever(Protocol):
