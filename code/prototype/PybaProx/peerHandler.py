@@ -178,4 +178,4 @@ class PeerHandler():
 		 	recvr = self.responseWriter(self,range=self.assigned_chunk)
 			response.deliverBody(recvr)
 		except:
-			self.log.warning("No content range in header")
+			pass
