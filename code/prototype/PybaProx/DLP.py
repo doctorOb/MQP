@@ -311,6 +311,7 @@ class DownloadPool():
 		if buf.done:
 			self.rangeIndex = buf.stop_idx + 1
 			del self.sendBuffers[0] #remove the buffer, and update the index
+			self.waitForData()
 
 		if self.bytes_sent >= self.requestSize - 1: #wiggle room
 			self.endSession(msg="All data for request has been written to client")
