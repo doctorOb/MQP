@@ -271,7 +271,7 @@ class DownloadPool():
 
 		try:
 			buf = self.sendBuffers[0]
-			if len(buf) > 0:
+			if len(buf) > 0 and buf.start_idx == self.rangeIndex:
 				postpone = False
 				d.callback(buf)
 		except KeyError:
@@ -309,6 +309,7 @@ class DownloadPool():
 
 
 		if buf.done:
+			self.rangeIndex = buf.stop_idx + 1
 			del self.sendBuffers[0] #remove the buffer, and update the index
 
 		if self.bytes_sent >= self.requestSize - 1: #wiggle room
