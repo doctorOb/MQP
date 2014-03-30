@@ -29,6 +29,13 @@ from Logger import Logger
 
 
 
+class Dummy(Protocol):
+	def __init__(self):
+		pass
+	def dataReceived(self,bytes):
+		print bytes
+	def connectionLost(self,reason):
+		print reason
 
 class PH_RequestBodyReciever(Protocol):
 	"""
@@ -156,7 +163,6 @@ class PeerHandler():
 	def begin(self):
 		"""called when a peer aggrees to participate in an aggregation session"""
 		self.active = True
-		print "beggingin \n"
 		chunk = self.downloadPool.getNextChunk(self.id)
 		if chunk:
 			return self.getChunk(chunk)
