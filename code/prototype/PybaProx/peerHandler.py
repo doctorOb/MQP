@@ -48,11 +48,10 @@ class PH_RequestBodyReciever(Protocol):
 			if range != None:
 				self.handler.getChunk(range)
 			else:
-				self.log.info("no new data to retrieve")
 				self.handler.terminateConnection()
 		except:
 			raise
-			self.log.warning('error in repeat callbac')
+			self.log.warning('error in repeat callback')
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)

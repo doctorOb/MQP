@@ -80,7 +80,7 @@ class RequestBodyReciever(Protocol):
 		if self.recvd < self.pClient.chunk_size:
 			#server sent back a splash page or something other then the desired content
 			self.pClient.father.endSession("Mismatched response length from server")
-		self.log.info("Server ended transmission successfully")
+		self.log.info("Server ended transmission successfully with local pClient")
 		self.repeatCallback()
 
 
@@ -162,7 +162,6 @@ class DownloadPool():
 		partial content responses) the code must be changed to 200, so the client sees it
 		as it would be for a real request
 		"""
-		self.log.info("received response code:{}".format(code,""))
 		if int(code) == 206: #206 is returned for partial content files.
 			code = 200
 		self.proxyRequest.setResponseCode(int(code),"")
