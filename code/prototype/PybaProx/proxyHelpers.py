@@ -175,8 +175,8 @@ class sendBuf():
 	def __init__(self,peer,range):
 		self.peer = peer
 		self.data = ''
-		self.start_idx = self.range[0]
-		self.stop_idx = self.range[1]
+		self.start_idx = range[0]
+		self.stop_idx = range[1]
 		self.size = range[1] - range[0]
 		self.done = False
 		self.received = 0
