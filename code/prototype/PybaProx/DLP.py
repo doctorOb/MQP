@@ -290,13 +290,17 @@ class DownloadPool():
 		try:
 			buf = self.sendBuffers[0]
 			data = buf.getData()
+			size = len(buf)
 		except:
 			self.log.warning("meant to write data, but no buffers were available")
 			return
 
+		if size == 0:
+			return
+
 		try:
 			self.proxyRequest.write(data)
-			self.bytes_sent+=len(buf)
+			self.bytes_sent+=size
 			self.log.info("{} / {} ({}%) sent back to client".format(self.bytes_sent, self.requestSize, float(self.bytes_sent) / float(self.requestSize)))
 			buf.clear()
 		except:

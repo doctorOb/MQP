@@ -41,6 +41,7 @@ class ProxyClient(HTTPClient):
 		self.configs = reactor.configs
 		self.can_pool = False #does the server support http range?
 		self.should_pool = False #is the response size large enough to merit aggregation?
+		self.req_size = 0 #how big is the response?
 
 	def connectionMade(self):
 		self.log.info('successful TCP connection established with {}'.format(self.father.uri))
@@ -67,6 +68,7 @@ class ProxyClient(HTTPClient):
 
 		if key == 'Content-Length' and int(value) > self.configs.minimum_file_size:
 			self.should_pool = True
+			self.req_size = int(value)
 
 		if key == 'Accept-Ranges' and 'bytes' in value:
 			self.can_pool = True #the server accepts range requests
@@ -76,10 +78,16 @@ class ProxyClient(HTTPClient):
 			self.father.responseHeaders.addRawHeader(key, value)
 
 		if self.should_pool and self.can_pool:
-			self.log.logic('using two streams, for target of size {}'.format(value))
-			pool = DownloadPool(int(value),self)
-			pool.queryPeers()
-			self.stop = True
+			try:
+				pool = DownloadPool(self.req_size,self)
+				self.log.logic('using two streams, for target of size {}'.format(value))
+				pool.queryPeers()
+				self.stop = True
+			except:
+				self.log.info("error instantiating download pool for request")
+				self.finish() #something went wrong loading the download pool
+				self.should_pool = False
+
 
 	def handleResponsePart(self, buffer):
 		if self.stop:
