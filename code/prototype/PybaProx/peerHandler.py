@@ -119,15 +119,14 @@ class PeerHandler():
 			None)
 		defered.addCallback(self.responseRecieved)
 		defered.addErrback(deferedError)
-		self.checkTimeout()
 		return defered
 
-	def checkTimeout(self):
+	def checkTimeout(self,tmp=None):
 		"""check if a timeout has occured"""
 		if self.timer.timedout():
 			self.terminateConnection()
 
-		reactor.callLater(1,self.checkTimeout)
+		reactor.callLater(1,self.checkTimeout,None)
 
 	def getInit(self):
 		"""Hit a peer with an init request for a session at the supplied url"""
