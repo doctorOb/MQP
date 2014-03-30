@@ -233,16 +233,16 @@ class DownloadPool():
 		except StopIteration:
 			#no more chunks to download, so terminate
 			self.log.info("No more chunks to allocate")
-			del self.chunks
-			self.chunks = None
-			chunk_range = None
-		finally:
-			pass
+
 
 		if chunk_range:
-			print chunk_range
-			buf = sendBuf(peer,chunk_range)
-			self.sendBuffers.append(buf)
+			try:
+				buf = sendBuf(peer,chunk_range)
+				self.sendBuffers.append(buf)
+			except:
+				#invalid range tuple (weird bug)
+				print "that weird generator bug"
+				pass
 
 		#create a deferred object to handle the response
 		defered = self.waitForData()
