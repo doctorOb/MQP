@@ -272,7 +272,6 @@ class DownloadPool():
 		try:
 			buf = self.sendBuffers[0]
 			if len(buf) > 0:
-				self.log.info("ready to write {} bytes to client".format(len(buf)))
 				postpone = False
 				d.callback(buf)
 		except KeyError:
