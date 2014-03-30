@@ -233,6 +233,7 @@ class DownloadPool():
 		except StopIteration:
 			#no more chunks to download, so terminate
 			self.log.info("No more chunks to allocate")
+			chunk_range = None
 
 
 		if chunk_range:
