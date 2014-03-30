@@ -83,15 +83,12 @@ class PersistentProxyClient():
 	 	else:
 	 		self.father.handleResponseCode(response.code)
 
-	 	finished = Deferred()
 	 	if not self.headersWritten:
 	 		for key,val in list(response.headers.getAllRawHeaders()):
 	 			self.father.handleHeader(key,val)
 	 		self.headersWritten = True
 
-	 	if self.callback:
-	 		finished.addCallback(self.callback)
-
-	 	recvr = self.responseWriter(self,finished) 
+	 	headers = headersFromResponse(response)
+	 	response_range = parseContentRange(headers['Content-Range'][0])
+	 	recvr = self.responseWriter(self,finished,response_range[0])
 		response.deliverBody(recvr)
-		return finished

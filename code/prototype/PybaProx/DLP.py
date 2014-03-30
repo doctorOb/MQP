@@ -56,11 +56,11 @@ class RequestBodyReciever(Protocol):
 	Passes any data it recieves to the Peer writer. This is an unfortunate side effect of the twisted 
 	architecture. A response object cannot pass it's body onwards without the use of this mitigating class"""
 
-	def __init__(self,pClient,defered):
+	def __init__(self,pClient,start):
 		self.pClient = pClient #reference to persistent client class that holds an 
 									 #open TCP connection with the peer
 		self.recvd = 0
-		self.defered = defered #placeholder for a deferred callback (incase one is eventually needed)
+		self.start = start #placeholder for a deferred callback (incase one is eventually needed)
 		self.log = Logger()
 
 	def repeatCallback(self):
@@ -73,7 +73,7 @@ class RequestBodyReciever(Protocol):
 
 	def dataReceived(self,bytes):
 		self.recvd += len(bytes)
-		self.pClient.father.appendData(self.pClient,bytes)
+		self.pClient.father.appendData(self.pClient,self.start,bytes)
 
 	def connectionLost(self,reason):
 		if self.recvd < self.pClient.chunk_size:
@@ -165,10 +165,10 @@ class DownloadPool():
 			code = 200
 		self.proxyRequest.setResponseCode(int(code),"")
 
-	def _peerBuffer(self,peer):
+	def _peerBuffer(self,peer,start):
 		"""find the peers buffer in the send buffers"""
 		for buf in self.sendBuffers:
-			if buf.peer is peer:
+			if buf.peer is peer and buf.start_idx == start:
 				return buf
 		self.log.warning("no peer found in send buffers")
 		return None
@@ -247,14 +247,13 @@ class DownloadPool():
 
 		return chunk_range
 
-	def appendData(self,peer,data):
+	def appendData(self,peer,startidx,data):
 		"""
 		called by a peerHandler when it has data to write, passes in a
 		buffer index (the start of the chunk) to write at
 		"""
-		buf = self._peerBuffer(peer)
+		buf = self._peerBuffer(peer,startidx)
 		buf.writeData(data)
-		#self.writeData()
 
 	def waitForData(self,d=None):
 		"""
@@ -300,8 +299,8 @@ class DownloadPool():
 		try:
 			self.proxyRequest.write(data)
 			self.bytes_sent+=size
-			self.log.info("{} / {} ({}%) sent back to client from peer {}".format(self.bytes_sent, self.requestSize, float(self.bytes_sent) / float(self.requestSize), buf.peer.id))
 			buf.clear()
+			self.log.info("{} / {} ({}%) sent back to client from peer {}".format(self.bytes_sent, self.requestSize, float(self.bytes_sent) / float(self.requestSize), buf.peer.id))
 		except:
 			self.log.warning('error writing to client')
 			raise

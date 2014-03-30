@@ -241,6 +241,23 @@ def httpRange(range):
 	the request range given by the supplied tuple"""
 	return "bytes={}-{}".format(*range)
 
+def parseContentRange(raw):
+	"""given a Content-Range: bytes x-y/z header, return a tuple of the range"""
+	try:
+		halve = raw.split("-")
+		start = int(halve[0].split(" "))
+		end = int(halve[1].split('/')[0])
+		return (start,end)
+	except:
+		return None
+
+def headersFromResponse(response):
+	"""process the headers from a response and return them as a dict"""
+	headers = {}
+	for key,val in response.headers.getAllRawHeaders():
+		headers[key] = val
+	return headers
+
 def TIMEOUT_THRESH():
 	return 10000000000 #some really long time idk
 

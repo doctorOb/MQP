@@ -37,9 +37,10 @@ class PH_RequestBodyReciever(Protocol):
 	architecture. A response object cannot pass it's body onwards without the use of this mitigating class
 	"""
 
-	def __init__(self,handler):
+	def __init__(self,handler,start):
 		self.handler = handler #reference to handler class that holds an open TCP connection with the peer
 		self.log = Logger()
+		self.start = start
 
 	def repeatCallback(self):
 		try:
@@ -54,7 +55,7 @@ class PH_RequestBodyReciever(Protocol):
 
 	def dataReceived(self,bytes):
 		self.handler.timer.reset()
-		self.handler.downloadPool.appendData(self.handler,bytes)
+		self.handler.downloadPool.appendData(self.handler,self.start,bytes)
 
 	def connectionLost(self,reason):
 		self.log.info("lost connection with peer (request finished)")
@@ -103,13 +104,6 @@ class PeerHandler():
 			self._headers.addRawHeader('Signature',self._sign(self.target))
 
 		return self._headers
-
-	def _responseHeaders(self,response):
-		"""process the headers from a response and return them as a dict"""
-		headers = {}
-		for key,val in response.headers.getAllRawHeaders():
-			headers[key] = val
-		return headers
 
 	def _doRequest(self,url,headers,doCallback=True):
 		defered = self.agent.request(
@@ -172,7 +166,8 @@ class PeerHandler():
 		self.log.info("Received reply from peer")
 
 		self.timer.reset()
-	 	headers = self._responseHeaders(response)
+	 	headers = headersFromResponse(response)
+	 	response_range = parseContentRange(headers['Content-Range'][0])
 
-	 	recvr = self.responseWriter(self) 
+	 	recvr = self.responseWriter(self,start=response_range[0])
 		response.deliverBody(recvr)
