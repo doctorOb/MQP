@@ -310,6 +310,7 @@ class DownloadPool():
 
 		if buf.done:
 			self.rangeIndex = buf.stop_idx + 1
+			print "range idx:{}\n".format(self.rangeIndex)
 			del self.sendBuffers[0] #remove the buffer, and update the index
 
 		if self.bytes_sent >= self.requestSize - 1: #wiggle room
