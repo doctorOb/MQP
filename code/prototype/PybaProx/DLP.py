@@ -56,11 +56,12 @@ class RequestBodyReciever(Protocol):
 	Passes any data it recieves to the Peer writer. This is an unfortunate side effect of the twisted 
 	architecture. A response object cannot pass it's body onwards without the use of this mitigating class"""
 
-	def __init__(self,pClient,start):
+	def __init__(self,pClient,range):
 		self.pClient = pClient #reference to persistent client class that holds an 
 									 #open TCP connection with the peer
 		self.recvd = 0
-		self.start = start #placeholder for a deferred callback (incase one is eventually needed)
+		self.start = range[0] #placeholder for a deferred callback (incase one is eventually needed)
+		self.size = range[1] - range[0]
 		self.log = Logger()
 
 	def repeatCallback(self):
@@ -76,7 +77,7 @@ class RequestBodyReciever(Protocol):
 		self.pClient.father.appendData(self.pClient,self.start,bytes)
 
 	def connectionLost(self,reason):
-		if self.recvd < self.pClient.chunk_size:
+		if self.recvd < self.size:
 			#server sent back a splash page or something other then the desired content
 			self.pClient.father.endSession("Mismatched response length from server")
 		self.log.info("Server ended transmission successfully with local pClient")

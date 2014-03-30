@@ -91,8 +91,7 @@ class PersistentProxyClient():
 	 	headers = headersFromResponse(response)
 	 	try:
 	 		response_range = parseContentRange(headers['Content-Range'][0])
-	 		recvr = self.responseWriter(self,response_range[0])
+	 		recvr = self.responseWriter(self,range=response_range)
 			response.deliverBody(recvr)
 		except:
 			self.log.warning("Error parsing content range from headers")
-			print headers
