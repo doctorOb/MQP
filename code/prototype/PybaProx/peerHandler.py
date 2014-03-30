@@ -185,6 +185,8 @@ class PeerHandler():
 			return self.end(response.code)
 
 		if not self.active:
+			dummyRecr = Dummy()
+			response.deliverBody(dummyRecr)
 			return self.begin()
 
 		self.timer.reset()
