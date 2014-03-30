@@ -37,10 +37,12 @@ class PH_RequestBodyReciever(Protocol):
 	architecture. A response object cannot pass it's body onwards without the use of this mitigating class
 	"""
 
-	def __init__(self,handler,start):
+	def __init__(self,handler,range):
 		self.handler = handler #reference to handler class that holds an open TCP connection with the peer
 		self.log = Logger()
-		self.start = start
+		self.size = range[1] - range[0]
+		self.start = range[0]
+		self.recvd = 0
 
 	def repeatCallback(self):
 		try:
@@ -55,9 +57,14 @@ class PH_RequestBodyReciever(Protocol):
 
 	def dataReceived(self,bytes):
 		self.handler.timer.reset()
+		self.recvd += len(bytes)
 		self.handler.downloadPool.appendData(self.handler,self.start,bytes)
 
 	def connectionLost(self,reason):
+		if self.recvd < self.size:
+			#server sent back a splash page or something other then the desired content
+			self.handler.downloadPool.endSession("Mismatched response length from peer")
+			return
 		self.log.info("lost connection with peer (request finished)")
 		self.repeatCallback()
 
@@ -167,7 +174,8 @@ class PeerHandler():
 
 		self.timer.reset()
 	 	headers = headersFromResponse(response)
-	 	response_range = parseContentRange(headers['Content-Range'][0])
-
-	 	recvr = self.responseWriter(self,start=response_range[0])
-		response.deliverBody(recvr)
+	 	try:
+		 	recvr = self.responseWriter(self,range=self.assigned_chunk)
+			response.deliverBody(recvr)
+		except:
+			self.log.warning("No content range in header")
