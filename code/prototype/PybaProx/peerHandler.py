@@ -155,20 +155,32 @@ class PeerHandler():
 		self.records.save()
 		self.downloadPool.terminatePeer(self)
 
+	def begin(self):
+		"""called when a peer aggrees to participate in an aggregation session"""
+		self.active = True
+		chunk = self.downloadPool.getNextChunk(self.id)
+		if chunk:
+			self.getChunk(chunk)
+
+	def end(self,code):
+		"""called when a peer sends an errorful response code"""
+		self.log.logic("Terminating connection with peer (error: {})".format(code))
+		self.terminateConnection() 
+
 	def responseRecieved(self,response):
 		"""
 			Hook in here before setting up the response body reader. 
 			Look at headers to determine if the signature is valid,
 			what the peer is sending back, ect.
 		"""
-		if not self.active:
-			self.active = True
 
 		if response.code > 206: #peer wises to terminate it's involvement
 			#add makeup chunk to downloadPool's buffers
-			self.log.logic("Terminating connection with peer")
-			self.terminateConnection()
-			return 
+			self.end(response.code)
+			return None
+		elif not self.active:
+			self.begin()
+			return None
 
 		self.log.info("Received reply from peer")
 
