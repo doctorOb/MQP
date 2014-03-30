@@ -172,16 +172,16 @@ class PeerHandler():
 			Look at headers to determine if the signature is valid,
 			what the peer is sending back, ect.
 		"""
+		self.log.info("Received reply from peer")
 
 		if response.code > 206: #peer wises to terminate it's involvement
 			#add makeup chunk to downloadPool's buffers
 			self.end(response.code)
 			return None
-		elif not self.active:
+
+		if not self.active:
 			self.begin()
 			return None
-
-		self.log.info("Received reply from peer")
 
 		self.timer.reset()
 	 	headers = headersFromResponse(response)
@@ -189,4 +189,4 @@ class PeerHandler():
 		 	recvr = self.responseWriter(self,range=self.assigned_chunk)
 			response.deliverBody(recvr)
 		except:
-			pass
+			self.log.warning("error setting up reciever")
