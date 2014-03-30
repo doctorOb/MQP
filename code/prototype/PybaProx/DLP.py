@@ -283,9 +283,9 @@ class DownloadPool():
 
 		return d
 
-	def writeData(self):
+	def writeData(self,req=None):
 		"""
-		write the data at the head of the buffer to the transport
+		write the data at the head of the buffer to the transport. Must take an argument (as defered callbacks pass one in)
 		"""
 		try:
 			buf = self.sendBuffers[0]
