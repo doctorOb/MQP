@@ -254,6 +254,7 @@ class DownloadPool():
 		"""
 		buf = self._peerBuffer(peer)
 		buf.writeData(data)
+		self.log.info("buffered {} bytes of data from {}.".format(len(data),peer.id))
 
 	
 	def waitForData(self,d=None):

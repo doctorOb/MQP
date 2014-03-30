@@ -39,7 +39,6 @@ class PH_RequestBodyReciever(Protocol):
 
 	def __init__(self,handler):
 		self.handler = handler #reference to handler class that holds an open TCP connection with the peer
-		self.recvd = 0
 		self.log = Logger()
 
 	def repeatCallback(self):
@@ -54,7 +53,6 @@ class PH_RequestBodyReciever(Protocol):
 			self.log.warning('error in repeat callback')
 
 	def dataReceived(self,bytes):
-		self.recvd += len(bytes)
 		self.handler.timer.reset()
 		self.handler.downloadPool.appendData(self.handler,bytes)
 
