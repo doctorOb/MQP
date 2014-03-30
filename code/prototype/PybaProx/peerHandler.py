@@ -47,7 +47,7 @@ class PH_RequestBodyReciever(Protocol):
 			if range != None:
 				self.handler.getChunk(range)
 			else:
-				self.handler.terminateConnection()
+				pass#self.handler.terminateConnection()
 		except:
 			raise
 			self.log.warning('error in repeat callback')
