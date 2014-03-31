@@ -274,9 +274,9 @@ class DownloadPool():
 			if len(buf) > 0 and buf.start_idx == self.rangeIndex:
 				postpone = False
 				d.callback(buf)
-		except KeyError:
-			self.log.warning('key error: {}'.format(self.rangeIndex))
-			
+		except IndexError:
+			self.log.warning('index error: {}'.format(self.rangeIndex))
+
 		if postpone:
 			reactor.callLater(.1,self.waitForData,d)
 
@@ -306,7 +306,6 @@ class DownloadPool():
 			self.log.warning('error writing to client')
 			raise
 			sys.exit(0)
-
 
 		if buf.done:
 			self.rangeIndex = buf.stop_idx + 1
