@@ -46,7 +46,7 @@ class ProjConfigs():
 		if not self._load():
 			return False #don't instantiate
 		self.neighbors = dict()
-		self.ip = get_ip()
+		self.ip = get_ip('eth1')
 		self.key = PKeyPair(self.ip,fname="keys/{}.key".format(self.ip))
 		self.peer_port = self.cfg.peer_port
 		self.proxy_port = self.cfg.proxy_port

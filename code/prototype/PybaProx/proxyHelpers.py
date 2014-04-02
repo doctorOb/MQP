@@ -43,11 +43,14 @@ if os.name != "nt":
 				struct.pack('256s', ifname[:15])
 			)[20:24])
 
-def get_ip():
+def get_ip(iface=None):
 	"""get ip address on both window and linux. 
 	Taken from Stack Overflow: http://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib
 	"""
 	ip = socket.gethostbyname(socket.gethostname())
+
+	if iface not None:
+		return get_interface_ip(iface)
 	if ip.startswith("127.") and os.name != "nt":
 		interfaces = ["eth0","eth1","eth2","wlan0","wlan1","wifi0","ath0","ath1","ppp0"]
 		for ifname in interfaces:
