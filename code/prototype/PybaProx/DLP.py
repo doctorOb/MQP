@@ -232,7 +232,10 @@ class DownloadPool():
 			#no more chunks to download, so terminate
 			self.log.info("No more chunks to allocate")
 			chunk_range = None
-			reactor.callLater(5,self.endSession,"Timeout session end")
+			#consider removing the following line. In the case that the last chunk
+			#is substantially large, it is difficult to predict a proper timeout 
+			#interval to wait. Hard coding is clearly a poor decision.
+			reactor.callLater(15,self.endSession,"Timeout session end") 
 
 
 		if chunk_range:

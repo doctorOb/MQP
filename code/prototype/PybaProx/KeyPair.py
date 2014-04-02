@@ -49,21 +49,16 @@ class PKeyPair():
 		return self.key.publickey().verify(hash,signature)
 
 if __name__ == '__main__':
-	a = PKeyPair('10.18.175.229',fname="../keys/10.18.175.229.key")
-	b = PKeyPair('10.18.175.229',fname="../keys/10.18.175.229.key")
+	#create a key when invoked as a script, optionally pass in an ip explicitly
+	from proxyHelpers import get_ip
+	import sys
 
-	msg = "Hello, alice"
-	hash=md5hash(msg)
-
-
-	a_sig = a.sign(msg)[0]
-	t_sig = str(a_sig)
-
-	unpacked = long(t_sig)
-	if a.verify(hash,(unpacked,)) is not True:
-		print "Verification error"
+	if len(sys.argv) > 1:
+		ip = str(sys.argv[1])
 	else:
-		print "verification succeeded"
+		ip = get_ip()
+
+	key = PKeyPair(ip)
 
 
 
