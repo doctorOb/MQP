@@ -73,7 +73,6 @@ class RequestBodyReciever(Protocol):
 			self.log.warning('error in repeat callback on dlp')
 
 	def dataReceived(self,bytes):
-		self.log.info("resp received")
 		self.recvd += len(bytes)
 		self.pClient.father.appendData(self.pClient,self.start,bytes)
 
@@ -282,7 +281,7 @@ class DownloadPool():
 			pass #send buffers empty
 
 		if postpone:
-			reactor.callLater(.1,self.waitForData,d)
+			reactor.callLater(.4,self.waitForData,d)
 
 		return d
 
@@ -311,8 +310,6 @@ class DownloadPool():
 			raise
 			sys.exit(0)
 
-		self.waitForData()
-
 		if buf.done:
 			self.rangeIndex = buf.stop_idx + 1
 			del self.sendBuffers[0] #remove the buffer, and update the index
@@ -320,5 +317,6 @@ class DownloadPool():
 		if self.bytes_sent >= self.requestSize - 1: #wiggle room
 			self.endSession(msg="All data for request has been written to client")
 
+		self.waitForData()
 
 
