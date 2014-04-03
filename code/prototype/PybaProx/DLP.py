@@ -73,6 +73,7 @@ class RequestBodyReciever(Protocol):
 			self.log.warning('error in repeat callback on dlp')
 
 	def dataReceived(self,bytes):
+		self.log.info("resp received")
 		self.recvd += len(bytes)
 		self.pClient.father.appendData(self.pClient,self.start,bytes)
 
@@ -278,7 +279,7 @@ class DownloadPool():
 				postpone = False
 				d.callback(buf)
 		except IndexError:
-			self.log.warning('index error: {}'.format(self.rangeIndex))
+			pass #send buffers empty
 
 		if postpone:
 			reactor.callLater(.1,self.waitForData,d)
