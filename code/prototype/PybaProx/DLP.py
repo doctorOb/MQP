@@ -276,7 +276,6 @@ class DownloadPool():
 		try:
 			buf = self.sendBuffers[0]
 			if len(buf) > 0 and buf.start_idx == self.rangeIndex:
-				postpone = False
 				d.callback(buf)
 		except IndexError:
 			pass #send buffers empty
