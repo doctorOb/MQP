@@ -235,7 +235,7 @@ class DownloadPool():
 			#consider removing the following line. In the case that the last chunk
 			#is substantially large, it is difficult to predict a proper timeout 
 			#interval to wait. Hard coding is clearly a poor decision.
-			reactor.callLater(15,self.endSession,"Timeout session end") 
+			#reactor.callLater(15,self.endSession,"Timeout session end") 
 
 
 		if chunk_range:
