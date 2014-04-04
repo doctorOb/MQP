@@ -1,5 +1,4 @@
-sudo route add -host 10.18.176.231 dev eth1;
-sudo route add -host 10.18.229.213 dev eth1;
+sudo route add -host 10.18.130.208 dev eth1;
+sudo route add -host 10.18.228.213 dev eth1;
+sudo route add -host 10.18.234.114 dev eth1;
 sudo route add -host 10.18.175.229 dev eth1;
-
-sudo ifconfig eth1 $ETH1_IP
