@@ -1,0 +1,4 @@
+Router A seems to download faster then Router B, after the bandwidth throttling has been applied. Not sure of the cause. Also, the limit that we apply doesn't 
+correlate with the effective bandwidth.
+
+For instance, on router A, a 10 kbps limit yields an effective bandwidth of 5.06 mbps. Yet on router B, a limit of 66 kbps is required to produce the same effect.
