@@ -1,0 +1,15 @@
+
+function ba_limit() {
+	ETH=$0;
+	LIMIT=$1;
+	sudo tc qdisc add dev $ETH root handle 1: htb default 10;
+	sudo tc class add dev $ETH parent 1: classid 1:1 htb rate $LIMIT ceil $LIMIT;
+	sudo tc class add dev $ETH parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT;
+}
+
+function tc_clear() {
+	sudo tc qdisc del dev $0 root;
+}
+
+
+alias test="curl --interface eth2 http://10.18.234.114/stuff/space.jpg > /dev/null";
