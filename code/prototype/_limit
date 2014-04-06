@@ -17,13 +17,17 @@ function ba_limit() {
 }
 
 function balim() {
+	#from http://lartc.org/lartc.html#LARTC.RATELIMIT.SINGLE
 	ETH=$1;
 	LIMIT=$2;
 	ETH_IP=$(getIP $ETH);
 
-	sudo tc qdisc add dev $ETH root handle 1: cbq avpkt 1000 bandwidth 10mbit;
-	sudo tc class add dev $ETH parent 1: classid 1:1 cbq rate $LIMIT allot 1500 prio 5 bounded isolated;
-	sudo tc filter add dev $ETH parent 1: protocol ip prio 16 u32 match ip dst $ETH_IP flowid 1:1;
+	#sudo tc qdisc add dev $ETH root tbf rate $LIMIT latency 50ms burst 1540;
+
+	sudo qdisc add dev $ETH root handle 1: htb;
+	sudo tc class add dev $ETH parent 1: classid 1:2 htb rate $LIMIT ceil $LIMIT burst 1Mb cburst 1Mb;
+	sudo tc filter add dev $ETH protocol ip parent 1: prio 1 u32 match ip dst $ETH_IP flowid 1:2;
+
 }
 
 function tc_clear() {
