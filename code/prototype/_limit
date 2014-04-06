@@ -25,7 +25,7 @@ function balim() {
 	sudo tc class add dev $DEV parent 1: classid 1:1 htb rate 500mbit ceil 500mbit ;
 	sudo tc class add dev $DEV parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT;
 	sudo tc filter add dev $DEV protocol ip parent 1:0 prio 1 u32 match ip dst ${ETH_IP} flowid 1:10;
-
+}
 function tc_clear() {
 	sudo tc qdisc del dev $1 root;
 	sudo tc qdisc del dev eth2 handle ffff: ingress;
