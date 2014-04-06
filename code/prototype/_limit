@@ -1,17 +1,18 @@
 #!/bin/bash
 
 function getIP() {
-	ip addr | awk '/inet/ && /$1/{sub(/\/.*$/,"",$2); print $2}';
+	A="/inet/ && /$1";
+	ip addr | awk $A'/{sub(/\/.*$/,"",$2); print $2}';
 }
 function ba_limit() {
 	ETH=$1;
 	LIMIT=$2;
-	IP=$(getIP $ETH)
-	echo sudo tc qdisc add dev $ETH root handle 1: htb default 10
-	echo sudo tc class add dev $ETH parent 1: classid 1:1 htb rate 50000kbps ceil 50000kbps 
-	echo sudo tc class add dev $ETH parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT
-	echo sudo tc class add dev $ETH parent 1:1 classid 1:11 htb rate $LIMIT ceil $LIMIT
-	echo sudo tc filter add dev $ETH protocol ip parent 1:0 prio 1 u32 match ip src ${CLIENT_IP}
+	IP=$(getIP $ETH);
+	sudo tc qdisc add dev $ETH root handle 1: htb default 10;
+	sudo tc class add dev $ETH parent 1: classid 1:1 htb rate 50000kbps ceil 50000kbps ;
+	sudo tc class add dev $ETH parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT;
+	sudo tc class add dev $ETH parent 1:1 classid 1:11 htb rate $LIMIT ceil $LIMIT;
+	sudo tc filter add dev $ETH protocol ip parent 1:0 prio 1 u32 match ip src ${CLIENT_IP};
 }
 
 function tc_clear() {
