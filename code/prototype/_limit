@@ -13,7 +13,7 @@ function ba_limit() {
 	sudo tc class add dev $ETH parent 1: classid 1:1 htb rate 50000kbps ceil 50000kbps ;
 	sudo tc class add dev $ETH parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT;
 	sudo tc class add dev $ETH parent 1:1 classid 1:11 htb rate $LIMIT ceil $LIMIT;
-	sudo tc filter add dev $ETH protocol ip parent 1:0 prio 1 u32 match ip src ${ETH_IP};
+	sudo tc filter add dev $ETH protocol ip parent 1:0 prio 1 u32 match ip dst ${ETH_IP};
 }
 
 function balim() {
@@ -24,7 +24,7 @@ function balim() {
 
 	#sudo tc qdisc add dev $ETH root tbf rate $LIMIT latency 50ms burst 1540;
 
-	sudo qdisc add dev $ETH root handle 1: htb;
+	sudo tc qdisc add dev $ETH root handle 1: htb;
 	sudo tc class add dev $ETH parent 1: classid 1:2 htb rate $LIMIT ceil $LIMIT burst 1Mb cburst 1Mb;
 	sudo tc filter add dev $ETH protocol ip parent 1: prio 1 u32 match ip dst $ETH_IP flowid 1:2;
 
