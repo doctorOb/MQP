@@ -5,6 +5,7 @@ function getIP() {
 	B='{sub(/\/.*$/,"",$2); print $2}';
 	ip addr | awk "$A$B";
 }
+
 function ba_limit() {
 	DEV=$1;
 	LIMIT=$2;
@@ -12,25 +13,22 @@ function ba_limit() {
 	sudo tc qdisc add dev $DEV root handle 1: htb default 10;
 	sudo tc class add dev $DEV parent 1: classid 1:1 htb rate 50000kbps ceil 50000kbps ;
 	sudo tc class add dev $DEV parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT;
-	sudo tc class add dev $DEV parent 1:1 classid 1:11 htb rate $LIMIT ceil $LIMIT;
-	sudo tc filter add dev $DEV protocol ip parent 1:0 prio 1 u32 match ip dst ${ETH_IP};
+	sudo tc filter add dev $DEV protocol ip parent 1:0 prio 1 u32 match ip dst ${ETH_IP} flowid 1:10;
 }
 
 function balim() {
 	#from http://lartc.org/lartc.html#LARTC.RATELIMIT.SINGLE
 	DEV=$1;
 	LIMIT=$2;
-	ETH_IP=$(getIP $DEV);
-
-	#sudo tc qdisc add dev $DEV root tbf rate $LIMIT latency 50ms burst 1540;
-
-	sudo tc qdisc add dev $DEV handle ffff: ingress;
-	sudo tc filter add dev $DEV parent ffff: protocol ip prio 50 u32 match ip src 0.0.0.0/0 police rate $LIMIT burst 10k drop flowid :1
-
-}
+	ETH_IP=$3;
+	sudo tc qdisc add dev $DEV root handle 1: htb default 10;
+	sudo tc class add dev $DEV parent 1: classid 1:1 htb rate 500mbit ceil 500mbit ;
+	sudo tc class add dev $DEV parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT;
+	sudo tc filter add dev $DEV protocol ip parent 1:0 prio 1 u32 match ip dst ${ETH_IP} flowid 1:10;
 
 function tc_clear() {
 	sudo tc qdisc del dev $1 root;
+	sudo tc qdisc del dev eth2 handle ffff: ingress;
 }
 
 
