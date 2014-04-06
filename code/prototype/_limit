@@ -8,12 +8,12 @@ function getIP() {
 function ba_limit() {
 	ETH=$1;
 	LIMIT=$2;
-	IP=$(getIP $ETH);
+	ETH_IP=$(getIP $ETH);
 	sudo tc qdisc add dev $ETH root handle 1: htb default 10;
 	sudo tc class add dev $ETH parent 1: classid 1:1 htb rate 50000kbps ceil 50000kbps ;
 	sudo tc class add dev $ETH parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT;
 	sudo tc class add dev $ETH parent 1:1 classid 1:11 htb rate $LIMIT ceil $LIMIT;
-	sudo tc filter add dev $ETH protocol ip parent 1:0 prio 1 u32 match ip src ${CLIENT_IP};
+	sudo tc filter add dev $ETH protocol ip parent 1:0 prio 1 u32 match ip src ${ETH_IP};
 }
 
 function tc_clear() {
