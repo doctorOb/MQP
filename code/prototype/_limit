@@ -2,7 +2,8 @@
 
 function getIP() {
 	A="/inet/ && /$1";
-	ip addr | awk $A'/{sub(/\/.*$/,"",$2); print $2}';
+	B='{sub(/\/.*$/,"",$2); print $2}';
+	ip addr | awk "$A$B";
 }
 function ba_limit() {
 	ETH=$1;
