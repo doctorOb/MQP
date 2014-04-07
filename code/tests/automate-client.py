@@ -16,8 +16,6 @@ MB_DOWNLOADS=[50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900] #add M.test
 GB_DOWNLOADS=[1, 2, 4, 5, 10]; #add G.test
 
 
-
-IP=sys.argv[1]
 PORT=5000
 BUFFER_SIZE=1024
 
