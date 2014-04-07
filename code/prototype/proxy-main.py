@@ -13,6 +13,8 @@ from twisted.internet import reactor
 from twisted.web import http
 from twisted.web.server import Site
 
+from optparse import OptionParser
+
 class BAListener():
 	"""A wrapper that couples the logic for instantiating the Peer listener."""
 	def __init__(self,reactor=reactor):
@@ -80,7 +82,14 @@ class ProjConfigs():
 if __name__ == '__main__':
 	#twisted specific imports
 
+	parser = OptionParser()
+	parser.add_argument("-c", "--chunk",type=int, help="Override the default chunk size with a specified value (in bytes)")
+	args = parser.parse_args()
 	reactor.configs = ProjConfigs('module.cfg') #borrow the reactors global state to hold the configs
+	if args.chunk:
+		reactor.configs.max_chunk_size = args.chunk
+		print "using chunk size: "
+
 	bal = BAListener()
 	bap = BAProxy()
 

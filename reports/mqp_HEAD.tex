@@ -6,6 +6,7 @@
 \geometry{a4paper} % Set the page size to be A4 as opposed to the default US Letter
 
 \usepackage{graphicx} % Required for including pictures
+\graphicspath{ {diagrams/} }
 
 \usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 \usepackage{wrapfig} % Allows in-line images such as the example fish picture
@@ -280,7 +281,20 @@
 
 \newpage
 \section{Evaluation}
-	
+
+
+	Initial evaluation of our prototype was conducted on virtualized Linux machines. A physical evaluation was later preformed using real hardware. Our network setup is modeled after that of a small apartment complex, in which each resident's router is assigned a limited bandwidth by their ISP, but can communicate with neighbors in its subnet relatively fast. Playing the role of a prudent ISP, we capped the downlink bandwidth on each device using a unix command geared towards traffic control (aptly named, tc). Each VM was outfitted with a number of network interfaces (NICs) in order to logically divide the communication channels that were in use. This allowed us to make isolated changes to one interface without affecting networking performance for the entire machine. 
+
+	Each router was outfitted with two network interfaces, one for communicating with eachother, and one for communicating with the server. We outfitted a VM with apache in order to emulate a typical server. Unix's powerful traffic shaping utility, tc, comes with robust queuing functionality which allows upload limits to be enforced very deterministically. However, shaping download bandwidth rates proved problematic and performed too unpredictably for a suitable evaluation environment. Bandwidth limiting (in a vain similar to that of a typical ISP) was achieved by applying upload rate rules to each client that contacts the server. A static configuration allowed each router VM to have a separate tc queue on the server with an associated outgoing bandwidth limit. Each router communicates with each other over another network interface, which emulates a local wireless connection (between apartment rooms). These interfaces can further be rate limited in order to better represent the wireless bandwidth of a typical 802.11 a/c/g router. 
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[keepaspectratio=true,scale=0.3]{InterfaceSetup.png}
+		\caption{VM diagram}
+		\label{fig:awesome_image}
+	\end{figure}
+
+	Initial evaluation results were satisfying. Our baseline case consisted of two routers, each with a 10 mbps throttled connection to the server, and an unthrottled (near instantaneous) connection with each other and their clients. Using a 40 Megabyte test file, downloaded in 1 Megabyte chunks, the total download speed (realized by the client) was close to being doubled, at 18 mbps. A significantly smaller test file of 7 Megabytes yielded speeds of 17.3 mbps, suggesting that the small overhead induced by our aggregation techniques is diminished with larger file sizes. 
 
 \newpage
 \section{Discussion}
