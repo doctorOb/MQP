@@ -17,7 +17,7 @@ def parse_command(message):
 	return parsed
 
 def handle_command(cmd):
-	p = subprocess.call(['worker.sh',cmd], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	p = subprocess.call(['sh worker.sh',cmd], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	p.wait()
 
 
