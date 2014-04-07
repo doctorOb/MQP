@@ -16,6 +16,38 @@ function ba_limit() {
 	sudo tc filter add dev $DEV protocol ip parent 1:0 prio 1 u32 match ip dst ${ETH_IP} flowid 1:10;
 }
 
+function filter-set() {
+	DEV=$1;
+	CLIENT_IP=$2;
+
+	sudo tc qdisc add dev $DEV root handle 1: htb;
+	sudo tc class add dev $DEV parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT;
+}
+
+function filter-ip() {
+	DEV=$1;
+	CLIENT_IP=$2;
+	sudo tc filter add dev $DEV protocol ip parent 1:0 prio 1 u32 match ip dst ${CLIENT_IP} flowid 1:10;
+}
+
+function filter-clear() {
+	DEV=$1;
+	sudo tc qdisc del dev $DEV root;
+	sudo tc filter del dev $DEV;
+}
+
+function server_limit() {
+	DEV=$1;
+
+	sudo tc qdisc add dev $DEV root handle 1: htb;
+	sudo tc class add dev $DEV parent 1:1 classid 1:10 htb rate 10mbit ceil 10mbit;
+	sudo tc class add dev $DEV parent 1:1 classid 1:11 htb rate 5mbit ceil 5mbit;
+
+	sudo iptables -t mangle -A FORWARD -d 10.18.211.123 -j MARK --set-mark 303;
+	sudo iptables -t mangle -A FORWARD -d 10.18.175.187 -j MARK --set-mark 404;
+}
+
+
 function balim() {
 	#from http://lartc.org/lartc.html#LARTC.RATELIMIT.SINGLE
 	DEV=$1;
