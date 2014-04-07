@@ -18,10 +18,11 @@ function ba_limit() {
 
 function filter-set() {
 	DEV=$1;
-	CLIENT_IP=$2;
+	LIMIT=$2;
+	CID=$3;
 
 	sudo tc qdisc add dev $DEV root handle 1: htb;
-	sudo tc class add dev $DEV parent 1:1 classid 1:10 htb rate $LIMIT ceil $LIMIT;
+	sudo tc class add dev $DEV parent 1:1 classid 1:$3 htb rate $LIMIT ceil $LIMIT;
 }
 
 function filter-ip() {
@@ -35,6 +36,7 @@ function filter-clear() {
 	sudo tc qdisc del dev $DEV root;
 	sudo tc filter del dev $DEV;
 }
+
 
 function server_limit() {
 	DEV=$1;
