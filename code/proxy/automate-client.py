@@ -44,7 +44,7 @@ if __name__ == '__main__':
 	for speed in ['10mbit']:
 		send_message(SERVER_IP,"server {}".format(speed))
 		for fsize in MB_DOWNLOADS:
-			for csize in CHUNK_SIZES:
+			for csize in CHUNK_SIZES[2:]:
 				for rip in ROUTERS:
 					send_message(rip, "router {}".format(csize))
 				sleep(15) #wait for each machine to process the request. TODO: wait for confirmation

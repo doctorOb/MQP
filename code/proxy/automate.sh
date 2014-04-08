@@ -30,8 +30,8 @@ server() {
 
 	A_IP=10.18.175.187;
 	B_IP=10.18.211.123;
-	sudo tc filter add dev $DEV protocol ip parent 1:0 prio 1 u32 match ip dst ${A_IP} flowid 1:11;
-	sudo tc filter add dev $DEV protocol ip parent 1:0 prio 1 u32 match ip dst ${B_IP} flowid 1:12;
+	sudo tc filter add dev eth1 protocol ip parent 1:0 prio 1 u32 match ip dst ${A_IP} flowid 1:11;
+	sudo tc filter add dev eth1 protocol ip parent 1:0 prio 1 u32 match ip dst ${B_IP} flowid 1:12;
 }
 
 client() {
