@@ -7,7 +7,6 @@ from time import sleep
 import subprocess
 
 
-
 IP = sys.argv[1]
 PORT = 5000
 BUFFER_SIZE = 1024
@@ -23,9 +22,9 @@ def handle_command(cmd,kill_pid=0):
 	return sp.pid
 
 
-if __name__ == '__main__':
 
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+if __name__ == '__main__':
+	signal.signal(signal.SIGINT,cleanup)
 	s.bind((IP, PORT))
 	s.listen(1)
 	active_pid = 0 #pid of the current running task

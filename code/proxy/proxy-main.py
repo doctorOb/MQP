@@ -22,7 +22,7 @@ def cleanup(signal,frame):
 	"""handle an interrupt signal, make sure sockets are lcosed properly and exit"""
 	print "Caught sigint"
 	reactor.stop()
-	sys.exit(1)
+	sys.exit(0)
 
 class BAListener():
 	"""A wrapper that couples the logic for instantiating the Peer listener."""
