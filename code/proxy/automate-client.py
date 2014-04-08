@@ -4,6 +4,7 @@ import socket
 import sys
 import os
 from time import sleep
+import subprocess
 
 SERVER_IP="10.18.234.114"
 ROUTERS=['10.18.175.187','10.18.211.123']
@@ -35,12 +36,19 @@ def send_message(ip,message):
 		#connection refused
 		return ""
 
+def handle_command(cmd):
+	out = subprocess.check_output(['sh','automate.sh'] + cmd.split(" "))
+	print out
+
 if __name__ == '__main__':
 	for fsize in MB_DOWNLOADS:
 		for csize in CHUNK_SIZES:
 			for rip in ROUTERS:
-				send_message(rip, "{} {}".format(csize,ISP_THROTTLE))
-			send_message(SERVER_IP,"{} {}".format(csize,ISP_THROTTLE))
+				send_message(rip, "router {}".format(csize))
+			send_message(SERVER_IP,"server {}".format(ISP_THROTTLE))
+			sleep(15) #wait for each machine to process the request. TODO: wait for confirmation
+			handle_command("client {}M.test".format(fsize))
+
 
 
 

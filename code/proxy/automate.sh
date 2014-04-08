@@ -33,7 +33,7 @@ function server() {
 
 function client() {
 	SIZE_URL=$2
-	(time tcurl $SIZE_URL/$SIZE.test) &>> $LOG_FILE;
+	(time tcurl $SIZE_URL/$SIZE) &>> $LOG_FILE;
 }
 
 
