@@ -5,21 +5,23 @@ export SERVER_ROOT=http://10.18.234.114;
 export SIZE_URL=${SERVER_ROOT}/sizes;
 export STUFF_URL=${SERVER_ROOT}/stuff;
 
-LOG_FILE=nightly.log;
+LOG_FILE="nightly.log";
 
-function router() {
+
+ARG=$2;
+
+router() {
 	#kill the proxy if it is currently running, then start again with the new chunk size
-	CHUNK_SIZE=$2;
-	THROTLE=$3; #not used by this script
+	CHUNK_SIZE=$ARG;
 
-	kill -9 `cat current_proc.pid` || true;
-	python proxy-main.py -c $CHUNK_SIZE;
-	echo $! > current_proc.pid;
+	#kill -9 `cat current_proc.pid` || true;
+	python proxy-main.py "-c $CHUNK_SIZE";
+	#echo $! > current_proc.pid;
 }
 
-function server() {
+server() {
 	#clear the current tc queues attached to eth1, reapply them with the new limit, for all possible router IPs.
-	LIMIT=$2
+	LIMIT=$ARG
 	sudo tc qdisc del dev eth1 root;
 	sudo tc qdisc add dev eth1 root handle 1: htb;
 	sudo tc class add dev eth1 parent 1:1 classid 1:11 htb rate $LIMIT ceil $LIMIT;
@@ -31,8 +33,8 @@ function server() {
 	sudo tc filter add dev $DEV protocol ip parent 1:0 prio 1 u32 match ip dst ${B_IP} flowid 1:12;
 }
 
-function client() {
-	SIZE_URL=$2
+client() {
+	SIZE_URL=$ARG
 	(time tcurl $SIZE_URL/$SIZE) &>> $LOG_FILE;
 }
 
@@ -42,6 +44,7 @@ case "$1" in
 
 	router)
 		#do router stuff
+		echo "doing router stuff";
 		router
 		;;
 	server)

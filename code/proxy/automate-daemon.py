@@ -11,11 +11,13 @@ import subprocess
 IP = sys.argv[1]
 PORT = 5000
 BUFFER_SIZE = 1024
-
+RUNNING_PID=None
 
 def handle_command(cmd):
-	out = subprocess.check_output(['sh','automate.sh'] + cmd.split(" "))
-	print out
+	if RUNNING_PID:
+		os.kill(RUNNING_PID,9)
+	sp = subprocess.Popen(['sh','automate.sh'] + cmd.split(" "))
+	RUNNING_PID=sp.pid
 
 
 if __name__ == '__main__':
