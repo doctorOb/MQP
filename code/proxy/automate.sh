@@ -35,7 +35,7 @@ server() {
 
 client() {
 	SIZE_URL=$ARG
-	(time tcurl $SIZE_URL/$SIZE) &>> $LOG_FILE;
+	(time time curl $SIZE_URL/$SIZE >/dev/null 2>&1) &>> $LOG_FILE;
 }
 
 
