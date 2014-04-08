@@ -14,6 +14,7 @@ from twisted.web import http
 from twisted.web.server import Site
 
 import argparse
+import os
 
 class BAListener():
 	"""A wrapper that couples the logic for instantiating the Peer listener."""
@@ -84,11 +85,13 @@ if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser(description='Run a bandwidth aggregation proxy')
 	parser.add_argument("-c", "--chunk",type=int, help="Override the default chunk size with a specified value (in bytes)")
+	parser.add_argument("-f", "--file",type=str, help="Path to config file")
 	args = parser.parse_args()
-	reactor.configs = ProjConfigs('module.cfg') #borrow the reactors global state to hold the configs
+
+	cfg_path = 'module.cfg' if not args.file else os.path.abspath(args.file)
+	reactor.configs = ProjConfigs(cfg_path) #borrow the reactors global state to hold the configs
 	if args.chunk:
 		reactor.configs.max_chunk_size = args.chunk
-		print "using chunk size: "
 
 	bal = BAListener()
 	bap = BAProxy()
