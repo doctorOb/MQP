@@ -35,7 +35,10 @@ if __name__ == '__main__':
 	for fsize in MB_DOWNLOADS:
 		for csize in CHUNK_SIZES:
 			for rip in ROUTERS:
-				send_message(rip, "{} {}".format(csize,ISP_THROTTLE))
+				try:
+					send_message(rip, "{} {}".format(csize,ISP_THROTTLE))
+				except:
+					pass #not running
 			send_message(SERVER_IP,"{} {}".format(csize,ISP_THROTTLE))
 
 
