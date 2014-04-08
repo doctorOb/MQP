@@ -14,7 +14,8 @@ BUFFER_SIZE = 1024
 def handle_command(cmd,kill_pid=0):
 	if kill_pid > 0:
 		try:
-			os.kill(kill_pid,9)
+			print "Killling existing proxy process"
+			os.system("kill -9 {}".format(str(kill_pid)))
 			sleep(3)
 		except:
 			pass #already finished
