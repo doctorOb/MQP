@@ -16,7 +16,8 @@ def parse_command(message):
 	return message
 
 def handle_command(cmd):
-	p = subprocess.call(['sh','worker.sh',cmd], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	out = subprocess.check_output(['sh','worker.sh',cmd])
+	print out
 
 
 if __name__ == '__main__':
@@ -31,7 +32,6 @@ if __name__ == '__main__':
 			message = conn.recv(BUFFER_SIZE)
 			if message:
 				args = parse_command(message)
-				print args
 				conn.send("Accept")
 				conn.close()
 				handle_command(args)
