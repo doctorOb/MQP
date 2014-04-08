@@ -41,13 +41,14 @@ def handle_command(cmd):
 	print out
 
 if __name__ == '__main__':
-	for fsize in MB_DOWNLOADS:
-		for csize in CHUNK_SIZES:
-			for rip in ROUTERS:
-				send_message(rip, "router {}".format(csize))
-			send_message(SERVER_IP,"server {}".format(ISP_THROTTLE))
-			sleep(15) #wait for each machine to process the request. TODO: wait for confirmation
-			handle_command("client {}M.test".format(fsize))
+	for speed in ['10mbit']:
+		send_message(SERVER_IP,"server {}".format(speed))
+		for fsize in MB_DOWNLOADS:
+			for csize in CHUNK_SIZES:
+				for rip in ROUTERS:
+					send_message(rip, "router {}".format(csize))
+				sleep(15) #wait for each machine to process the request. TODO: wait for confirmation
+				handle_command("client {}M.test".format(fsize))
 
 
 
