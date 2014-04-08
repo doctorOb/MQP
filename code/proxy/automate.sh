@@ -9,6 +9,7 @@ LOG_FILE="nightly.log";
 
 
 ARG=$2;
+CHUNK=$3;
 
 router() {
 	#kill the proxy if it is currently running, then start again with the new chunk size
@@ -34,9 +35,9 @@ server() {
 }
 
 client() {
-	SIZE_URL=$ARG
-	echo "Running curl test for file $ARG";
-	(time curl $SIZE_URL/$SIZE >/dev/null 2>&1) &>> $LOG_FILE;
+	SIZE=$ARG;
+	echo "=====Running curl test for file $ARG and chunk $CHUNK=====" >> $LOG_FILE;
+	(time curl $SIZE_URL/$SIZE >/dev/null) > dump  2>> $LOG_FILE;
 }
 
 
