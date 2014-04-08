@@ -15,6 +15,13 @@ from twisted.web.server import Site
 
 import argparse
 import os
+import signal
+
+def cleanup(signal,frame):
+	"""handle an interrupt signal, make sure sockets are lcosed properly and exit"""
+	print "Caught sigint"
+	reactor.stop()
+	sys.exit(1)
 
 class BAListener():
 	"""A wrapper that couples the logic for instantiating the Peer listener."""
@@ -96,6 +103,7 @@ if __name__ == '__main__':
 	bal = BAListener()
 	bap = BAProxy()
 
+	signal.signal(signal.SIGINT,cleanup)
 	reactor.run() #start the server
 
 

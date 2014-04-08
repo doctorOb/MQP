@@ -16,6 +16,7 @@ def handle_command(cmd,kill_pid=0):
 	if kill_pid > 0:
 		try:
 			os.kill(kill_pid,9)
+			sleep(30)
 		except:
 			pass #already finished
 	sp = subprocess.Popen(['sh','automate.sh'] + cmd.split(" "))
