@@ -105,6 +105,7 @@ if __name__ == '__main__':
 	bap = BAProxy()
 
 	signal.signal(signal.SIGINT,cleanup)
+	signal.signal(signal.SIGTERM,cleanup)
 	reactor.run() #start the server
 
 
