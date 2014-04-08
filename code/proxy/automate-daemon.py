@@ -23,8 +23,9 @@ def handle_command(cmd,kill_pid=0):
 
 
 
+
 if __name__ == '__main__':
-	signal.signal(signal.SIGINT,cleanup)
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.bind((IP, PORT))
 	s.listen(1)
 	active_pid = 0 #pid of the current running task
