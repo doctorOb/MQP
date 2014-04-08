@@ -5,18 +5,24 @@ import sys
 import os
 from time import sleep
 import subprocess
+import psutil
 
 
 IP = sys.argv[1]
 PORT = 5000
 BUFFER_SIZE = 1024
 
+def killall(pid):
+	parent = psutil.Process(pid)
+	for child in parent.children(recursive=True):
+		child.kill()
+	parent.kill()
+
 def handle_command(cmd,kill_pid=0):
 	if kill_pid > 0:
 		try:
 			print "Killling existing proxy process"
-			os.system("kill -- -{}".format(str(kill_pid)))
-			sleep(3)
+			killall(kill_pid)
 		except:
 			pass #already finished
 	sp = subprocess.Popen(['sh','automate.sh'] + cmd.split(" "))
