@@ -15,7 +15,7 @@ def handle_command(cmd,kill_pid=0):
 	if kill_pid > 0:
 		try:
 			print "Killling existing proxy process"
-			os.system("kill -9 {}".format(str(kill_pid)))
+			os.system("kill -- -{}".format(str(kill_pid)))
 			sleep(3)
 		except:
 			pass #already finished

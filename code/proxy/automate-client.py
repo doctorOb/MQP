@@ -46,7 +46,7 @@ if __name__ == '__main__':
 			for rip in ROUTERS:
 				send_message(rip, "router {}".format(csize))
 			send_message(SERVER_IP,"server {}".format(ISP_THROTTLE))
-			sleep(30) #wait for each machine to process the request. TODO: wait for confirmation
+			sleep(15) #wait for each machine to process the request. TODO: wait for confirmation
 			handle_command("client {}M.test".format(fsize))
 
 
