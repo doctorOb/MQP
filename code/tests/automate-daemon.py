@@ -16,7 +16,7 @@ def parse_command(message):
 	return message
 
 def handle_command(cmd):
-	out = subprocess.check_output(['sh','worker.sh',cmd])
+	out = subprocess.check_output(['sh','worker.sh'] + cmd.split(" "))
 	print out
 
 
