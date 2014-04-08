@@ -24,21 +24,22 @@ BUFFER_SIZE=1024
 ISP_THROTTLE="10mbit"
 
 def send_message(ip,message):
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect((ip,PORT))
-	s.send(message)
-	data = s.recv(BUFFER_SIZE)
-	s.close()
-	return data
+	try:
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.connect((ip,PORT))
+		s.send(message)
+		data = s.recv(BUFFER_SIZE)
+		s.close()
+		return data
+	except:
+		#connection refused
+		return ""
 
 if __name__ == '__main__':
 	for fsize in MB_DOWNLOADS:
 		for csize in CHUNK_SIZES:
 			for rip in ROUTERS:
-				try:
-					send_message(rip, "{} {}".format(csize,ISP_THROTTLE))
-				except:
-					pass #not running
+				send_message(rip, "{} {}".format(csize,ISP_THROTTLE))
 			send_message(SERVER_IP,"{} {}".format(csize,ISP_THROTTLE))
 
 

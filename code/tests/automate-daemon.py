@@ -31,6 +31,7 @@ if __name__ == '__main__':
 			message = conn.recv(BUFFER_SIZE)
 			if message:
 				args = parse_command(message)
+				print args
 				conn.send("Accept")
 				conn.close()
 				handle_command(args)
