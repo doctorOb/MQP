@@ -16,6 +16,7 @@ from twisted.web.server import Site
 import argparse
 import os
 import signal
+import sys
 
 def cleanup(signal,frame):
 	"""handle an interrupt signal, make sure sockets are lcosed properly and exit"""
