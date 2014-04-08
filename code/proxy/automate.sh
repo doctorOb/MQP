@@ -36,7 +36,7 @@ server() {
 client() {
 	SIZE_URL=$ARG
 	echo "Running curl test for file $ARG";
-	(time time curl $SIZE_URL/$SIZE >/dev/null 2>&1) &>> $LOG_FILE;
+	(time curl $SIZE_URL/$SIZE >/dev/null 2>&1) &>> $LOG_FILE;
 }
 
 

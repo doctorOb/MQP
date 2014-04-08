@@ -15,7 +15,7 @@ def handle_command(cmd,kill_pid=0):
 	if kill_pid > 0:
 		try:
 			os.kill(kill_pid,9)
-			sleep(30)
+			sleep(3)
 		except:
 			pass #already finished
 	sp = subprocess.Popen(['sh','automate.sh'] + cmd.split(" "))
@@ -39,6 +39,7 @@ if __name__ == '__main__':
 					conn.send("Accept")
 					conn.close()
 					active_pid = handle_command(message,kill_pid=active_pid)
+					print "PID of BA process is ",str(active_pid)
 				break
 			sleep(5)
 	except:
