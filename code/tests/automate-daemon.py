@@ -13,11 +13,10 @@ PORT = 5000
 BUFFER_SIZE = 1024
 
 def parse_command(message):
-	parsed = message
-	return parsed
+	return message
 
 def handle_command(cmd):
-	p = subprocess.call(['sh worker.sh',cmd], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	p = subprocess.call(['sh','worker.sh',cmd], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	p.wait()
 
 
