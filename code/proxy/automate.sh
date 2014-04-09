@@ -16,6 +16,7 @@ router() {
 	CHUNK_SIZE=$ARG;
 
 	#kill -9 `cat current_proc.pid` || true;
+	echo "=====Running Proxy with chunk size: $CHUNK_SIZE=====" >> $LOG_FILE;
 	python proxy-main.py "-c $CHUNK_SIZE";
 	#echo $! > current_proc.pid;
 }
@@ -37,7 +38,7 @@ server() {
 client() {
 	SIZE=$ARG;
 	echo "=====Running curl test for file $ARG and chunk $CHUNK=====" >> $LOG_FILE;
-	(time curl $SIZE_URL/$SIZE >/dev/null) > dump  2>> $LOG_FILE;
+	(/usr/bin/time -ao $LOG_FILE curl $SIZE_URL/$SIZE >/dev/null);
 }
 
 

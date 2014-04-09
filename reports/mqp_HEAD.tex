@@ -61,6 +61,16 @@
 \newpage
 \section{Intro}
 
+	%introduce NABC, explain the approach briefly, mention the results, include organizational remarks at the end
+	An influx of bandwidth intensive services over the past decade has placed an increased demand for high speed connections on the shoulders of Internet Service Providers (ISPs). However, the demand is overwhelming to the typical ISP, who has to enforce a fair and steady bandwidth between each subscriber in order to keep their network healthy. It is now common place that ISPs apply traffic shaping rules, in order to enforce an upper limit on bandwidth alloted to each client. Cellular service providers, who employ long distance wireless communication channels (such as LTE) to guarantee internet coverage to mobile clients, rate limit their clients for the same reasons. 
+
+	It is often the case that clients (both mobile users and home owners) naturally cluster together in close proximity (by nature of our society). One can imagine the number of mobile devices crowded together at a busy bus stop, or the overlap of routers (each with a separate ISP subscription) within wireless communication range of each other in a city apartment. Combining these rate limited neighboring devices can yield download speeds that comes close to the true sum of the parts. This very idea has become a low hanging fruit in the networking community. A great number of works have focused on aggregating the bandwidth of LTE users into altruistic communities, which offer higher bandwidth then that of an individual link. However, in the apartment setting, only a limited number of commercial offerings have been devised. This MQP seeks to contribute to the latter case.
+
+	Existing bandwidth aggregating solutions realizable by consumers have two shortcomings. Their functioning requires the presence of a special router (for each client), and they fail to provide strong security guarantees. Our approach leverages the HTTP protocol in order to aggregate bandwidth between a number of routers, called {\it peers}, in local wireless range of each other. It can be run on any Linux platform (such as the DD-WRT router firmware), making home installation an easily achievable reality. Further, it safeguards participants from being incriminated for traffic they unwillingly download on behalf of other peers, through strict enforcement of non-repudiation.
+
+
+
+
 %=====================HISTORY=================================================%
 \newpage
 \section{Background}
