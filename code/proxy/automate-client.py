@@ -38,7 +38,6 @@ def send_message(ip,message):
 
 def handle_command(cmd):
 	out = subprocess.check_output(['sh','automate.sh'] + cmd.split(" "))
-	print out
 
 if __name__ == '__main__':
 	for speed in ['10mbit']:
@@ -48,7 +47,7 @@ if __name__ == '__main__':
 				for rip in ROUTERS:
 					send_message(rip, "router {}".format(csize))
 				sleep(15) #wait for each machine to process the request. TODO: wait for confirmation
-				handle_command("client {}M.test".format(fsize))
+				handle_command("client {}M.test {}".format(fsize,csize))
 
 
 
