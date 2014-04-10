@@ -5,7 +5,7 @@ export SERVER_ROOT=http://10.18.234.114;
 export SIZE_URL=${SERVER_ROOT}/sizes;
 export STUFF_URL=${SERVER_ROOT}/stuff;
 
-LOG_FILE="nightly.log";
+LOG_FILE="~/nightlies/nightly.log";
 
 
 ARG=$2;

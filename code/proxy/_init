@@ -3,3 +3,4 @@ sudo route add -host 10.18.228.213 dev eth1;
 sudo route add -host 10.18.234.114 dev eth2;
 sudo route add -host 10.18.175.229 dev eth1;
 sudo route add -host 10.18.205.154 dev eth1;
+sudo route add -host 10.18.228.100 dev eth1;
