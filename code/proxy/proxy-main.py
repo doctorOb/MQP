@@ -100,6 +100,7 @@ if __name__ == '__main__':
 	reactor.configs = ProjConfigs(cfg_path) #borrow the reactors global state to hold the configs
 	if args.chunk:
 		reactor.configs.max_chunk_size = args.chunk
+		print "Using chunk size {}".format(args.chunk)
 
 	bal = BAListener()
 	bap = BAProxy()

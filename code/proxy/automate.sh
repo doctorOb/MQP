@@ -28,11 +28,16 @@ server() {
 	sudo tc qdisc add dev eth1 root handle 1: htb;
 	sudo tc class add dev eth1 parent 1:1 classid 1:11 htb rate $LIMIT ceil $LIMIT;
 	sudo tc class add dev eth1 parent 1:1 classid 1:12 htb rate $LIMIT ceil $LIMIT;
+	sudo tc class add dev eth1 parent 1:1 classid 1:13 htb rate $LIMIT ceil $LIMIT;
+
 
 	A_IP=10.18.175.187;
 	B_IP=10.18.211.123;
+	C_IP=10.18.228.100;
 	sudo tc filter add dev eth1 protocol ip parent 1:0 prio 1 u32 match ip dst ${A_IP} flowid 1:11;
 	sudo tc filter add dev eth1 protocol ip parent 1:0 prio 1 u32 match ip dst ${B_IP} flowid 1:12;
+	sudo tc filter add dev eth1 protocol ip parent 1:0 prio 1 u32 match ip dst ${C_IP} flowid 1:13;
+
 }
 
 client() {

@@ -7,7 +7,7 @@ from time import sleep
 import subprocess
 
 SERVER_IP="10.18.234.114"
-ROUTERS=['10.18.175.187','10.18.211.123']
+ROUTERS=['10.18.175.187','10.18.211.123','10.18.205.154']
 
 SERVER_ROOT="http://{}".format(SERVER_IP)
 
