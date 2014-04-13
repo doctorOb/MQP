@@ -1,0 +1,411 @@
+=====Running curl test for file 50M.test and chunk 102400=====
+real 0.32
+user 0.02
+sys 0.18
+=====Running curl test for file 50M.test and chunk 1048576=====
+real 0.26
+user 0.02
+sys 0.17
+=====Running curl test for file 50M.test and chunk 2097152=====
+real 0.27
+user 0.02
+sys 0.17
+=====Running curl test for file 50M.test and chunk 3145728=====
+real 0.25
+user 0.02
+sys 0.16
+=====Running curl test for file 50M.test and chunk 102400=====
+real 26.37
+user 0.05
+sys 0.22
+=====Running curl test for file 50M.test and chunk 1048576=====
+real 21.89
+user 0.02
+sys 0.20
+=====Running curl test for file 50M.test and chunk 102400=====
+Command terminated by signal 2
+real 137.42
+user 0.03
+sys 0.16
+=====Running curl test for file 50M.test and chunk 102400=====
+real 10.19
+user 0.03
+sys 0.18
+=====Running curl test for file 50M.test and chunk 1048576=====
+real 3.81
+user 0.04
+sys 0.14
+=====Running curl test for file 50M.test and chunk 2097152=====
+real 5.36
+user 0.04
+sys 0.16
+=====Running curl test for file 50M.test and chunk 3145728=====
+real 6.87
+user 0.04
+sys 0.15
+=====Running curl test for file 50M.test and chunk 5242880=====
+real 8.70
+user 0.02
+sys 0.18
+=====Running curl test for file 50M.test and chunk 10485760=====
+real 17.12
+user 0.05
+sys 0.15
+=====Running curl test for file 50M.test and chunk 16777216=====
+Command exited with non-zero status 18
+real 7.36
+user 0.01
+sys 0.04
+=====Running curl test for file 50M.test and chunk 102400=====
+real 18.90
+user 0.07
+sys 0.17
+=====Running curl test for file 50M.test and chunk 1048576=====
+real 15.09
+user 0.04
+sys 0.16
+=====Running curl test for file 50M.test and chunk 2097152=====
+real 15.33
+user 0.02
+sys 0.19
+=====Running curl test for file 50M.test and chunk 3145728=====
+real 15.31
+user 0.02
+sys 0.19
+=====Running curl test for file 50M.test and chunk 5242880=====
+real 16.95
+user 0.05
+sys 0.15
+=====Running curl test for file 50M.test and chunk 10485760=====
+real 17.03
+user 0.04
+sys 0.16
+=====Running curl test for file 50M.test and chunk 16777216=====
+real 19.64
+user 0.04
+sys 0.20
+=====Running curl test for file 50M.test and chunk 33554432=====
+real 27.15
+user 0.05
+sys 0.20
+=====Running curl test for file 75M.test and chunk 102400=====
+real 28.68
+user 0.08
+sys 0.30
+=====Running curl test for file 75M.test and chunk 1048576=====
+real 22.19
+user 0.08
+sys 0.24
+=====Running curl test for file 75M.test and chunk 2097152=====
+real 22.10
+user 0.09
+sys 0.22
+=====Running curl test for file 75M.test and chunk 3145728=====
+real 22.87
+user 0.05
+sys 0.23
+=====Running curl test for file 75M.test and chunk 5242880=====
+real 21.35
+user 0.05
+sys 0.25
+=====Running curl test for file 75M.test and chunk 10485760=====
+real 26.21
+user 0.07
+sys 0.25
+=====Running curl test for file 75M.test and chunk 16777216=====
+real 33.89
+user 0.02
+sys 0.29
+=====Running curl test for file 75M.test and chunk 33554432=====
+real 36.19
+user 0.10
+sys 0.25
+=====Running curl test for file 100M.test and chunk 102400=====
+real 37.71
+user 0.08
+sys 0.43
+=====Running curl test for file 100M.test and chunk 1048576=====
+real 29.25
+user 0.07
+sys 0.36
+=====Running curl test for file 100M.test and chunk 2097152=====
+real 29.35
+user 0.06
+sys 0.34
+=====Running curl test for file 100M.test and chunk 3145728=====
+real 28.78
+user 0.04
+sys 0.35
+=====Running curl test for file 100M.test and chunk 5242880=====
+real 29.80
+user 0.04
+sys 0.38
+=====Running curl test for file 100M.test and chunk 10485760=====
+real 36.47
+user 0.08
+sys 0.35
+=====Running curl test for file 100M.test and chunk 16777216=====
+real 38.14
+user 0.06
+sys 0.38
+=====Running curl test for file 100M.test and chunk 33554432=====
+real 77.45
+user 0.10
+sys 0.42
+=====Running curl test for file 200M.test and chunk 102400=====
+real 75.53
+user 0.19
+sys 0.79
+=====Running curl test for file 200M.test and chunk 1048576=====
+real 58.38
+user 0.13
+sys 0.71
+=====Running curl test for file 200M.test and chunk 2097152=====
+real 57.66
+user 0.18
+sys 0.62
+=====Running curl test for file 200M.test and chunk 3145728=====
+real 57.52
+user 0.13
+sys 0.66
+=====Running curl test for file 200M.test and chunk 5242880=====
+real 59.23
+user 0.16
+sys 0.64
+=====Running curl test for file 200M.test and chunk 10485760=====
+real 59.31
+user 0.10
+sys 0.72
+=====Running curl test for file 200M.test and chunk 16777216=====
+real 81.89
+user 0.17
+sys 0.73
+=====Running curl test for file 200M.test and chunk 33554432=====
+real 142.43
+user 0.17
+sys 0.81
+=====Running curl test for file 300M.test and chunk 102400=====
+real 113.89
+user 0.32
+sys 1.12
+=====Running curl test for file 300M.test and chunk 1048576=====
+real 87.43
+user 0.24
+sys 1.01
+=====Running curl test for file 300M.test and chunk 2097152=====
+real 86.27
+user 0.24
+sys 1.00
+=====Running curl test for file 300M.test and chunk 3145728=====
+real 86.22
+user 0.19
+sys 1.02
+=====Running curl test for file 300M.test and chunk 5242880=====
+real 85.19
+user 0.20
+sys 0.99
+=====Running curl test for file 300M.test and chunk 10485760=====
+real 85.50
+user 0.18
+sys 1.04
+=====Running curl test for file 300M.test and chunk 16777216=====
+real 111.32
+user 0.27
+sys 1.04
+=====Running curl test for file 300M.test and chunk 33554432=====
+real 198.25
+user 0.26
+sys 1.16
+=====Running curl test for file 400M.test and chunk 102400=====
+real 152.58
+user 0.34
+sys 1.59
+=====Running curl test for file 400M.test and chunk 1048576=====
+real 116.69
+user 0.29
+sys 1.37
+=====Running curl test for file 400M.test and chunk 2097152=====
+real 115.22
+user 0.28
+sys 1.32
+=====Running curl test for file 400M.test and chunk 3145728=====
+real 114.04
+user 0.29
+sys 1.38
+=====Running curl test for file 400M.test and chunk 5242880=====
+real 114.76
+user 0.26
+sys 1.33
+=====Running curl test for file 400M.test and chunk 10485760=====
+real 118.46
+user 0.27
+sys 1.42
+=====Running curl test for file 400M.test and chunk 16777216=====
+real 157.92
+user 0.28
+sys 1.49
+=====Running curl test for file 400M.test and chunk 33554432=====
+real 263.92
+user 0.37
+sys 1.52
+=====Running curl test for file 500M.test and chunk 102400=====
+real 191.51
+user 0.50
+sys 1.94
+=====Running curl test for file 500M.test and chunk 1048576=====
+real 145.76
+user 0.38
+sys 1.66
+=====Running curl test for file 500M.test and chunk 2097152=====
+real 143.23
+user 0.40
+sys 1.66
+=====Running curl test for file 500M.test and chunk 3145728=====
+real 142.89
+user 0.29
+sys 1.72
+=====Running curl test for file 500M.test and chunk 5242880=====
+real 143.39
+user 0.29
+sys 1.72
+=====Running curl test for file 500M.test and chunk 10485760=====
+real 144.04
+user 0.26
+sys 1.80
+=====Running curl test for file 500M.test and chunk 16777216=====
+real 183.90
+user 0.40
+sys 1.73
+=====Running curl test for file 500M.test and chunk 33554432=====
+real 354.90
+user 0.37
+sys 2.08
+=====Running curl test for file 600M.test and chunk 102400=====
+Command exited with non-zero status 18
+real 232.17
+user 0.54
+sys 2.40
+=====Running curl test for file 600M.test and chunk 1048576=====
+real 175.20
+user 0.44
+sys 1.99
+=====Running curl test for file 600M.test and chunk 2097152=====
+real 172.55
+user 0.44
+sys 2.03
+=====Running curl test for file 600M.test and chunk 3145728=====
+real 171.94
+user 0.36
+sys 2.06
+=====Running curl test for file 600M.test and chunk 5242880=====
+real 170.05
+user 0.36
+sys 2.10
+=====Running curl test for file 600M.test and chunk 10485760=====
+real 173.55
+user 0.35
+sys 2.12
+=====Running curl test for file 600M.test and chunk 16777216=====
+real 243.57
+user 0.36
+sys 2.18
+=====Running curl test for file 600M.test and chunk 33554432=====
+real 421.66
+user 0.50
+sys 2.31
+=====Running curl test for file 700M.test and chunk 102400=====
+real 278.79
+user 0.78
+sys 2.65
+=====Running curl test for file 700M.test and chunk 1048576=====
+real 204.13
+user 0.56
+sys 2.38
+=====Running curl test for file 700M.test and chunk 2097152=====
+real 200.15
+user 0.49
+sys 2.38
+=====Running curl test for file 700M.test and chunk 3145728=====
+real 200.24
+user 0.46
+sys 2.38
+=====Running curl test for file 700M.test and chunk 5242880=====
+real 199.81
+user 0.37
+sys 2.42
+=====Running curl test for file 700M.test and chunk 10485760=====
+real 202.52
+user 0.43
+sys 2.38
+=====Running curl test for file 700M.test and chunk 16777216=====
+real 260.93
+user 0.50
+sys 2.51
+=====Running curl test for file 700M.test and chunk 33554432=====
+real 474.20
+user 0.56
+sys 2.84
+=====Running curl test for file 800M.test and chunk 102400=====
+real 321.24
+user 0.88
+sys 3.03
+=====Running curl test for file 800M.test and chunk 1048576=====
+real 233.23
+user 0.56
+sys 2.80
+=====Running curl test for file 800M.test and chunk 2097152=====
+real 229.49
+user 0.50
+sys 2.82
+=====Running curl test for file 800M.test and chunk 3145728=====
+real 228.22
+user 0.48
+sys 2.75
+=====Running curl test for file 800M.test and chunk 5242880=====
+real 227.67
+user 0.47
+sys 2.84
+=====Running curl test for file 800M.test and chunk 10485760=====
+real 233.78
+user 0.47
+sys 2.76
+=====Running curl test for file 800M.test and chunk 16777216=====
+real 287.24
+user 0.62
+sys 2.69
+=====Running curl test for file 800M.test and chunk 33554432=====
+real 556.21
+user 0.70
+sys 3.18
+=====Running curl test for file 900M.test and chunk 102400=====
+real 366.03
+user 0.83
+sys 3.57
+=====Running curl test for file 900M.test and chunk 1048576=====
+real 262.22
+user 0.71
+sys 3.06
+=====Running curl test for file 900M.test and chunk 2097152=====
+real 257.47
+user 0.67
+sys 3.06
+=====Running curl test for file 900M.test and chunk 3145728=====
+real 256.71
+user 0.63
+sys 2.99
+=====Running curl test for file 900M.test and chunk 5242880=====
+real 255.19
+user 0.57
+sys 3.00
+=====Running curl test for file 900M.test and chunk 10485760=====
+real 258.04
+user 0.51
+sys 3.16
+=====Running curl test for file 900M.test and chunk 16777216=====
+real 324.43
+user 0.59
+sys 3.19
+=====Running curl test for file 900M.test and chunk 33554432=====
+real 639.77
+user 0.75
+sys 3.66
