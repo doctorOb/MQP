@@ -42,8 +42,9 @@ server() {
 
 client() {
 	SIZE=$ARG;
-	echo "=====Running curl test for file $ARG and chunk $CHUNK=====" >> $LOG_FILE;
-	(/usr/bin/time -ao $LOG_FILE -p curl $SIZE_URL/$SIZE >/dev/null);
+	echo "==================================\n" >> $LOG_FILE;
+	echo "[INFO]{'fsize' : '$SIZE', 'chunk' : '$CHUNK'}" >> $LOG_FILE;
+	(/usr/bin/time -ao $LOG_FILE -f "[TIME] %e\n" curl $SIZE_URL/$SIZE >/dev/null);
 }
 
 

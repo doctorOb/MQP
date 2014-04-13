@@ -98,9 +98,4 @@
 [INFO]{'fsize' : '75M.test', 'chunk' : '33554432'}
 [TIME] 43.01
 
-==================================
-
-[INFO]{'fsize' : '100M.test', 'chunk' : '1024'}
-Command terminated by signal 2
-[TIME] 9297.05
 
