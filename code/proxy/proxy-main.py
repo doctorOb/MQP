@@ -57,7 +57,11 @@ class ProjConfigs():
 		if not self._load():
 			return False #don't instantiate
 		self.neighbors = dict()
-		self.ip = get_ip(interface)
+		try:
+			self.ip = get_ip(interface)
+		except IOError:
+			print "Not a valid interface:{}".format(interface)
+			sys.exit(1)
 		self.key = PKeyPair(self.ip,fname="keys/{}.key".format(self.ip))
 		self.peer_port = self.cfg.peer_port
 		self.proxy_port = self.cfg.proxy_port
@@ -96,6 +100,7 @@ if __name__ == '__main__':
 	parser.add_argument("-f", "--file",type=str, help="Path to config file")
 	parser.add_argument("-i", "--interface",type=str, help="Interface to listen on")
 	args = parser.parse_args()
+	print args
 
 	cfg_path = os.path.abspath(args.file) if args.file else 'module.cfg'
 	interface = args.interface if args.interface else 'eth1'
