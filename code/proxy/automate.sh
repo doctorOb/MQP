@@ -5,7 +5,7 @@ export SERVER_ROOT=http://10.18.234.114;
 export SIZE_URL=${SERVER_ROOT}/sizes;
 export STUFF_URL=${SERVER_ROOT}/stuff;
 
-LOG_FILE="~/nightlies/nightly.log";
+LOG_FILE="nightly.log";
 
 
 ARG=$2;
@@ -14,7 +14,7 @@ DEV="eth1"
 
 router() {
 	CHUNK_SIZE=$ARG;
-	python proxy-main.py "-c $CHUNK_SIZE -i $DEV";
+	python proxy-main.py "-c $CHUNK_SIZE" "-i $DEV";
 }
 
 server() {
