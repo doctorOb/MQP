@@ -1,5 +1,5 @@
 from twisted.web import proxy, http
-from twisted.web.client import Agent, HTTPConnectionPool, _parse
+from twisted.web.client import Agent, HTTPConnectionPool
 from twisted.web.http_headers import Headers
 from twisted.internet import reactor, defer
 from twisted.internet.protocol import Protocol, Factory, ClientFactory, ClientCreator

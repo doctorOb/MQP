@@ -19,6 +19,8 @@ CHUNK_SIZES=[1024, 10240, 102400, 1048576, 2097152, 3145728, 5242880, 10485760, 
 MB_DOWNLOADS=[50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900] #add M.test
 GB_DOWNLOADS=[1, 2, 4, 5, 10]; #add G.test
 
+N_DOWNLOADS=['200M','300M','500M','700M','900M','1GB','2GB','4GB']
+
 
 PORT=5000
 BUFFER_SIZE=1024
@@ -42,12 +44,12 @@ def handle_command(cmd):
 if __name__ == '__main__':
 	for speed in ['10mbit']:
 		send_message(SERVER_IP,"server {}".format(speed))
-		for fsize in MB_DOWNLOADS:
+		for fsize in N_DOWNLOADS:
 			for csize in CHUNK_SIZES[2:]:
 				for rip in ROUTERS:
 					send_message(rip, "router {}".format(csize))
 				sleep(15) #wait for each machine to process the request. TODO: wait for confirmation
-				handle_command("client {}M.test {}".format(fsize,csize))
+				handle_command("client {}.test {}".format(fsize,csize))
 
 
 

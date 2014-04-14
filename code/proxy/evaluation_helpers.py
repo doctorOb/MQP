@@ -8,6 +8,7 @@ TIME_DELIM = '[TIME]'
 TRIAL_DELIM = '==='
 
 CHUNK_SIZES=[102400, 1048576, 2097152, 3145728, 5242880, 10485760, 16777216, 33554432]
+FILE_SIZES=[50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
 
 KB = 1024.0
@@ -76,6 +77,17 @@ def group_by_chunk(stats):
 			dtimes[run['chunk']].add(bandwidth)
 	return dtimes
 
+def group_by_request_size(stats):
+	"""group a collection of stats by file size"""
+	sizes = dict()
+	for run in stats:
+		bandwidth = calculate_mbps(run['size'],run['time'])
+		if run['size'] not in sizes:
+			sizes[run['size']] = Measure(bandwidth)
+		else:
+			sizes[run['size']].add(bandwidth)
+	return sizes
+
 def graph_chunk_bandwidth(chunks):
 	fig = plot.figure()
 	ax = fig.add_subplot(111)
@@ -96,9 +108,31 @@ def graph_chunk_bandwidth(chunks):
 
 	plot.show()
 
+def graph_filesize_bandwidth(sizes):
+	fig = plot.figure()
+	ax = fig.add_subplot(111)
+	N = len(sizes)
+	indicies = np.arange(N)
+	width = 0.5
+
+	#the bars
+	rects1 = ax.bar(indicies,sizes,width,color='red')
+	ax.set_xlim(-width,len(indicies)+width)
+	ax.set_ylim(0,30)
+	ax.set_ylabel('Bandwidth (mbps)')
+	ax.set_xlabel('File Size')
+	ax.set_title('Average realized bandwidth using 3 Routers.')
+	ax.set_xticks(indicies+width)
+	xTicks = ax.set_xticklabels([btoh(size) for size in FILE_SIZES])
+	plot.setp(xTicks,rotation=45,fontsize=10)
+
+	plot.show()
+
 if __name__ == '__main__':
 	stats = parse_log(sys.argv[1])
 	dtime_by_chunk = group_by_chunk(stats)
+	dtime_by_size = group_by_request_size(stats)
 
 	plt_chunks = [dtime_by_chunk[size].average() for size in CHUNK_SIZES]
-	graph_chunk_bandwidth(plt_chunks)
+	plt_sizes = [dtime_by_size[size].average() for size in FILE_SIZES]
+	graph_filesize_bandwidth(plt_chunks)

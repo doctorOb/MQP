@@ -9,7 +9,7 @@
 \BOOKMARK [2][-]{subsection.2.4}{Mobile Devices as an Aggregation Platform}{section.2}% 9
 \BOOKMARK [2][-]{subsection.2.5}{Non Repudiation, and Willingness to Participate}{section.2}% 10
 \BOOKMARK [1][-]{section.3}{Approach}{}% 11
-\BOOKMARK [2][-]{subsection.3.1}{Big Design Components}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.1}{Core Design Components}{section.3}% 12
 \BOOKMARK [3][-]{subsubsection.3.1.1}{Determining when to aggregate}{subsection.3.1}% 13
 \BOOKMARK [3][-]{subsubsection.3.1.2}{Negotiating Peer Involvement}{subsection.3.1}% 14
 \BOOKMARK [3][-]{subsubsection.3.1.3}{Security and Liability}{subsection.3.1}% 15
@@ -18,7 +18,7 @@
 \BOOKMARK [2][-]{subsection.3.3}{First Design Iteration}{section.3}% 18
 \BOOKMARK [2][-]{subsection.3.4}{Implementing on a proxy}{section.3}% 19
 \BOOKMARK [3][-]{subsubsection.3.4.1}{Squid proxy}{subsection.3.4}% 20
-\BOOKMARK [3][-]{subsubsection.3.4.2}{proxying with Python}{subsection.3.4}% 21
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Proxying with Python}{subsection.3.4}% 21
 \BOOKMARK [2][-]{subsection.3.5}{Developing a Prototype}{section.3}% 22
 \BOOKMARK [3][-]{subsubsection.3.5.1}{Peer communication protocol}{subsection.3.5}% 23
 \BOOKMARK [3][-]{subsubsection.3.5.2}{Role of the Coordinating Router}{subsection.3.5}% 24
