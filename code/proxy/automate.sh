@@ -10,15 +10,11 @@ LOG_FILE="~/nightlies/nightly.log";
 
 ARG=$2;
 CHUNK=$3;
+DEV="eth1"
 
 router() {
-	#kill the proxy if it is currently running, then start again with the new chunk size
 	CHUNK_SIZE=$ARG;
-
-	#kill -9 `cat current_proc.pid` || true;
-	echo "=====Running Proxy with chunk size: $CHUNK_SIZE=====" >> $LOG_FILE;
-	python proxy-main.py "-c $CHUNK_SIZE";
-	#echo $! > current_proc.pid;
+	python proxy-main.py "-c $CHUNK_SIZE -i $DEV";
 }
 
 server() {

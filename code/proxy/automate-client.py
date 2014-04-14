@@ -15,16 +15,17 @@ MEGABYTE = 102400
 
 #			  1kb  10kb    100kb    1mb      2mb      3mb      5mb      10mb     16mb      32mb
 CHUNK_SIZES=[1024, 10240, 102400, 1048576, 2097152, 3145728, 5242880, 10485760, 16777216, 33554432]
+OPTIMAL_SIZES=[102400, 204800, 409600, 819200, 1048576, 2097152, 3145728, 5242880]
 
 MB_DOWNLOADS=[50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900] #add M.test
 GB_DOWNLOADS=[1, 2, 4, 5, 10]; #add G.test
 
-N_DOWNLOADS=['200M','300M','500M','700M','900M','1GB','2GB','4GB']
+N_DOWNLOADS=['100M','200M','300M','500M','700M','900M','1GB','2GB']
 
 
 PORT=5000
 BUFFER_SIZE=1024
-ISP_THROTTLE="10mbit"
+ISP_THROTTLE="20mbit"
 
 def send_message(ip,message):
 	try:
@@ -42,7 +43,7 @@ def handle_command(cmd):
 	out = subprocess.check_output(['sh','automate.sh'] + cmd.split(" "))
 
 if __name__ == '__main__':
-	for speed in ['10mbit']:
+	for speed in [ISP_THROTTLE]:
 		send_message(SERVER_IP,"server {}".format(speed))
 		for fsize in N_DOWNLOADS:
 			for csize in CHUNK_SIZES[2:]:
