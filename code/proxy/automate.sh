@@ -14,7 +14,7 @@ DEV="eth1"
 
 router() {
 	CHUNK_SIZE=$ARG;
-	python proxy-main.py "-c $CHUNK_SIZE" "-i $DEV";
+	python proxy-main.py -c $CHUNK_SIZE -i $DEV;
 }
 
 server() {
