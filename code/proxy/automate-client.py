@@ -3,7 +3,7 @@
 import socket
 import sys
 import os
-from time import sleep
+from time import sleep, strftime
 import subprocess
 
 SERVER_IP="10.18.234.114"
@@ -20,7 +20,7 @@ OPTIMAL_SIZES=[102400, 204800, 409600, 819200, 1048576, 2097152, 3145728, 524288
 MB_DOWNLOADS=[50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900] #add M.test
 GB_DOWNLOADS=[1, 2, 4, 5, 10]; #add G.test
 
-N_DOWNLOADS=['100M','200M','300M','500M','700M','900M','1GB','2GB']
+N_DOWNLOADS=['100M','200M','300M','500M','700M','900M','1G','2G']
 
 
 PORT=5000
@@ -42,15 +42,24 @@ def send_message(ip,message):
 def handle_command(cmd):
 	out = subprocess.check_output(['sh','automate.sh'] + cmd.split(" "))
 
+def run_test(bandwidth=ISP_THROTTLE,routers=ROUTERS):
+	send_message(SERVER_IP,"server {}".format(bandwidth))
+	for fsize in N_DOWNLOADS:
+		for csize in CHUNK_SIZES[2:]:
+			for rip in routers:
+				send_message(rip, "router {}".format(csize))
+			sleep(15) #wait for each machine to process the request. TODO: wait for confirmation
+			handle_command("client {}.test {}".format(fsize,csize))
+	date = strftime("%m_%d_%H:%M")
+	log_name = "{}-{}:54mbit-x{}.log".format(date, bandwidth, len(routers))
+	subprocess.call("mv nightly.log ~/nightlies/{}".format(log_name).split(" "))
+
 if __name__ == '__main__':
-	for speed in [ISP_THROTTLE]:
-		send_message(SERVER_IP,"server {}".format(speed))
-		for fsize in N_DOWNLOADS:
-			for csize in CHUNK_SIZES[2:]:
-				for rip in ROUTERS:
-					send_message(rip, "router {}".format(csize))
-				sleep(15) #wait for each machine to process the request. TODO: wait for confirmation
-				handle_command("client {}.test {}".format(fsize,csize))
+
+	for bandwidth in ['10mbit','15mbit','20mbit','25mbit']:
+		run_test(bandwidth=bandwidth)
+
+
 
 
 
