@@ -44,15 +44,18 @@ def handle_command(cmd):
 
 def run_test(bandwidth=ISP_THROTTLE,routers=ROUTERS):
 	send_message(SERVER_IP,"server {}".format(bandwidth))
+	with open('nightly.log','a') as f:
+		f.write("\n=========New Session: {}=========\n".format(bandwidth))
+
 	for fsize in N_DOWNLOADS:
-		for csize in CHUNK_SIZES[2:]:
+		for csize in OPTIMAL_SIZES:
 			for rip in routers:
 				send_message(rip, "router {}".format(csize))
 			sleep(15) #wait for each machine to process the request. TODO: wait for confirmation
 			handle_command("client {}.test {}".format(fsize,csize))
 	date = strftime("%m_%d_%H:%M")
 	log_name = "{}-{}:54mbit-x{}.log".format(date, bandwidth, len(routers))
-	subprocess.call("mv nightly.log ~/nightlies/{}".format(log_name).split(" "))
+	subprocess.call("mv nightly.log /var/log/nightlies/{}".format(log_name).split(" "))
 
 if __name__ == '__main__':
 
