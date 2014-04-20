@@ -35,7 +35,7 @@ class BAListener():
 		ph = PeerHelper()
 		root = Dispatcher(ph)
 		peerFactory = Site(root)
-		self.reactor.listenTCP(self.configs.peer_port, peerFactory)
+		self.reactor.listenTCP(self.configs.peer_port, peerFactory,interface=self.configs.ip)
 
 class BAProxy():
 	"""A wrapper that groups the logic for instantiating a base proxy."""
@@ -47,7 +47,7 @@ class BAProxy():
 	def _setup(self):
 		proxyFactory = http.HTTPFactory()
 		proxyFactory.protocol = Proxy
-		self.reactor.listenTCP(self.configs.proxy_port, proxyFactory)
+		self.reactor.listenTCP(self.configs.proxy_port, proxyFactory,interface=self.configs.ip)
 
 class ProjConfigs():
 

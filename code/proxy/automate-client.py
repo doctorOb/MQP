@@ -21,6 +21,7 @@ MB_DOWNLOADS=[50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900] #add M.test
 GB_DOWNLOADS=[1, 2, 4, 5, 10]; #add G.test
 
 N_DOWNLOADS=['100M','200M','300M','500M','700M','900M','1G','2G']
+THROTTLES=['10mbit','15mbit','20mbit','25mbit']
 
 
 PORT=5000
@@ -59,7 +60,7 @@ def run_test(bandwidth=ISP_THROTTLE,routers=ROUTERS):
 
 if __name__ == '__main__':
 
-	for bandwidth in ['10mbit','15mbit','20mbit','25mbit']:
+	for bandwidth in THROTTLES:
 		run_test(bandwidth=bandwidth)
 
 
