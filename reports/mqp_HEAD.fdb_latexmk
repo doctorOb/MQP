@@ -1,11 +1,20 @@
 # Fdb version 3
+<<<<<<< Updated upstream
 ["biber mqp_HEAD"] 1397442409 "mqp_HEAD.bcf" "mqp_HEAD.bbl" "mqp_HEAD" 1397787626
   "mqp_HEAD.bcf" 1397787626 90859 0e9301bc857a361180619a0883fcc5ad ""
+=======
+["biber mqp_HEAD"] 1395619061 "mqp_HEAD.bcf" "mqp_HEAD.bbl" "mqp_HEAD" 1397149815
+  "mqp_HEAD.bcf" 1397149815 90859 0e9301bc857a361180619a0883fcc5ad ""
+>>>>>>> Stashed changes
   "mqp_bib.bib" 1395617963 9062 aafac4bf0ce4fdce7cf51718111e148b ""
   (generated)
   "mqp_HEAD.bbl"
   "mqp_HEAD.blg"
+<<<<<<< Updated upstream
 ["pdflatex"] 1397787621 "mqp_HEAD.tex" "mqp_HEAD.pdf" "mqp_HEAD" 1397787626
+=======
+["pdflatex"] 1397149812 "mqp_HEAD.tex" "mqp_HEAD.pdf" "mqp_HEAD" 1397149815
+>>>>>>> Stashed changes
   "/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii" 1337017135 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2013/texmf-dist/tex/generic/ifxetex/ifxetex.sty" 1284331290 1458 43ab4710dc82f3edeabecd0d099626b2 ""
   "/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/etexcmds.sty" 1335995445 7612 c47308d923ec19888707b0f1792b326a ""
@@ -142,14 +151,25 @@
   "/usr/local/texlive/2013/texmf-dist/tex/latex/xcolor/xcolor.sty" 1169481954 55224 a43bab84e0ac5e6efcaf9a98bde73a94 ""
   "/usr/local/texlive/2013/texmf-dist/tex/latex/xkeyval/xkeyval.sty" 1350473462 4934 09bb8eb3760faa4ffb6107a36e5b3d76 ""
   "diagrams/InterfaceSetup.png" 1396889789 77307 dbe88c27329cda32d7120e7c7fee3b96 ""
+<<<<<<< Updated upstream
   "diagrams/RouterDiagram.png" 1378946018 692826 e7ab0a5b2b0f57f904aa766ebafc98c0 ""
   "diagrams/all_sizes.png" 1397410333 29805 a417ea316187f058bf3f40c531a97278 ""
   "mqp_HEAD.aux" 1397787626 8135 f6b231dddbaac949e155b3e95849ee59 ""
   "mqp_HEAD.bbl" 1397442413 25504 469b327c3d9d361bc4e8d76205ef2053 "biber mqp_HEAD"
   "mqp_HEAD.out" 1397787626 2803 ab5c0f43c74cf43639e48e26fc4bd309 ""
   "mqp_HEAD.tex" 1397787596 96131 a09a9245c1b704f2d242ba627fb001fa ""
+=======
+  "mqp_HEAD.aux" 1397149815 7470 7405ba560c30eee592e4443ac4491675 ""
+  "mqp_HEAD.bbl" 1395619062 25504 469b327c3d9d361bc4e8d76205ef2053 "biber mqp_HEAD"
+  "mqp_HEAD.out" 1397149815 2705 ddae194ea25dbde9b2125a802927c448 ""
+  "mqp_HEAD.tex" 1397149807 88270 09b459678c207e4c678f7be3b61bb2c5 ""
+>>>>>>> Stashed changes
   (generated)
   "mqp_HEAD.pdf"
-  "mqp_HEAD.out"
   "mqp_HEAD.aux"
+<<<<<<< Updated upstream
+=======
+  "mqp_HEAD.out"
+  "mqp_HEAD.tdo"
+>>>>>>> Stashed changes
   "mqp_HEAD.log"
