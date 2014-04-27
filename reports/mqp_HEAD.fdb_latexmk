@@ -1,5 +1,6 @@
 # Fdb version 3
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ["biber mqp_HEAD"] 1397442409 "mqp_HEAD.bcf" "mqp_HEAD.bbl" "mqp_HEAD" 1397787626
   "mqp_HEAD.bcf" 1397787626 90859 0e9301bc857a361180619a0883fcc5ad ""
 =======
@@ -14,6 +15,15 @@
 ["pdflatex"] 1397787621 "mqp_HEAD.tex" "mqp_HEAD.pdf" "mqp_HEAD" 1397787626
 =======
 ["pdflatex"] 1397149812 "mqp_HEAD.tex" "mqp_HEAD.pdf" "mqp_HEAD" 1397149815
+>>>>>>> Stashed changes
+=======
+["biber mqp_HEAD"] 1398040416 "mqp_HEAD.bcf" "mqp_HEAD.bbl" "mqp_HEAD" 1398040704
+  "mqp_HEAD.bcf" 1398040704 93657 bec76dbc3f115f11bd7e7e620caea05e ""
+  "mqp_bib.bib" 1398039811 15069 a631dcf69eb22fedec5642da82ae7c9f ""
+  (generated)
+  "mqp_HEAD.bbl"
+  "mqp_HEAD.blg"
+["pdflatex"] 1398040699 "mqp_HEAD.tex" "mqp_HEAD.pdf" "mqp_HEAD" 1398040704
 >>>>>>> Stashed changes
   "/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii" 1337017135 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2013/texmf-dist/tex/generic/ifxetex/ifxetex.sty" 1284331290 1458 43ab4710dc82f3edeabecd0d099626b2 ""
@@ -154,6 +164,7 @@
 <<<<<<< Updated upstream
   "diagrams/RouterDiagram.png" 1378946018 692826 e7ab0a5b2b0f57f904aa766ebafc98c0 ""
   "diagrams/all_sizes.png" 1397410333 29805 a417ea316187f058bf3f40c531a97278 ""
+<<<<<<< Updated upstream
   "mqp_HEAD.aux" 1397787626 8135 f6b231dddbaac949e155b3e95849ee59 ""
   "mqp_HEAD.bbl" 1397442413 25504 469b327c3d9d361bc4e8d76205ef2053 "biber mqp_HEAD"
   "mqp_HEAD.out" 1397787626 2803 ab5c0f43c74cf43639e48e26fc4bd309 ""
@@ -171,5 +182,16 @@
 =======
   "mqp_HEAD.out"
   "mqp_HEAD.tdo"
+>>>>>>> Stashed changes
+=======
+  "diagrams/small_sizes.png" 1398037619 36998 bb513f0700cbb41cf17137f0017e08ec ""
+  "mqp_HEAD.aux" 1398040704 9066 4792a0adfccf063df670a62513e48c08 ""
+  "mqp_HEAD.bbl" 1398040418 46802 7b2c200aa786582a5e70143c012c4925 "biber mqp_HEAD"
+  "mqp_HEAD.out" 1398040704 2897 bab7b545a47a2a32e1b2519e9f112c43 ""
+  "mqp_HEAD.tex" 1398040690 98333 5139ad2a574b3129ab70df98629f03e3 ""
+  (generated)
+  "mqp_HEAD.pdf"
+  "mqp_HEAD.aux"
+  "mqp_HEAD.out"
 >>>>>>> Stashed changes
   "mqp_HEAD.log"

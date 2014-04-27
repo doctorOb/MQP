@@ -1954,27 +1954,85 @@
     <bcf:datasource type="file" datatype="bibtex">mqp_bib.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">Ramaboli20121674</bcf:citekey>
-    <bcf:citekey order="2">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="1">trunkingTutorial</bcf:citekey>
+    <bcf:citekey order="2">IEEE_IBM</bcf:citekey>
     <bcf:citekey order="3">Ramaboli20121674</bcf:citekey>
     <bcf:citekey order="4">Ramaboli20121674</bcf:citekey>
-    <bcf:citekey order="5">1541208</bcf:citekey>
-    <bcf:citekey order="6">4539690</bcf:citekey>
-    <bcf:citekey order="7">mohamed2002user</bcf:citekey>
-    <bcf:citekey order="8">5763587</bcf:citekey>
-    <bcf:citekey order="9">barre2011multipath</bcf:citekey>
-    <bcf:citekey order="10">5763587</bcf:citekey>
-    <bcf:citekey order="11">kim2008packet</bcf:citekey>
-    <bcf:citekey order="12">5355198</bcf:citekey>
-    <bcf:citekey order="13">GLL:2005</bcf:citekey>
-    <bcf:citekey order="14">Ramaboli20121674</bcf:citekey>
-    <bcf:citekey order="15">1204756</bcf:citekey>
-    <bcf:citekey order="16">1363842</bcf:citekey>
-    <bcf:citekey order="17">5421846</bcf:citekey>
-    <bcf:citekey order="18">AbdElAl20041012</bcf:citekey>
-    <bcf:citekey order="19">1363842</bcf:citekey>
-    <bcf:citekey order="20">1363842</bcf:citekey>
+    <bcf:citekey order="5">rfc5236</bcf:citekey>
+    <bcf:citekey order="6">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="7">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="8">1541208</bcf:citekey>
+    <bcf:citekey order="9">4539690</bcf:citekey>
+    <bcf:citekey order="10">mohamed2002user</bcf:citekey>
+    <bcf:citekey order="11">5763587</bcf:citekey>
+    <bcf:citekey order="12">barre2011multipath</bcf:citekey>
+    <bcf:citekey order="13">MPTCPNetsy</bcf:citekey>
+    <bcf:citekey order="14">5763587</bcf:citekey>
+    <bcf:citekey order="15">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="16">kim2008packet</bcf:citekey>
+    <bcf:citekey order="17">5355198</bcf:citekey>
+    <bcf:citekey order="18">GLL:2005</bcf:citekey>
+    <bcf:citekey order="19">Ramaboli20121674</bcf:citekey>
+    <bcf:citekey order="20">1204756</bcf:citekey>
     <bcf:citekey order="21">1363842</bcf:citekey>
-    <bcf:citekey order="22">Kremer20021606</bcf:citekey>
+    <bcf:citekey order="22">5421846</bcf:citekey>
+    <bcf:citekey order="23">AbdElAl20041012</bcf:citekey>
+    <bcf:citekey order="24">iguchi2005new</bcf:citekey>
+    <bcf:citekey order="25">1363842</bcf:citekey>
+    <bcf:citekey order="26">1363842</bcf:citekey>
+    <bcf:citekey order="27">1363842</bcf:citekey>
+    <bcf:citekey order="28">Kremer20021606</bcf:citekey>
+    <bcf:citekey order="29">goldreich1994definitions</bcf:citekey>
+    <bcf:citekey order="30">chang2006trust</bcf:citekey>
+    <bcf:citekey order="31">1318566</bcf:citekey>
+    <bcf:citekey order="32">1318566</bcf:citekey>
+    <bcf:citekey order="33">dou2004recommendation</bcf:citekey>
+    <bcf:citekey order="34">stakhanova2004reputation</bcf:citekey>
+    <bcf:citekey order="35">damiani2002reputation</bcf:citekey>
+    <bcf:citekey order="36">stakhanova2004reputation</bcf:citekey>
+    <bcf:citekey order="37">stakhanova2004reputation</bcf:citekey>
+    <bcf:citekey order="38">stakhanova2004reputation</bcf:citekey>
+    <bcf:citekey order="39">selcuk2004reputation</bcf:citekey>
+    <bcf:citekey order="40">zhou1996fair</bcf:citekey>
+    <bcf:citekey order="41">Kremer20021606</bcf:citekey>
+    <bcf:citekey order="42">Kremer20021606</bcf:citekey>
+    <bcf:citekey order="43">zhou1996fair</bcf:citekey>
+    <bcf:citekey order="44">zhang1996achieving</bcf:citekey>
+    <bcf:citekey order="45">zhou1996fair</bcf:citekey>
+    <bcf:citekey order="46">zhou1996fair</bcf:citekey>
+    <bcf:citekey order="47">booth1981authentication</bcf:citekey>
+    <bcf:citekey order="48">booth1981authentication</bcf:citekey>
+    <bcf:citekey order="49">kline1899public</bcf:citekey>
+    <bcf:citekey order="50">allen2010wireless</bcf:citekey>
   </bcf:section>
+  <bcf:sortlist section="0" type="entry" label="nty">
+  <bcf:sorting>
+    <bcf:sort order="1">
+      <bcf:sortitem order="1">presort</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="2" final="1">
+      <bcf:sortitem order="1">sortkey</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="3">
+      <bcf:sortitem order="1">sortname</bcf:sortitem>
+      <bcf:sortitem order="2">author</bcf:sortitem>
+      <bcf:sortitem order="3">editor</bcf:sortitem>
+      <bcf:sortitem order="4">translator</bcf:sortitem>
+      <bcf:sortitem order="5">sorttitle</bcf:sortitem>
+      <bcf:sortitem order="6">title</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="4">
+      <bcf:sortitem order="1">sorttitle</bcf:sortitem>
+      <bcf:sortitem order="2">title</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="5">
+      <bcf:sortitem order="1">sortyear</bcf:sortitem>
+      <bcf:sortitem order="2">year</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="6">
+      <bcf:sortitem order="1" pad_side="left" pad_width="4" pad_char="0">volume</bcf:sortitem>
+      <bcf:sortitem order="2">0000</bcf:sortitem>
+    </bcf:sort>
+  </bcf:sorting>
+  </bcf:sortlist>
 </bcf:controlfile>

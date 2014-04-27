@@ -104,7 +104,7 @@ def graph_chunk_bandwidth(chunks):
 	ax.set_ylim(0,60)
 	ax.set_ylabel('Bandwidth (mbps)')
 	ax.set_xlabel('Chunk Size')
-	ax.set_title('Average realized bandwidth using 3 Routers.')
+	ax.set_title('Average Realized Bandwidth, using 3 Routers, each with 20mbit throttled downlink.')
 	ax.set_xticks(indicies+width)
 	xTicks = ax.set_xticklabels([btoh(size) for size in sorted(chunks,key=chunks.get)])
 	plot.setp(xTicks,rotation=45,fontsize=10)

@@ -1,17 +1,19 @@
 [0] Config.pm:387> INFO - This is Biber 1.6
 [0] Config.pm:390> INFO - Logfile is 'mqp_HEAD.blg'
-[70] biber-darwin:218> INFO - === Sun Apr 13, 2014, 22:26:53
-[70] Biber.pm:325> INFO - Reading 'mqp_HEAD.bcf'
-[136] Biber.pm:623> INFO - Found 14 citekeys in bib section 0
-[147] Biber.pm:2995> INFO - Processing section 0
-[162] Biber.pm:3129> INFO - Looking for bibtex format file 'mqp_bib.bib' for section 0
-[163] bibtex.pm:775> INFO - Found BibTeX data source 'mqp_bib.bib'
-[205] Utils.pm:169> WARN - I didn't find a database entry for 'GLL:2005' (section 0)
-[212] Utils.pm:169> WARN - The field 'note' in entry 'Ramaboli20121674' cannot be null, deleting it
-[216] Utils.pm:169> WARN - The field 'note' in entry 'Kremer20021606' cannot be null, deleting it
-[308] Biber.pm:2881> INFO - Overriding locale 'en_US.UTF-8' default tailoring 'variable = shifted' with 'variable = non-ignorable'
-[308] Biber.pm:2887> INFO - Sorting 'entry' list 'nty' keys
-[308] Biber.pm:2891> INFO - No sort tailoring available for locale 'en_US.UTF-8'
-[408] bbl.pm:472> INFO - Writing 'mqp_HEAD.bbl' with encoding 'ascii'
-[413] bbl.pm:545> INFO - Output to mqp_HEAD.bbl
-[413] Biber.pm:105> INFO - WARNINGS: 3
+[73] biber-darwin:218> INFO - === Sun Apr 20, 2014, 20:33:38
+[73] Biber.pm:325> INFO - Reading 'mqp_HEAD.bcf'
+[143] Biber.pm:623> INFO - Found 31 citekeys in bib section 0
+[154] Biber.pm:2995> INFO - Processing section 0
+[168] Biber.pm:3129> INFO - Looking for bibtex format file 'mqp_bib.bib' for section 0
+[170] bibtex.pm:775> INFO - Found BibTeX data source 'mqp_bib.bib'
+[232] Utils.pm:169> WARN - BibTeX subsystem: /var/folders/g7/tv2h0ds14p3g6sg75jkmzmf80000gn/T/Vk0czSuLGD/mqp_bib.bib_7167.utf8, line 21, warning: 270 characters of junk seen at toplevel
+[232] Utils.pm:169> WARN - BibTeX subsystem: /var/folders/g7/tv2h0ds14p3g6sg75jkmzmf80000gn/T/Vk0czSuLGD/mqp_bib.bib_7167.utf8, line 83, warning: 64 characters of junk seen at toplevel
+[233] Utils.pm:169> WARN - I didn't find a database entry for 'GLL:2005' (section 0)
+[256] Utils.pm:169> WARN - The field 'note' in entry 'Ramaboli20121674' cannot be null, deleting it
+[261] Utils.pm:169> WARN - The field 'note' in entry 'Kremer20021606' cannot be null, deleting it
+[431] Biber.pm:2881> INFO - Overriding locale 'en_US.UTF-8' default tailoring 'variable = shifted' with 'variable = non-ignorable'
+[432] Biber.pm:2887> INFO - Sorting 'entry' list 'nty' keys
+[432] Biber.pm:2891> INFO - No sort tailoring available for locale 'en_US.UTF-8'
+[671] bbl.pm:472> INFO - Writing 'mqp_HEAD.bbl' with encoding 'ascii'
+[677] bbl.pm:545> INFO - Output to mqp_HEAD.bbl
+[678] Biber.pm:105> INFO - WARNINGS: 5

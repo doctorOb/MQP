@@ -79,6 +79,27 @@
       \endverb
       \keyw{Multi-homing}
     \endentry
+    \entry{allen2010wireless}{misc}{}
+      \name{labelname}{2}{}{%
+        {{hash=490a9a2e9bcda8c1b529a76d852b62e9}{Allen}{A\bibinitperiod}{Todd\bibnamedelima W}{T\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{hash=0bd898ce1854adfe556a3734f4658e23}{Jones}{J\bibinitperiod}{Kevin\bibnamedelima W}{K\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=490a9a2e9bcda8c1b529a76d852b62e9}{Allen}{A\bibinitperiod}{Todd\bibnamedelima W}{T\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{hash=0bd898ce1854adfe556a3734f4658e23}{Jones}{J\bibinitperiod}{Kevin\bibnamedelima W}{K\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Google Patents}%
+      }
+      \strng{namehash}{0e0fdef1ff58b3f0933a0eb24cc9fc29}
+      \strng{fullhash}{0e0fdef1ff58b3f0933a0eb24cc9fc29}
+      \field{sortinit}{A}
+      \field{labeltitle}{Wireless bandwidth aggregation}
+      \field{month}{05~18}
+      \field{note}{US Patent 7,720,098}
+      \field{title}{Wireless bandwidth aggregation}
+      \field{year}{2010}
+    \endentry
     \entry{barre2011multipath}{incollection}{}
       \name{labelname}{3}{}{%
         {{hash=290f7165f1a0013c93b89ce8946c570b}{Barr{\'e}}{B\bibinitperiod}{S{\'e}bastien}{S\bibinitperiod}{}{}{}{}}%
@@ -101,6 +122,119 @@
       \field{title}{Multipath TCP: from theory to practice}
       \field{year}{2011}
       \field{pages}{444\bibrangedash 457}
+    \endentry
+    \entry{MPTCPNetsy}{inproceedings}{}
+      \name{labelname}{1}{}{%
+        {{hash=500195eaab29dc05f97c2298de61e35f}{Bonaventure}{B\bibinitperiod}{Olivier}{O\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=500195eaab29dc05f97c2298de61e35f}{Bonaventure}{B\bibinitperiod}{Olivier}{O\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Universite Catholique de Louvain}%
+      }
+      \strng{namehash}{500195eaab29dc05f97c2298de61e35f}
+      \strng{fullhash}{500195eaab29dc05f97c2298de61e35f}
+      \field{sortinit}{B}
+      \field{labeltitle}{Decoupling TCP from IP with Multipath TCP}
+      \field{title}{Decoupling TCP from IP with Multipath TCP}
+      \field{year}{2013}
+    \endentry
+    \entry{booth1981authentication}{article}{}
+      \name{labelname}{1}{}{%
+        {{hash=dd8d765d680a76c9c60c4555002d4ac3}{Booth}{B\bibinitperiod}{Kellogg\bibnamedelima S}{K\bibinitperiod\bibinitdelim S\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=dd8d765d680a76c9c60c4555002d4ac3}{Booth}{B\bibinitperiod}{Kellogg\bibnamedelima S}{K\bibinitperiod\bibinitdelim S\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{dd8d765d680a76c9c60c4555002d4ac3}
+      \strng{fullhash}{dd8d765d680a76c9c60c4555002d4ac3}
+      \field{sortinit}{B}
+      \field{labeltitle}{Authentication of signatures using public key encryption}
+      \field{journaltitle}{Communications of the ACM}
+      \field{number}{11}
+      \field{title}{Authentication of signatures using public key encryption}
+      \field{volume}{24}
+      \field{year}{1981}
+      \field{pages}{772\bibrangedash 774}
+    \endentry
+    \entry{chang2006trust}{book}{}
+      \name{labelname}{3}{}{%
+        {{hash=896dd0aec79fbbf7a0819a4ae6f859a8}{Chang}{C\bibinitperiod}{Elizabeth}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=d830ccb708b678d71d60143308d3150b}{Hussain}{H\bibinitperiod}{Farookh}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=df88e5dd5ad0a84e0408bca23e247bfb}{Dillon}{D\bibinitperiod}{Tharam}{T\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=896dd0aec79fbbf7a0819a4ae6f859a8}{Chang}{C\bibinitperiod}{Elizabeth}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=d830ccb708b678d71d60143308d3150b}{Hussain}{H\bibinitperiod}{Farookh}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=df88e5dd5ad0a84e0408bca23e247bfb}{Dillon}{D\bibinitperiod}{Tharam}{T\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {John Wiley \& Sons}%
+      }
+      \strng{namehash}{c7d47b86eb600893f801a0b03a401a8d}
+      \strng{fullhash}{c7d47b86eb600893f801a0b03a401a8d}
+      \field{sortinit}{C}
+      \field{labeltitle}{Trust and reputation for service-oriented environments: technologies for building business intelligence and consumer confidence}
+      \field{title}{Trust and reputation for service-oriented environments: technologies for building business intelligence and consumer confidence}
+      \field{year}{2006}
+    \endentry
+    \entry{damiani2002reputation}{inproceedings}{}
+      \name{labelname}{5}{}{%
+        {{hash=832654d2c401b8bf9a040fe6056d3a49}{Damiani}{D\bibinitperiod}{Ernesto}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=0139fe53753721caddb3a8bea4d6b786}{Vimercati}{V\bibinitperiod}{De\bibnamedelima Capitani}{D\bibinitperiod\bibinitdelim C\bibinitperiod}{di}{d\bibinitperiod}{}{}}%
+        {{hash=4158c04c999d8710a8ac52fdaac460f1}{Paraboschi}{P\bibinitperiod}{Stefano}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=19cbbd79dfea5fca14f15fee59d99895}{Samarati}{S\bibinitperiod}{Pierangela}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=e088112b5bab31af912023a5c0bfa63c}{Violante}{V\bibinitperiod}{Fabio}{F\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{5}{}{%
+        {{hash=832654d2c401b8bf9a040fe6056d3a49}{Damiani}{D\bibinitperiod}{Ernesto}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=0139fe53753721caddb3a8bea4d6b786}{Vimercati}{V\bibinitperiod}{De\bibnamedelima Capitani}{D\bibinitperiod\bibinitdelim C\bibinitperiod}{di}{d\bibinitperiod}{}{}}%
+        {{hash=4158c04c999d8710a8ac52fdaac460f1}{Paraboschi}{P\bibinitperiod}{Stefano}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=19cbbd79dfea5fca14f15fee59d99895}{Samarati}{S\bibinitperiod}{Pierangela}{P\bibinitperiod}{}{}{}{}}%
+        {{hash=e088112b5bab31af912023a5c0bfa63c}{Violante}{V\bibinitperiod}{Fabio}{F\bibinitperiod}{}{}{}{}}%
+      }
+      \list{organization}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{dd0f705b02272efa14850ed0d34b035c}
+      \strng{fullhash}{a5dcec8867f3bbd225e01be66de804b2}
+      \field{sortinit}{D}
+      \field{labeltitle}{A reputation-based approach for choosing reliable resources in peer-to-peer networks}
+      \field{booktitle}{Proceedings of the 9th ACM conference on Computer and communications security}
+      \field{title}{A reputation-based approach for choosing reliable resources in peer-to-peer networks}
+      \field{year}{2002}
+      \field{pages}{207\bibrangedash 216}
+    \endentry
+    \entry{dou2004recommendation}{article}{}
+      \name{labelname}{4}{}{%
+        {{hash=144188591a8bd97a7d40091488a16730}{Dou}{D\bibinitperiod}{Wen}{W\bibinitperiod}{}{}{}{}}%
+        {{hash=a8243bd46be7c5017c8913a61793f605}{Wang}{W\bibinitperiod}{Huai-Min}{H\bibinithyphendelim M\bibinitperiod}{}{}{}{}}%
+        {{hash=dac09067e89440490763a92ac983db62}{Jia}{J\bibinitperiod}{Yan}{Y\bibinitperiod}{}{}{}{}}%
+        {{hash=f752b01473b562ab110fca43fda00706}{Zou}{Z\bibinitperiod}{Peng}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{hash=144188591a8bd97a7d40091488a16730}{Dou}{D\bibinitperiod}{Wen}{W\bibinitperiod}{}{}{}{}}%
+        {{hash=a8243bd46be7c5017c8913a61793f605}{Wang}{W\bibinitperiod}{Huai-Min}{H\bibinithyphendelim M\bibinitperiod}{}{}{}{}}%
+        {{hash=dac09067e89440490763a92ac983db62}{Jia}{J\bibinitperiod}{Yan}{Y\bibinitperiod}{}{}{}{}}%
+        {{hash=f752b01473b562ab110fca43fda00706}{Zou}{Z\bibinitperiod}{Peng}{P\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Beijing}%
+      }
+      \strng{namehash}{f1986aa697de5c3660a50d4a47da0189}
+      \strng{fullhash}{32f4d23e63f0543a461b71113b5d012f}
+      \field{sortinit}{D}
+      \field{labeltitle}{A recommendation-based peer-to-peer trust model}
+      \field{journaltitle}{Journal of software}
+      \field{number}{4}
+      \field{title}{A recommendation-based peer-to-peer trust model}
+      \field{volume}{15}
+      \field{year}{2004}
+      \field{pages}{571\bibrangedash 583}
     \endentry
     \entry{5355198}{inproceedings}{}
       \name{labelname}{6}{}{%
@@ -132,6 +266,120 @@
       \verb 10.1109/LCN.2009.5355198
       \endverb
       \keyw{IP networks;Internet;bandwidth allocation;fault tolerance;multi-access systems;telecommunication network reliability;transport protocols;IP packet reordering;bandwidth aggregation;bandwidth reduction;fault tolerance;multihomed clients;multilink proxy;multiple Internet connections;multiple network interfaces;network-layer proxy;Bandwidth;Bluetooth;Cellular phones;Delay;Fault tolerance;IP networks;Multiaccess communication;Network interfaces;Throughput;Wireless LAN;Wireless networks;heterogeneous systems;measurements;network protocols;scheduling;traffic analysis}
+    \endentry
+    \entry{goldreich1994definitions}{article}{}
+      \name{labelname}{2}{}{%
+        {{hash=66aba379c7d3adb8af5b662a65c4c140}{Goldreich}{G\bibinitperiod}{Oded}{O\bibinitperiod}{}{}{}{}}%
+        {{hash=2442911fc5d46da2b80042d81e04bb12}{Oren}{O\bibinitperiod}{Yair}{Y\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=66aba379c7d3adb8af5b662a65c4c140}{Goldreich}{G\bibinitperiod}{Oded}{O\bibinitperiod}{}{}{}{}}%
+        {{hash=2442911fc5d46da2b80042d81e04bb12}{Oren}{O\bibinitperiod}{Yair}{Y\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{1b0f8f2ab4819d139a97a08d7c031d14}
+      \strng{fullhash}{1b0f8f2ab4819d139a97a08d7c031d14}
+      \field{sortinit}{G}
+      \field{labeltitle}{Definitions and properties of zero-knowledge proof systems}
+      \field{journaltitle}{Journal of Cryptology}
+      \field{number}{1}
+      \field{title}{Definitions and properties of zero-knowledge proof systems}
+      \field{volume}{7}
+      \field{year}{1994}
+      \field{pages}{1\bibrangedash 32}
+    \endentry
+    \entry{trunkingTutorial}{inproceedings}{}
+      \name{labelname}{1}{}{%
+        {{hash=2e7f658ed1d5c9bb1418cb65125d19d9}{Hendel}{H\bibinitperiod}{Ariel}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=2e7f658ed1d5c9bb1418cb65125d19d9}{Hendel}{H\bibinitperiod}{Ariel}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Sun Microsystems}%
+      }
+      \strng{namehash}{2e7f658ed1d5c9bb1418cb65125d19d9}
+      \strng{fullhash}{2e7f658ed1d5c9bb1418cb65125d19d9}
+      \field{sortinit}{H}
+      \field{labeltitle}{Link Aggregation Trunking}
+      \field{title}{Link Aggregation Trunking}
+      \field{year}{1997}
+    \endentry
+    \entry{IEEE_IBM}{misc}{}
+      \list{language}{1}{%
+        {en-us}%
+      }
+      \field{sortinit}{I}
+      \field{labeltitle}{{IEEE} 802.3ad Link Aggregation configuration}
+      \field{abstract}{{IEEE} 802.3ad is a standard way of doing link aggregation. Conceptually, it works the same as {EtherChannel} in that several Ethernet adapters are aggregated into a single virtual adapter, providing greater bandwidth and protection against failures.}
+      \field{title}{{IEEE} 802.3ad Link Aggregation configuration}
+      \field{type}{concept}
+      \field{urlday}{13}
+      \field{urlmonth}{10}
+      \field{urlyear}{2013}
+      \verb{url}
+      \verb http://publib.boulder.ibm.com/infocenter/pseries/v5r3/topic/com.ibm.aix.commadmn/doc/commadmndita/ieee8023ad_intro.htm
+      \endverb
+    \endentry
+    \entry{iguchi2005new}{incollection}{}
+      \name{labelname}{3}{}{%
+        {{hash=b468de4192e80abdd72bedfddd55eaab}{Iguchi}{I\bibinitperiod}{Tomohito}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=ac35c31c42886359772f207299ba9ade}{Hasegawa}{H\bibinitperiod}{Go}{G\bibinitperiod}{}{}{}{}}%
+        {{hash=54b96033838199fa5b811da3405be247}{Murata}{M\bibinitperiod}{Masayuki}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=b468de4192e80abdd72bedfddd55eaab}{Iguchi}{I\bibinitperiod}{Tomohito}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=ac35c31c42886359772f207299ba9ade}{Hasegawa}{H\bibinitperiod}{Go}{G\bibinitperiod}{}{}{}{}}%
+        {{hash=54b96033838199fa5b811da3405be247}{Murata}{M\bibinitperiod}{Masayuki}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{8f27c682513beae409109186cc9a84ce}
+      \strng{fullhash}{8f27c682513beae409109186cc9a84ce}
+      \field{sortinit}{I}
+      \field{labeltitle}{A new congestion control mechanism of TCP with inline network measurement}
+      \field{booktitle}{Information Networking. Convergence in Broadband and Mobile Networking}
+      \field{title}{A new congestion control mechanism of TCP with inline network measurement}
+      \field{year}{2005}
+      \field{pages}{109\bibrangedash 121}
+    \endentry
+    \entry{rfc5236}{misc}{}
+      \name{labelname}{5}{}{%
+        {{hash=e39c898c7420118bb8756f5e6b4129de}{Jayasumana}{J\bibinitperiod}{A.}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=0f9372a5f81a4081b59efe02007b6784}{Piratla}{P\bibinitperiod}{N.}{N\bibinitperiod}{}{}{}{}}%
+        {{hash=4655595385fadbd065cbc08aabe54af2}{Banka}{B\bibinitperiod}{T.}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=23628f91e2dc3c0a96b2f0fc8520a2ee}{Bare}{B\bibinitperiod}{A.}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=cf1b090d9b034256ca3f8b1bf3b7aa5c}{Whitner}{W\bibinitperiod}{R.}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{5}{}{%
+        {{hash=e39c898c7420118bb8756f5e6b4129de}{Jayasumana}{J\bibinitperiod}{A.}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=0f9372a5f81a4081b59efe02007b6784}{Piratla}{P\bibinitperiod}{N.}{N\bibinitperiod}{}{}{}{}}%
+        {{hash=4655595385fadbd065cbc08aabe54af2}{Banka}{B\bibinitperiod}{T.}{T\bibinitperiod}{}{}{}{}}%
+        {{hash=23628f91e2dc3c0a96b2f0fc8520a2ee}{Bare}{B\bibinitperiod}{A.}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=cf1b090d9b034256ca3f8b1bf3b7aa5c}{Whitner}{W\bibinitperiod}{R.}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \list{organization}{1}{%
+        {Internet Engineering Task Force}%
+      }
+      \list{publisher}{1}{%
+        {IETF}%
+      }
+      \strng{namehash}{990c376c4deeedec87819f5ab3525cbd}
+      \strng{fullhash}{bab1aa06c485e416f2fa0c7848d0bad7}
+      \field{sortinit}{J}
+      \field{labeltitle}{{Improved Packet Reordering Metrics}}
+      \field{howpublished}{RFC 5236 (Informational)}
+      \field{month}{06}
+      \field{number}{5236}
+      \field{series}{Request for Comments}
+      \field{title}{{Improved Packet Reordering Metrics}}
+      \field{year}{2008}
+      \verb{url}
+      \verb http://www.ietf.org/rfc/rfc5236.txt
+      \endverb
     \endentry
     \entry{1541208}{inproceedings}{}
       \name{labelname}{2}{}{%
@@ -211,6 +459,27 @@
       \field{volume}{3}
       \field{year}{2008}
       \field{pages}{325\bibrangedash 41}
+    \endentry
+    \entry{kline1899public}{inproceedings}{}
+      \name{labelname}{2}{}{%
+        {{hash=21a3c772a4d5e9780206c3c8a5416bd5}{Kline}{K\bibinitperiod}{Charles\bibnamedelima S}{C\bibinitperiod\bibinitdelim S\bibinitperiod}{}{}{}{}}%
+        {{hash=1112168c2765915c95bcc916edd5d22c}{Popek}{P\bibinitperiod}{Gerald\bibnamedelima J}{G\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=21a3c772a4d5e9780206c3c8a5416bd5}{Kline}{K\bibinitperiod}{Charles\bibnamedelima S}{C\bibinitperiod\bibinitdelim S\bibinitperiod}{}{}{}{}}%
+        {{hash=1112168c2765915c95bcc916edd5d22c}{Popek}{P\bibinitperiod}{Gerald\bibnamedelima J}{G\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+      }
+      \list{organization}{1}{%
+        {IEEE Computer Society}%
+      }
+      \strng{namehash}{9a97ccdb4afea64d470902cd242d8980}
+      \strng{fullhash}{9a97ccdb4afea64d470902cd242d8980}
+      \field{sortinit}{K}
+      \field{labeltitle}{Public key vs. conventional key encryption}
+      \field{booktitle}{1979 Proceedings of the National Computer Conference}
+      \field{title}{Public key vs. conventional key encryption}
+      \field{year}{1899}
+      \field{pages}{831}
     \endentry
     \entry{Kremer20021606}{article}{}
       \name{labelname}{3}{}{%
@@ -352,6 +621,29 @@
       \endverb
       \keyw{Heterogeneous wireless networks}
     \endentry
+    \entry{selcuk2004reputation}{inproceedings}{}
+      \name{labelname}{3}{}{%
+        {{hash=a317c657d52165061aa7fce0f0301a93}{Selcuk}{S\bibinitperiod}{Ali\bibnamedelima Aydin}{A\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
+        {{hash=a33d89b760be33ded6506c51c9201ed5}{Uzun}{U\bibinitperiod}{Ersin}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=de7eb0a1087de4222cab7ef48f4d36fd}{Pariente}{P\bibinitperiod}{Mark\bibnamedelima Resat}{M\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{hash=a317c657d52165061aa7fce0f0301a93}{Selcuk}{S\bibinitperiod}{Ali\bibnamedelima Aydin}{A\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
+        {{hash=a33d89b760be33ded6506c51c9201ed5}{Uzun}{U\bibinitperiod}{Ersin}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=de7eb0a1087de4222cab7ef48f4d36fd}{Pariente}{P\bibinitperiod}{Mark\bibnamedelima Resat}{M\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{dc21f7b94ae36936b7db19b86e84669b}
+      \strng{fullhash}{dc21f7b94ae36936b7db19b86e84669b}
+      \field{sortinit}{S}
+      \field{labeltitle}{A reputation-based trust management system for P2P networks}
+      \field{booktitle}{Cluster Computing and the Grid, 2004. CCGrid 2004. IEEE International Symposium on}
+      \field{title}{A reputation-based trust management system for P2P networks}
+      \field{year}{2004}
+      \field{pages}{251\bibrangedash 258}
+    \endentry
     \entry{1363842}{inproceedings}{}
       \name{labelname}{4}{}{%
         {{hash=bbfe84d8aa15dc84a266691b6b8c61ad}{Sharma}{S\bibinitperiod}{P.}{P\bibinitperiod}{}{}{}{}}%
@@ -378,6 +670,99 @@
       \verb 10.1109/BROADNETS.2004.43
       \endverb
       \keyw{Internet;channel allocation;groupware;mobile computing;mobile radio;multiplexing;radio links;telecommunication network routing;telecommunication traffic;visual communication;wide area networks;Internet;WAN;decentralized inverse multiplexing system;handheld router;intelligent bandwidth aggregation;mobile collaborative community;mobile wireless computing;video traffic;Bandwidth;Collaboration;Computational modeling;Mobile communication;Mobile computing;Performance gain;Traffic control;Video sharing;Wide area networks;Wireless communication}
+    \endentry
+    \entry{stakhanova2004reputation}{article}{}
+      \name{labelname}{4}{}{%
+        {{hash=ad92a742038500b4a5cabd6161799755}{Stakhanova}{S\bibinitperiod}{Natalia}{N\bibinitperiod}{}{}{}{}}%
+        {{hash=b255253b21117cf64411dc56ba60a0c0}{Ferrero}{F\bibinitperiod}{Sergio}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=458b3c2eca6e1b2f8040ce926cbc3af6}{Wong}{W\bibinitperiod}{Johnny\bibnamedelima S}{J\bibinitperiod\bibinitdelim S\bibinitperiod}{}{}{}{}}%
+        {{hash=1590429c915a01a51d67986862f94c45}{Cai}{C\bibinitperiod}{Ying}{Y\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{4}{}{%
+        {{hash=ad92a742038500b4a5cabd6161799755}{Stakhanova}{S\bibinitperiod}{Natalia}{N\bibinitperiod}{}{}{}{}}%
+        {{hash=b255253b21117cf64411dc56ba60a0c0}{Ferrero}{F\bibinitperiod}{Sergio}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=458b3c2eca6e1b2f8040ce926cbc3af6}{Wong}{W\bibinitperiod}{Johnny\bibnamedelima S}{J\bibinitperiod\bibinitdelim S\bibinitperiod}{}{}{}{}}%
+        {{hash=1590429c915a01a51d67986862f94c45}{Cai}{C\bibinitperiod}{Ying}{Y\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{ee7fcb234742083de4bfa6042fe3a1fb}
+      \strng{fullhash}{bbfb2e1719e594560152511a1a71988a}
+      \field{sortinit}{S}
+      \field{labeltitle}{A Reputation-based Trust Management in Peer-to-Peer Network Systems.}
+      \field{journaltitle}{ISCA PDCS}
+      \field{title}{A Reputation-based Trust Management in Peer-to-Peer Network Systems.}
+      \field{volume}{4}
+      \field{year}{2004}
+      \field{pages}{510\bibrangedash 515}
+    \endentry
+    \entry{1318566}{article}{}
+      \name{labelname}{2}{}{%
+        {{hash=1ef3bb212d96afbd467bc2fefbb7b377}{Xiong}{X\bibinitperiod}{Li}{L\bibinitperiod}{}{}{}{}}%
+        {{hash=1c17a20c4acfa6f32b73321fc505433b}{Liu}{L\bibinitperiod}{Ling}{L\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=1ef3bb212d96afbd467bc2fefbb7b377}{Xiong}{X\bibinitperiod}{Li}{L\bibinitperiod}{}{}{}{}}%
+        {{hash=1c17a20c4acfa6f32b73321fc505433b}{Liu}{L\bibinitperiod}{Ling}{L\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{86fa1845d6e7b51d9ccc4c2cda451d76}
+      \strng{fullhash}{86fa1845d6e7b51d9ccc4c2cda451d76}
+      \field{sortinit}{X}
+      \field{labeltitle}{PeerTrust: supporting reputation-based trust for peer-to-peer electronic communities}
+      \field{issn}{1041-4347}
+      \field{journaltitle}{Knowledge and Data Engineering, IEEE Transactions on}
+      \field{month}{07}
+      \field{number}{7}
+      \field{title}{PeerTrust: supporting reputation-based trust for peer-to-peer electronic communities}
+      \field{volume}{16}
+      \field{year}{2004}
+      \field{pages}{843\bibrangedash 857}
+      \verb{doi}
+      \verb 10.1109/TKDE.2004.1318566
+      \endverb
+      \keyw{computer networks;electronic commerce;security of data;transaction processing;P2P network;data management;peer-to-peer electronic communities;reputation mechanism;security;transaction-based feedback system;trust model;Communities;Computer Society;Computer applications;Consumer electronics;Costs;Data security;Electronic commerce;Feedback;Information security;Peer to peer computing}
+    \endentry
+    \entry{zhang1996achieving}{article}{}
+      \name{labelname}{2}{}{%
+        {{hash=803fb0c7ba592ff2ac5109218a4a8211}{Zhang}{Z\bibinitperiod}{Ning}{N\bibinitperiod}{}{}{}{}}%
+        {{hash=6a336359cddb96bbe91e58adf66384fd}{Shi}{S\bibinitperiod}{Qi}{Q\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=803fb0c7ba592ff2ac5109218a4a8211}{Zhang}{Z\bibinitperiod}{Ning}{N\bibinitperiod}{}{}{}{}}%
+        {{hash=6a336359cddb96bbe91e58adf66384fd}{Shi}{S\bibinitperiod}{Qi}{Q\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Br Computer Soc}%
+      }
+      \strng{namehash}{ce13368595ee1ccbca0995386b4e151a}
+      \strng{fullhash}{ce13368595ee1ccbca0995386b4e151a}
+      \field{sortinit}{Z}
+      \field{labeltitle}{Achieving non-repudiation of receipt}
+      \field{journaltitle}{The Computer Journal}
+      \field{number}{10}
+      \field{title}{Achieving non-repudiation of receipt}
+      \field{volume}{39}
+      \field{year}{1996}
+      \field{pages}{844\bibrangedash 853}
+    \endentry
+    \entry{zhou1996fair}{inproceedings}{}
+      \name{labelname}{2}{}{%
+        {{hash=985773c35faadcac01ed2d33eb0b22c9}{Zhou}{Z\bibinitperiod}{Jinaying}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=1edae263d5d3aaa3c2546e36fecae29c}{Gollmann}{G\bibinitperiod}{Dieter}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{hash=985773c35faadcac01ed2d33eb0b22c9}{Zhou}{Z\bibinitperiod}{Jinaying}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=1edae263d5d3aaa3c2546e36fecae29c}{Gollmann}{G\bibinitperiod}{Dieter}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \list{organization}{1}{%
+        {Citeseer}%
+      }
+      \strng{namehash}{12a6565f2560e7e6ddd5323236e8d46e}
+      \strng{fullhash}{12a6565f2560e7e6ddd5323236e8d46e}
+      \field{sortinit}{Z}
+      \field{labeltitle}{A fair non-repudiation protocol}
+      \field{booktitle}{IEEE symposium on security and privacy}
+      \field{title}{A fair non-repudiation protocol}
+      \field{year}{1996}
+      \field{pages}{55\bibrangedash 61}
     \endentry
   \endsortlist
   \missing{GLL:2005}

@@ -1,4 +1,4 @@
-\BOOKMARK [1][-]{section.1}{Intro}{}% 1
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Background}{}% 2
 \BOOKMARK [2][-]{subsection.2.1}{Heterogeneous Wireless Networks}{section.2}% 3
 \BOOKMARK [2][-]{subsection.2.2}{Application Layer}{section.2}% 4
@@ -7,7 +7,7 @@
 \BOOKMARK [3][-]{subsubsection.2.2.3}{Data link Layer}{subsection.2.2}% 7
 \BOOKMARK [2][-]{subsection.2.3}{Adaptive bandwidth aggregation}{section.2}% 8
 \BOOKMARK [2][-]{subsection.2.4}{Mobile Devices as an Aggregation Platform}{section.2}% 9
-\BOOKMARK [2][-]{subsection.2.5}{Non Repudiation, and Willingness to Participate}{section.2}% 10
+\BOOKMARK [2][-]{subsection.2.5}{Non-Repudiation and Willingness to Participate}{section.2}% 10
 \BOOKMARK [1][-]{section.3}{Approach}{}% 11
 \BOOKMARK [2][-]{subsection.3.1}{Core Design Components}{section.3}% 12
 \BOOKMARK [3][-]{subsubsection.3.1.1}{Determining when to aggregate}{subsection.3.1}% 13
@@ -16,7 +16,7 @@
 \BOOKMARK [3][-]{subsubsection.3.1.4}{Request Segmentation and Distribution}{subsection.3.1}% 16
 \BOOKMARK [2][-]{subsection.3.2}{Deciding on a Device}{section.3}% 17
 \BOOKMARK [2][-]{subsection.3.3}{First Design Iteration}{section.3}% 18
-\BOOKMARK [2][-]{subsection.3.4}{Implementing on a proxy}{section.3}% 19
+\BOOKMARK [2][-]{subsection.3.4}{Implementation through a proxy}{section.3}% 19
 \BOOKMARK [3][-]{subsubsection.3.4.1}{Squid proxy}{subsection.3.4}% 20
 \BOOKMARK [3][-]{subsubsection.3.4.2}{Proxying with Python}{subsection.3.4}% 21
 \BOOKMARK [2][-]{subsection.3.5}{Developing a Prototype}{section.3}% 22
@@ -24,14 +24,15 @@
 \BOOKMARK [3][-]{subsubsection.3.5.2}{Role of the Coordinating Router}{subsection.3.5}% 24
 \BOOKMARK [1][-]{section.4}{Evaluation}{}% 25
 \BOOKMARK [2][-]{subsubsection.4.0.3}{Effect of Chunk Size on Realized Bandwidth}{section.4}% 26
-\BOOKMARK [1][-]{section.5}{Discussion}{}% 27
-\BOOKMARK [2][-]{subsection.5.1}{Rationale for various Design decisions \(and their alternatives\)}{section.5}% 28
-\BOOKMARK [3][-]{subsubsection.5.1.1}{Packet Segmentation Algorithm}{subsection.5.1}% 29
-\BOOKMARK [3][-]{subsubsection.5.1.2}{Boundaries on segment size}{subsection.5.1}% 30
-\BOOKMARK [2][-]{subsection.5.2}{Security Goals}{section.5}% 31
-\BOOKMARK [3][-]{subsubsection.5.2.1}{Trust Platform, and Reliability}{subsection.5.2}% 32
-\BOOKMARK [3][-]{subsubsection.5.2.2}{Responsibility with Asymmetric Cryptography}{subsection.5.2}% 33
-\BOOKMARK [3][-]{subsubsection.5.2.3}{Peer selection by a variety of metrics}{subsection.5.2}% 34
-\BOOKMARK [1][-]{section.6}{Related Work}{}% 35
-\BOOKMARK [1][-]{section.7}{Conclusion, Future work}{}% 36
-\BOOKMARK [1][-]{section.8}{References}{}% 37
+\BOOKMARK [3][-]{subsubsection.4.0.4}{Real World Tests}{subsubsection.4.0.3}% 27
+\BOOKMARK [1][-]{section.5}{Discussion}{}% 28
+\BOOKMARK [2][-]{subsection.5.1}{Rationale for various Design decisions \(and their alternatives\)}{section.5}% 29
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Packet Segmentation Algorithm}{subsection.5.1}% 30
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Boundaries on segment size}{subsection.5.1}% 31
+\BOOKMARK [2][-]{subsection.5.2}{Security Goals}{section.5}% 32
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Trust Platform, and Reliability}{subsection.5.2}% 33
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Responsibility with Asymmetric Cryptography}{subsection.5.2}% 34
+\BOOKMARK [3][-]{subsubsection.5.2.3}{Peer selection by a variety of metrics}{subsection.5.2}% 35
+\BOOKMARK [1][-]{section.6}{Related Work}{}% 36
+\BOOKMARK [1][-]{section.7}{Conclusion, Future work}{}% 37
+\BOOKMARK [1][-]{section.8}{References}{}% 38
